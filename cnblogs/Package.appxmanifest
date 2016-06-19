@@ -14,7 +14,7 @@
   <mp:PhoneIdentity PhoneProductId="33670373-ec24-45d7-b3bd-079d5a8a8257" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>cnblogs</DisplayName>
+    <DisplayName>CnBlogs</DisplayName>
     <PublisherDisplayName>Dm_ca</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="cnblogs.App">
+      EntryPoint="CnBlogs.App">
       <uap:VisualElements
-        DisplayName="cnblogs"
+        DisplayName="CnBlogs"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="cnblogs"
+        Description="CnBlogs"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />

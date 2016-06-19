@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F4A5D8AB-AF8A-49DD-BB05-AFC7BA89EEF8}</ProjectGuid>
+    <ProjectGuid>{98CDC108-B51F-467A-9693-DB79BBD3C657}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CnBlogs.Common</RootNamespace>
-    <AssemblyName>CnBlogs.Common</AssemblyName>
+    <RootNamespace>CnBlogs.Entities</RootNamespace>
+    <AssemblyName>CnBlogs.Entities</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
@@ -107,18 +107,11 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Author.cs" />
+    <Compile Include="Blog.cs" />
+    <Compile Include="BlogComment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\Cnblogs.Common.rd.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\cnblogs.Core\CnBlogs.Core.csproj">
-      <Project>{f980f830-4cd5-4276-b4b2-7197e7691f53}</Project>
-      <Name>CnBlogs.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Cnblogs.Entities\CnBlogs.Entities.csproj">
-      <Project>{98cdc108-b51f-467a-9693-db79bbd3c657}</Project>
-      <Name>CnBlogs.Entities</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="Properties\Cnblogs.Entities.rd.xml" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

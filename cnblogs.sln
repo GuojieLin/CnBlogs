@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cnblogs", "cnblogs\cnblogs.csproj", "{0C5D8B40-816E-46EE-92DC-93A11A4F11F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CnBlogs", "cnblogs\CnBlogs.csproj", "{0C5D8B40-816E-46EE-92DC-93A11A4F11F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cnblogs.Service", "cnblogs.Service\cnblogs.Service.csproj", "{313CB9FA-B21A-4448-8330-2E889D7CC8C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CnBlogs.Service", "cnblogs.Service\CnBlogs.Service.csproj", "{313CB9FA-B21A-4448-8330-2E889D7CC8C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cnblogs.Common", "cnblogs.Common\cnblogs.Common.csproj", "{F4A5D8AB-AF8A-49DD-BB05-AFC7BA89EEF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CnBlogs.Common", "cnblogs.Common\CnBlogs.Common.csproj", "{F4A5D8AB-AF8A-49DD-BB05-AFC7BA89EEF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cnblogs.Core", "cnblogs.Core\cnblogs.Core.csproj", "{F980F830-4CD5-4276-B4B2-7197E7691F53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CnBlogs.Core", "cnblogs.Core\CnBlogs.Core.csproj", "{F980F830-4CD5-4276-B4B2-7197E7691F53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CnBlogs.Entities", "Cnblogs.Entities\CnBlogs.Entities.csproj", "{98CDC108-B51F-467A-9693-DB79BBD3C657}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +93,22 @@ Global
 		{F980F830-4CD5-4276-B4B2-7197E7691F53}.Release|x64.Build.0 = Release|x64
 		{F980F830-4CD5-4276-B4B2-7197E7691F53}.Release|x86.ActiveCfg = Release|x86
 		{F980F830-4CD5-4276-B4B2-7197E7691F53}.Release|x86.Build.0 = Release|x86
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Debug|ARM.ActiveCfg = Debug|ARM
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Debug|ARM.Build.0 = Debug|ARM
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Debug|x64.ActiveCfg = Debug|x64
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Debug|x64.Build.0 = Debug|x64
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Debug|x86.ActiveCfg = Debug|x86
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Debug|x86.Build.0 = Debug|x86
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Release|ARM.ActiveCfg = Release|ARM
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Release|ARM.Build.0 = Release|ARM
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Release|x64.ActiveCfg = Release|x64
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Release|x64.Build.0 = Release|x64
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Release|x86.ActiveCfg = Release|x86
+		{98CDC108-B51F-467A-9693-DB79BBD3C657}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

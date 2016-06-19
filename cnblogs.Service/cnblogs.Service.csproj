@@ -7,8 +7,8 @@
     <ProjectGuid>{313CB9FA-B21A-4448-8330-2E889D7CC8C2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>cnblogs.Service</RootNamespace>
-    <AssemblyName>cnblogs.Service</AssemblyName>
+    <RootNamespace>CnBlogs.Service</RootNamespace>
+    <AssemblyName>CnBlogs.Service</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
@@ -107,8 +107,25 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlogService.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="WcfApiUrlConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\cnblogs.Service.rd.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cnblogs.Common\CnBlogs.Common.csproj">
+      <Project>{f4a5d8ab-af8a-49dd-bb05-afc7ba89eef8}</Project>
+      <Name>CnBlogs.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\cnblogs.Core\CnBlogs.Core.csproj">
+      <Project>{f980f830-4cd5-4276-b4b2-7197e7691f53}</Project>
+      <Name>CnBlogs.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cnblogs.Entities\CnBlogs.Entities.csproj">
+      <Project>{98cdc108-b51f-467a-9693-db79bbd3c657}</Project>
+      <Name>CnBlogs.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

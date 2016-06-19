@@ -7,8 +7,8 @@
     <ProjectGuid>{F980F830-4CD5-4276-B4B2-7197E7691F53}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>cnblogs.Core</RootNamespace>
-    <AssemblyName>cnblogs.Core</AssemblyName>
+    <RootNamespace>CnBlogs.Core</RootNamespace>
+    <AssemblyName>CnBlogs.Core</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
@@ -107,8 +107,10 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extentsions\StringExtensions.cs" />
+    <Compile Include="HttpHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\cnblogs.Core.rd.xml" />
+    <EmbeddedResource Include="Properties\Cnblogs.Core.rd.xml" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
