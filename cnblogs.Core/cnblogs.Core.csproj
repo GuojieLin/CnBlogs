@@ -107,6 +107,8 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\DeviceFamily.cs" />
+    <Compile Include="Constants\DeviceSize.cs" />
     <Compile Include="Extentsions\StringExtensions.cs" />
     <Compile Include="HttpHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

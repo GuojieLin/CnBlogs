@@ -6,8 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-
-    <Grid Padding="0,5,0,5">
+    <Grid Padding="5,2,5,2" >
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -15,73 +14,60 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0"
                    Text="{x:Bind Blog.Title}"
-                   FontSize="16"
-                   Name="BlogTitle"
-                   FontWeight="Bold">
+                   Style="{StaticResource TitleTextBlock}"
+                   Name="BlogTitle">
         </TextBlock>
-        <RelativePanel Grid.Row="1" Padding="0,5,5,5">
+        <RelativePanel Grid.Row="1" Padding="0,3,0,3" HorizontalAlignment="Left">
             <Image Source="{x:Bind Blog.Author.Avatar}"
                                     Width="50"
                                     RelativePanel.AlignLeftWithPanel="True"
-                                    Name="AuthorAvatar"
-                                    Margin="0,4,0,0">
+                                    Name="AuthorAvatar">
             </Image>
             <TextBlock Text="{x:Bind Blog.Summary}"
-                       Padding="10,0,0,0"
+                       Style="{StaticResource BaseTextBlock}"
                        TextWrapping="Wrap"    
                        MaxLines="3"
-                       FontSize="15"
+                       TextTrimming="CharacterEllipsis"
                        RelativePanel.RightOf="AuthorAvatar"
                        RelativePanel.AlignRightWithPanel="True">
             </TextBlock>
         </RelativePanel>
-        <StackPanel Orientation="Horizontal" Grid.Row="2">
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Left">
             <HyperlinkButton Content="{x:Bind Blog.Author.Name}"
-                             FontSize="13"
-                             Padding="0"
-                             Margin="0"
+                             FontSize="10"
                              VerticalAlignment="Center"
                              Click="HyperlinkButton_Click"
+                             Margin="2"
                              Tag="{x:Bind Blog.BlogApp}">
             </HyperlinkButton>
             <TextBlock Text="{x:Bind Blog.Published}"
-                        FontSize="13"
-                        Margin="10,0,0,0"
-                        VerticalAlignment="Center">
+                       FontSize="10"                   
+                       Margin="2"
+                       VerticalAlignment="Center">
             </TextBlock>
-            <Button Name="CommentButton" Click="CommentButton_Click">
+
+            <Button Name="CommentButton" Click="CommentButton_Click" Background="Transparent"  Margin="2">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Comment" />
                         <TextBlock Text="{x:Bind Blog.Comments}"
-                                   FontSize="14"
-                                   Margin="12,0,2,0"
-                                   VerticalAlignment="Center">
+                                   Style="{StaticResource StackPanelTextBlockStyle}">
                         </TextBlock>        
                     </StackPanel>
                 </Button.Content>
             </Button>
-
-            <Button Name="ViewButton" Click="ViewButton_Click">
-                <Button.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <SymbolIcon Symbol="View"/>
-                        <TextBlock Text="{x:Bind Blog.Views}"
-                                    FontSize="14"
-                                    Margin="12,0,2,0"
-                                    VerticalAlignment="Center">
-                        </TextBlock>
-                    </StackPanel>
-                </Button.Content>
-            </Button>
-            <Button Name="DiggsButton" Click="DiggsButton_Click">
+            <StackPanel Orientation="Horizontal">
+                <SymbolIcon Symbol="View"/>
+                <TextBlock Text="{x:Bind Blog.Views}"
+                                   Style="{StaticResource StackPanelTextBlockStyle}">
+                </TextBlock>
+            </StackPanel>
+            <Button Name="DiggsButton" Click="DiggsButton_Click" Background="Transparent" Margin="2">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Like"/>
                         <TextBlock Text="{x:Bind Blog.Diggs}"
-                                    FontSize="14"
-                                    Margin="12,0,2,0"
-                                    VerticalAlignment="Center">
+                                   Style="{StaticResource StackPanelTextBlockStyle}">
                         </TextBlock>
                     </StackPanel>
                 </Button.Content>

@@ -42,12 +42,12 @@ namespace CnBlogs.Service
         /// postId,pageIndex,pageSize
         /// 获取文章评论
         /// </summary>
-        internal static string GetComments = CnblogsWcfBlogUrl + "post/{0}/comments/{1}/{2}";
+        internal static string GetBlogComments = CnblogsWcfBlogUrl + "post/{0}/comments/{1}/{2}";
         /// <summary>
         /// postId
         /// 获取文章内容
         /// </summary>
-        internal static string GetBody = CnblogsWcfBlogUrl + "post/body/{0}";
+        internal static string GetBlogBody = CnblogsWcfBlogUrl + "post/body/{0}";
         /// <summary>
         /// pageIndex,pageSize 
         /// 分页获取首页文章列表
@@ -69,6 +69,39 @@ namespace CnBlogs.Service
         /// 分页获取个人博客文章列表
         /// </summary>
         internal static string PersonalBlogs = CnblogsWcfBlogUrl + "u/{blogapp}/posts/{pageIndex}/{pageSize}";
+        #endregion
+        #region http://wcf.open.CnBlogs.com/news/
+        internal static string CnblogsWcfNewsUrl = CnblogsWcfBaseUrl + "news/";
+        /// <summary>
+        /// 获取新闻列表
+        /// </summary>
+        internal static string NewsData = CnblogsWcfNewsUrl + "GetData";
+        /// <summary>
+        /// itemcount
+        /// 获取热门新闻列表
+        /// </summary>
+        internal static string HotNewsData = CnblogsWcfNewsUrl + "hot/{0}";
+        /// <summary>
+        /// contentId
+        /// 获取新闻内容
+        /// </summary>
+        internal static string NewsContent = CnblogsWcfNewsUrl + "item/{0}";
+        /// <summary>
+        /// contentId,pageIndex,pageSize
+        /// 获取新闻评论
+        /// </summary>
+        internal static string GetNewsComment = CnblogsWcfNewsUrl + "item/{0}/comments/{1}/{2}";
+        /// <summary>
+        /// pageIndex,pageSize
+        /// 分页获取最新新闻列表
+        /// </summary>
+        internal static string RecentNewsByPaging = CnblogsWcfNewsUrl + "recent/paged/{0}/{1}";
+        /// <summary>
+        /// pageIndex,pageSize
+        /// 分页获取推荐新闻列表
+        /// </summary>
+        internal static string RecentRecommendNewsByPaging = CnblogsWcfNewsUrl + "recommend/paged/{0}/{1}";
+        
         #endregion
     }
 }

@@ -16,7 +16,10 @@ using System.Xml.Linq;
 //======================================================//
 namespace CnBlogs.Service
 {
-    public class BlogService
+    /// <summary>
+    /// 获取新闻服务
+    /// </summary>
+    public class NewsService
     {
         /// <summary>
         /// 分页获取首页博客

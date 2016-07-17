@@ -107,6 +107,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NewsService.cs" />
     <Compile Include="BlogService.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="WcfApiUrlConstants.cs" />

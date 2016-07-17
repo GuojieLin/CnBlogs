@@ -19,20 +19,21 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace CnBlogs
+namespace CnBlogs.UI
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class HomeBlogPage : Page
+    public sealed partial class BlogListPage : Page
     {
         internal BlogFactory BlogFactory;
-        public HomeBlogPage()
+        private Frame DetailFrame;
+        public BlogListPage()
         {
             this.InitializeComponent();
             BlogFactory = new BlogFactory();
-            BlogFactory.OnLoadMoreStarted += DataLoading;
-            BlogFactory.OnLoadMoreCompleted += DataLoaded;
+            BlogFactory.OnLoadMoreStarted += count=> LoadingProgressRing.IsActive = true;
+            BlogFactory.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
             BlogFactory.Refresh();
         }
 
@@ -42,25 +43,18 @@ namespace CnBlogs
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            DetailFrame = e.Parameter as Frame;
+            DetailFrame.Navigating += (sender, args) => LoadingProgressRing.IsActive = true;
+            DetailFrame.Navigated += (sender, args) => LoadingProgressRing.IsActive = false;
             base.OnNavigatedTo(e);
         }
         private void BlogsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
+            DetailFrame.Navigate(typeof(BlogBodyPage),e.ClickedItem );
+        }
+        private void RefreshBlogListButton_Click(object sender, RoutedEventArgs e)
+        {
 
-        }
-        /// <summary>
-        /// 博客列表开始加载
-        /// </summary>
-        private void DataLoading(uint count)
-        {
-            LoadingProgressRing.IsActive = true;
-        }
-        /// <summary>
-        /// 博客列表加载完毕
-        /// </summary>
-        private void DataLoaded(uint count)
-        {
-            LoadingProgressRing.IsActive = false;
         }
     }
 }

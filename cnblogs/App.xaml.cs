@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CnBlogs.UI;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -45,7 +47,7 @@ namespace CnBlogs
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                this.DebugSettings.EnableFrameRateCounter = true;
+                //this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
             Frame rootFrame = Window.Current.Content as Frame;
@@ -67,7 +69,20 @@ namespace CnBlogs
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
-
+            rootFrame.Navigated += (s, arg) =>
+            {
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
+                ((Frame)s).CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
+            };
+            SystemNavigationManager.GetForCurrentView().BackRequested += (ss, arg1) =>
+            {
+                Frame rFrame = Window.Current.Content as Frame;
+                if (rFrame.CanGoBack)
+                {
+                    arg1.Handled = true;
+                    rFrame.GoBack();
+                }
+            };
             if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
