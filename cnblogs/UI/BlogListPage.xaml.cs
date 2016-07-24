@@ -27,7 +27,6 @@ namespace CnBlogs.UI
     public sealed partial class BlogListPage : Page
     {
         internal BlogFactory BlogFactory;
-        private Frame DetailFrame;
         public BlogListPage()
         {
             this.InitializeComponent();
@@ -43,14 +42,13 @@ namespace CnBlogs.UI
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            DetailFrame = e.Parameter as Frame;
-            DetailFrame.Navigating += (sender, args) => LoadingProgressRing.IsActive = true;
-            DetailFrame.Navigated += (sender, args) => LoadingProgressRing.IsActive = false;
+            App.NavigationService.DetailFrame.Navigating += (sender, args) => LoadingProgressRing.IsActive = true;
+            App.NavigationService.DetailFrame.Navigated += (sender, args) => LoadingProgressRing.IsActive = false;
             base.OnNavigatedTo(e);
         }
         private void BlogsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            DetailFrame.Navigate(typeof(BlogBodyPage),e.ClickedItem );
+            App.NavigationService.SecondLevelNavigate(typeof(BlogBodyPage),e.ClickedItem );
         }
         private void RefreshBlogListButton_Click(object sender, RoutedEventArgs e)
         {

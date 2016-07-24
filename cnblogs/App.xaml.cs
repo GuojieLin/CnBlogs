@@ -24,6 +24,7 @@ namespace CnBlogs
     /// </summary>
     sealed partial class App : Application
     {
+        public static NavigationService NavigationService;
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -35,6 +36,10 @@ namespace CnBlogs
                 Microsoft.ApplicationInsights.WindowsCollectors.Session);
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+        }
+        public static void InitNavigationService(Frame mainFrame, Frame detailFrame)
+        {
+            App.NavigationService = new NavigationService(mainFrame, detailFrame);
         }
 
         /// <summary>

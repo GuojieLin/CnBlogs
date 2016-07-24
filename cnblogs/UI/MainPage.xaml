@@ -10,6 +10,29 @@
     xmlns:usercontrol="using:CnBlogs.UserControls">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveStates" CurrentStateChanged="AdaptiveStates_CurrentStateChanged">
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="LeftColumn.Width" Value="*" />
+                        <Setter Target="RightColumn.Width" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="MediumState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="640" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="LeftColumn.Width" Value="320" />
+                        <Setter Target="RightColumn.Width" Value="*" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <SplitView Grid.Column="0"
                    Name="CnBlogSplitView" 
                    DisplayMode="CompactOverlay"
@@ -97,10 +120,10 @@
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <Grid>
+                <Grid Name="MainGrid">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="2*" x:Name="LeftColumn"/>
+                    <ColumnDefinition Width="3*" x:Name="RightColumn"/>
                 </Grid.ColumnDefinitions>
                     <Frame Name="MainFrame"></Frame>
                     <ProgressBar Name="LoadingProgressRing"

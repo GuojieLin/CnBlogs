@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -26,7 +27,7 @@ namespace CnBlogs.UI
     public sealed partial class MainPage : Page
     {
         public readonly string deviceFamily = Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily;
-        private Frame NavigateDetailFrame;
+        private ListBoxItem _lastClickListItem;
         public MainPage()
         {
             this.InitializeComponent();
@@ -38,40 +39,36 @@ namespace CnBlogs.UI
             {
                 LoadingProgressRing.IsIndeterminate = false;
             };
-
-            //this.SizeChanged += (o, s) =>
-            //{
-            //    if (s.NewSize.Width <= DeviceSize.Narrow)
-            //    {
-            //        //窄
-            //    }
-            //    else if (s.NewSize.Width <= DeviceSize.Medium)
-            //    {
-            //        //中等
-            //    }
-            //    else
-            //    {
-            //        //宽
-            //    }
-            //    //bool result = VisualStateManager.GoToState(this, state, true);
-
-            //};
-
-            if (deviceFamily == DeviceFamily.WindowsMobile)
-            {
-                //windows10手机只限制一列
-                NavigateDetailFrame = MainFrame;
-            }
-            else if (deviceFamily == DeviceFamily.WindowsDesktop)
-            {
-                //windows10桌面显示2列
-                NavigateDetailFrame = DetailFrame;
-            }
-            MainFrame.Navigate(typeof(BlogListPage), NavigateDetailFrame);
-
+            App.InitNavigationService(MainFrame, DetailFrame);
+            SystemNavigationManager.GetForCurrentView().BackRequested += MainPage_BackRequested;
+            App.NavigationService.FirstLevelNavigate(typeof(BlogListPage));
             this.NavigationCacheMode = NavigationCacheMode.Enabled;
         }
-        
+
+        private void MainPage_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            App.NavigationService.GoBack();
+        }
+
+        private void AdaptiveStates_CurrentStateChanged(object sender, VisualStateChangedEventArgs e)
+        {
+            UpdateForVisualState(e.NewState, e.OldState);
+        }
+
+        private void UpdateForVisualState(VisualState newState, VisualState oldState = null)
+        {
+            var isNarrow = newState == NarrowState;
+            if (isNarrow && oldState == MediumState && _lastClickListItem != null)
+            {
+                //从大变小
+                App.NavigationService.MediumToNarrow();
+            }
+            else if(!isNarrow && oldState == NarrowState)
+            {
+                //从小变大
+                App.NavigationService.NarrowToMedium();
+            }
+        }
         private void FirstMenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {   
             if (HamburgerButton.IsSelected)
@@ -80,15 +77,14 @@ namespace CnBlogs.UI
             }
             if (HomeListItem.IsSelected)
             {
-                MainFrame.Navigate(typeof(BlogListPage), NavigateDetailFrame);
+                MainFrame.Navigate(typeof(BlogListPage));
                 //MainFrame.Navigate(typeof(BlogListPage), DetailFrame);
             }
             else if (NewsListItem.IsSelected)
             {
-                MainFrame.Navigate(typeof(NewsPage), NavigateDetailFrame);
+                MainFrame.Navigate(typeof(NewsPage));
             }
         }
-
         private void SecondMenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             
