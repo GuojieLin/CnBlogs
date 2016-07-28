@@ -11,17 +11,12 @@ namespace CnBlogs
 {
     public class NavigationService
     {
-        public bool IsNarrow { get; private set;}
+        public bool IsNarrow { get; private set; }
+        public bool CanGoBack { get { return DetailFrame != null && DetailFrame.BackStackDepth >= 1 && DetailFrame.CanGoBack; } }
         public Frame MasterFrame;
         public Frame DetailFrame;
-        /// <summary>
-        /// 上一次导航类型
-        /// </summary>
-        private Frame _lastNavigateFrame;
-
         //private Stack<Type> _mainPageStack;
         //private Stack<Type> _detailPageStack;
-        public bool ShowBackUpButton { get { return this.DetailFrame.CanGoBack; } }
         public NavigationService(Frame masterFrame, Frame detailFrame)
         {
             MasterFrame = masterFrame;
@@ -29,10 +24,10 @@ namespace CnBlogs
 
             //_mainPageStack = new Stack<Type>();
             //_detailPageStack = new Stack<Type>();
-
+            this.DetailFrameNavigate(typeof(BlankPage));
         }
 
-        public void FirstLevelNavigate(Type type, object parameter = null)
+        public void MasterFrameNavigate(Type type, object parameter = null)
         {
             if (parameter == null)
             {
@@ -42,10 +37,9 @@ namespace CnBlogs
             {
                 MasterFrame.Navigate(type, parameter);
             }
-            _lastNavigateFrame = MasterFrame;
-            //_detailPageStack.Clear();
+            MasterFrame.Visibility = Visibility.Visible;
         }
-        public void SecondLevelNavigate(Type type, object parameter = null)
+        public void DetailFrameNavigate(Type type, object parameter = null)
         {
             if (parameter == null)
             {
@@ -55,6 +49,7 @@ namespace CnBlogs
             {
                 DetailFrame.Navigate(type, parameter);
             }
+            DetailFrame.Visibility = Visibility.Visible;
         }
         /// <summary>
         /// 从大变小，优先显示详情页面
@@ -63,7 +58,7 @@ namespace CnBlogs
         {
             IsNarrow = true;
             //表示存在
-            DetailFrame.Visibility = DetailFrame.BackStackDepth >= 1 ? Visibility.Visible : Visibility.Collapsed;
+            DetailFrame.Visibility = CanGoBack ? Visibility.Visible : Visibility.Collapsed;
         }
         /// <summary>
         /// 从小变大，从主导航窗口分离详情页面至右侧
@@ -75,13 +70,14 @@ namespace CnBlogs
         }
         public void GoBack(BackRequestedEventArgs e)
         {
-            if (DetailFrame.CanGoBack)
+            if (CanGoBack)
             {
                 DetailFrame.GoBack();
                 e.Handled = true;
             }
             else if (MasterFrame.CanGoBack)
             {
+                MasterFrame.Visibility = Visibility.Visible;
                 MasterFrame.GoBack();
                 e.Handled = true;
             }

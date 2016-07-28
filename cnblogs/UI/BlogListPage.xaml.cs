@@ -48,7 +48,7 @@ namespace CnBlogs.UI
         }
         private void BlogsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            App.NavigationService.SecondLevelNavigate(typeof(BlogBodyPage),e.ClickedItem );
+            App.NavigationService.DetailFrameNavigate(typeof(BlogBodyPage),e.ClickedItem );
         }
         private void RefreshBlogListButton_Click(object sender, RoutedEventArgs e)
         {

@@ -16,16 +16,16 @@
         <RelativePanel Grid.Row="0"
                        Style="{StaticResource TopRelativePanel}">
             <!--顶部-->
-            <Button Name="BackButton"
+            <!--<Button Name="BackButton"
                     Content="&#xE0d5;"
                     RelativePanel.AlignLeftWithPanel="True"
                     RelativePanel.AlignVerticalCenterWithPanel="True"
                     Click="BackButton_Click"
                     Style="{StaticResource BaseButtonStyle}">
-            </Button>
+            </Button>-->
             <TextBlock Name="TitleTextBlock"
                        Text="正文"
-                        RelativePanel.RightOf="BackButton"
+                    RelativePanel.AlignLeftWithPanel="True"
                         RelativePanel.AlignVerticalCenterWithPanel="True"
                        Style="{StaticResource ListBoxNameTextBlockStyle}">
             </TextBlock>

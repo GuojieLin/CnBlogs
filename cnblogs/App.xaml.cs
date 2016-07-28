@@ -74,18 +74,21 @@ namespace CnBlogs
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
+            //if ("Windows.Mobile" == Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily)
+                //Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
+
             rootFrame.Navigated += (s, arg) =>
             {
-                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
-                ((Frame)s).CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = NavigationService.CanGoBack ?
+                AppViewBackButtonVisibility.Visible :
+                AppViewBackButtonVisibility.Collapsed;
             };
-            SystemNavigationManager.GetForCurrentView().BackRequested += (ss, arg1) =>
+            SystemNavigationManager.GetForCurrentView().BackRequested += (sender, args) =>
             {
-                Frame rFrame = Window.Current.Content as Frame;
-                if (rFrame.CanGoBack)
+                if (NavigationService.CanGoBack)
                 {
-                    arg1.Handled = true;
-                    rFrame.GoBack();
+                    args.Handled = true;
+                    NavigationService.GoBack(args);
                 }
             };
             if (e.PrelaunchActivated == false)

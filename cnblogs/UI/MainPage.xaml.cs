@@ -47,15 +47,10 @@ namespace CnBlogs.UI
             {
                 UpdateForVisualState(AdaptiveStates.CurrentState);
             };
-            SystemNavigationManager.GetForCurrentView().BackRequested += MainPage_BackRequested;
-            App.NavigationService.FirstLevelNavigate(typeof(BlogListPage));
+            App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
             this.NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
-        private void MainPage_BackRequested(object sender, BackRequestedEventArgs e)
-        {
-            App.NavigationService.GoBack(e);
-        }
 
         private void AdaptiveStates_CurrentStateChanged(object sender, VisualStateChangedEventArgs e)
         {
@@ -75,6 +70,7 @@ namespace CnBlogs.UI
             {
                 //从小变大
                 App.NavigationService.NarrowToMedium();
+                
             }
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = DetailFrame.CanGoBack || MasterFrame.CanGoBack 
                 ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
