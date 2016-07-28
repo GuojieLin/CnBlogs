@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Core;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace CnBlogs
@@ -10,49 +12,41 @@ namespace CnBlogs
     public class NavigationService
     {
         public bool IsNarrow { get; private set;}
-        public Frame MainFrame;
+        public Frame MasterFrame;
         public Frame DetailFrame;
         /// <summary>
         /// 上一次导航类型
         /// </summary>
         private Frame _lastNavigateFrame;
 
-        private Stack<Type> _mainPageStack;
-        private Stack<Type> _detailPageStack;
-        public bool ShowBackUpButton { get { return this._detailPageStack.Count > 0; } }
-        public NavigationService(Frame mainFrame, Frame detailFrame)
+        //private Stack<Type> _mainPageStack;
+        //private Stack<Type> _detailPageStack;
+        public bool ShowBackUpButton { get { return this.DetailFrame.CanGoBack; } }
+        public NavigationService(Frame masterFrame, Frame detailFrame)
         {
-            MainFrame = mainFrame;
+            MasterFrame = masterFrame;
             DetailFrame = detailFrame;
 
-            _mainPageStack = new Stack<Type>();
-            _detailPageStack = new Stack<Type>();
+            //_mainPageStack = new Stack<Type>();
+            //_detailPageStack = new Stack<Type>();
 
         }
 
         public void FirstLevelNavigate(Type type, object parameter = null)
         {
-            _mainPageStack.Push(type);
             if (parameter == null)
             {
-                MainFrame.Navigate(type);
+                MasterFrame.Navigate(type);
             }
             else
             {
-                MainFrame.Navigate(type, parameter);
+                MasterFrame.Navigate(type, parameter);
             }
-            _lastNavigateFrame = MainFrame;
-            _detailPageStack.Clear();
+            _lastNavigateFrame = MasterFrame;
+            //_detailPageStack.Clear();
         }
         public void SecondLevelNavigate(Type type, object parameter = null)
         {
-            if (_lastNavigateFrame == MainFrame)
-            {
-                //上一次是主导航,清空
-                _detailPageStack.Clear();
-            }
-            _detailPageStack.Push(type);
-            if (IsNarrow) FirstLevelNavigate(type, parameter);
             if (parameter == null)
             {
                 DetailFrame.Navigate(type);
@@ -68,8 +62,8 @@ namespace CnBlogs
         public void MediumToNarrow()
         {
             IsNarrow = true;
-            if (_detailPageStack.Count >= 1)
-                App.NavigationService.FirstLevelNavigate(_detailPageStack.Peek(), null);
+            //表示存在
+            DetailFrame.Visibility = DetailFrame.BackStackDepth >= 1 ? Visibility.Visible : Visibility.Collapsed;
         }
         /// <summary>
         /// 从小变大，从主导航窗口分离详情页面至右侧
@@ -77,35 +71,19 @@ namespace CnBlogs
         public void NarrowToMedium()
         {
             IsNarrow = false;
-            if (_detailPageStack.Count >= 1)
-            {
-                App.NavigationService.SecondLevelNavigate(_detailPageStack.Peek(), null);
-                while (MainFrame.CurrentSourcePageType != _mainPageStack.Peek())
-                {
-                    if(FirstLevelFrameCanGoBack()) MainFrame.GoBack();
-                }
-            }
-
+            DetailFrame.Visibility = Visibility.Visible;
         }
-
-        public bool FirstLevelFrameCanGoBack()
+        public void GoBack(BackRequestedEventArgs e)
         {
-            return _mainPageStack.Count > 1 && MainFrame.CanGoBack;
-        }
-        public bool SecondLevelFrameCanGoBack()
-        {
-
-            return _detailPageStack.Count > 1 && DetailFrame.CanGoBack;
-        }
-        public void GoBack()
-        {
-            if (FirstLevelFrameCanGoBack())
-            {
-                MainFrame.GoBack();
-            }
-            else if(SecondLevelFrameCanGoBack())
+            if (DetailFrame.CanGoBack)
             {
                 DetailFrame.GoBack();
+                e.Handled = true;
+            }
+            else if (MasterFrame.CanGoBack)
+            {
+                MasterFrame.GoBack();
+                e.Handled = true;
             }
         }
     }

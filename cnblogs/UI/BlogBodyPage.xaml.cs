@@ -53,15 +53,15 @@ namespace CnBlogs.UI
         private void FixImage()
         {
             XElement xelement = XElement.Parse(Blog.Body);
-            foreach (XElement imageXElement in xelement.Elements("img"))
-            {
-                //width="685" height="89" 
-                int width = Convert.ToInt32(imageXElement.Attribute("width").Value);
-                int height = Convert.ToInt32(imageXElement.Attribute("height").Value);
-                imageXElement.Attribute("width").SetValue(BlogBodyWebView.ActualWidth);
-                imageXElement.Attribute("height").SetValue(BlogBodyWebView.ActualWidth / width * height);
+            //foreach (XElement imageXElement in xelement.Elements("img"))
+            //{
+            //    //width="685" height="89" 
+            //    int width = Convert.ToInt32(imageXElement.Attribute("width").Value);
+            //    int height = Convert.ToInt32(imageXElement.Attribute("height").Value);
+            //    imageXElement.Attribute("width").SetValue(BlogBodyWebView.ActualWidth);
+            //    imageXElement.Attribute("height").SetValue(BlogBodyWebView.ActualWidth / width * height);
 
-            }
+            //}
         }
         /// <summary>
         /// 博客列表开始加载

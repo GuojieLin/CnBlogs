@@ -37,9 +37,9 @@ namespace CnBlogs
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
-        public static void InitNavigationService(Frame mainFrame, Frame detailFrame)
+        public static void InitNavigationService(Frame masterFrame, Frame detailFrame)
         {
-            App.NavigationService = new NavigationService(mainFrame, detailFrame);
+            App.NavigationService = new NavigationService(masterFrame, detailFrame);
         }
 
         /// <summary>

@@ -9,6 +9,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -27,19 +28,25 @@ namespace CnBlogs.UI
     public sealed partial class MainPage : Page
     {
         public readonly string deviceFamily = Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily;
-        private ListBoxItem _lastClickListItem;
         public MainPage()
         {
             this.InitializeComponent();
-            MainFrame.Navigating += (sender, e) =>
+            var appView = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
+            appView.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
+            MasterFrame.Navigating += (sender, e) =>
             {
                 LoadingProgressRing.IsIndeterminate = true;
             };
-            MainFrame.Navigated += (sender, e) =>
+            MasterFrame.Navigated += (sender, e) =>
             {
                 LoadingProgressRing.IsIndeterminate = false;
+                UpdateForVisualState(AdaptiveStates.CurrentState);
             };
-            App.InitNavigationService(MainFrame, DetailFrame);
+            App.InitNavigationService(MasterFrame, DetailFrame);
+            DetailFrame.Navigated += (sender,e)=> 
+            {
+                UpdateForVisualState(AdaptiveStates.CurrentState);
+            };
             SystemNavigationManager.GetForCurrentView().BackRequested += MainPage_BackRequested;
             App.NavigationService.FirstLevelNavigate(typeof(BlogListPage));
             this.NavigationCacheMode = NavigationCacheMode.Enabled;
@@ -47,7 +54,7 @@ namespace CnBlogs.UI
 
         private void MainPage_BackRequested(object sender, BackRequestedEventArgs e)
         {
-            App.NavigationService.GoBack();
+            App.NavigationService.GoBack(e);
         }
 
         private void AdaptiveStates_CurrentStateChanged(object sender, VisualStateChangedEventArgs e)
@@ -57,17 +64,20 @@ namespace CnBlogs.UI
 
         private void UpdateForVisualState(VisualState newState, VisualState oldState = null)
         {
-            var isNarrow = newState == NarrowState;
-            if (isNarrow && oldState == MediumState && _lastClickListItem != null)
+            if (newState == NarrowState && 
+                oldState == MediumState)
             {
                 //从大变小
                 App.NavigationService.MediumToNarrow();
             }
-            else if(!isNarrow && oldState == NarrowState)
+            else if(newState == MediumState &&
+                oldState == NarrowState)
             {
                 //从小变大
                 App.NavigationService.NarrowToMedium();
             }
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = DetailFrame.CanGoBack || MasterFrame.CanGoBack 
+                ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
         }
         private void FirstMenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {   
@@ -77,12 +87,12 @@ namespace CnBlogs.UI
             }
             if (HomeListItem.IsSelected)
             {
-                MainFrame.Navigate(typeof(BlogListPage));
-                //MainFrame.Navigate(typeof(BlogListPage), DetailFrame);
+                MasterFrame.Navigate(typeof(BlogListPage));
+                //MasterFrame.Navigate(typeof(BlogListPage), DetailFrame);
             }
             else if (NewsListItem.IsSelected)
             {
-                MainFrame.Navigate(typeof(NewsPage));
+                MasterFrame.Navigate(typeof(NewsPage));
             }
         }
         private void SecondMenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

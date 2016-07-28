@@ -20,6 +20,7 @@
                     <VisualState.Setters>
                         <Setter Target="LeftColumn.Width" Value="*" />
                         <Setter Target="RightColumn.Width" Value="0" />
+                        <Setter Target="DetailFrame.(Grid.Column)" Value="0" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="MediumState">
@@ -29,6 +30,7 @@
                     <VisualState.Setters>
                         <Setter Target="LeftColumn.Width" Value="320" />
                         <Setter Target="RightColumn.Width" Value="*" />
+                        <Setter Target="DetailFrame.(Grid.Column)" Value="1" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -121,11 +123,11 @@
             </SplitView.Pane>
             <SplitView.Content>
                 <Grid Name="MainGrid">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" x:Name="LeftColumn"/>
-                    <ColumnDefinition Width="3*" x:Name="RightColumn"/>
-                </Grid.ColumnDefinitions>
-                    <Frame Name="MainFrame"></Frame>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*" x:Name="LeftColumn"/>
+                        <ColumnDefinition Width="3*" x:Name="RightColumn"/>
+                    </Grid.ColumnDefinitions>
+                    <Frame Name="MasterFrame"></Frame>
                     <ProgressBar Name="LoadingProgressRing"
                                  VerticalAlignment="Top"
                                  IsIndeterminate="False">
