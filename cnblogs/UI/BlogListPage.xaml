@@ -22,13 +22,12 @@
                        Text="博客园"
                     RelativePanel.AlignLeftWithPanel="True"
                     RelativePanel.AlignVerticalCenterWithPanel="True"
-                       Style="{StaticResource ListBoxNameTextBlockStyle}">
+                       Style="{StaticResource TopRelativePanelTextBlockStyle}">
             </TextBlock>
             <Button Name="RefreshBlogListButton"
                     Content="&#xE72C;"
                     RelativePanel.AlignRightWithPanel="True"
                     RelativePanel.AlignVerticalCenterWithPanel="True"
-                    Padding="10,2,10,2"
                     Style="{StaticResource BaseButtonStyle}"
                     Click="RefreshBlogListButton_Click">
             </Button>

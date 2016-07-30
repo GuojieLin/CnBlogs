@@ -49,7 +49,7 @@
                     <ListBox Grid.Row ="0" Name="FirstMenuListBox"
                              SelectionMode="Single"
                              SelectionChanged="FirstMenuListBox_SelectionChanged">
-                        <ListBoxItem Name="HamburgerButton">
+                        <ListBoxItem Name="HamburgerButton" Height="40">
                             <!--首页-->
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="&#xE700;" Style="{StaticResource ListBoxIconTextBlockStyle}"/>

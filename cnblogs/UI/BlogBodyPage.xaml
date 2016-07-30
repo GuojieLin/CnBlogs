@@ -15,19 +15,11 @@
         </Grid.RowDefinitions>
         <RelativePanel Grid.Row="0"
                        Style="{StaticResource TopRelativePanel}">
-            <!--顶部-->
-            <!--<Button Name="BackButton"
-                    Content="&#xE0d5;"
-                    RelativePanel.AlignLeftWithPanel="True"
-                    RelativePanel.AlignVerticalCenterWithPanel="True"
-                    Click="BackButton_Click"
-                    Style="{StaticResource BaseButtonStyle}">
-            </Button>-->
             <TextBlock Name="TitleTextBlock"
                        Text="正文"
-                    RelativePanel.AlignLeftWithPanel="True"
-                        RelativePanel.AlignVerticalCenterWithPanel="True"
-                       Style="{StaticResource ListBoxNameTextBlockStyle}">
+                       RelativePanel.AlignLeftWithPanel="True"
+                       RelativePanel.AlignVerticalCenterWithPanel="True"
+                       Style="{StaticResource TopRelativePanelTextBlockStyle}">
             </TextBlock>
             <StackPanel Orientation="Horizontal"
                         RelativePanel.LeftOf="DiggsButton"
@@ -38,13 +30,29 @@
                 </TextBlock>
             </StackPanel>
             <Button Name="DiggsButton" Click="DiggsButton_Click" 
-                    Background="Transparent" Margin="2"
-                        RelativePanel.AlignRightWithPanel="True"
-                        RelativePanel.AlignVerticalCenterWithPanel="True">
+                    Background="Transparent" 
+                    RelativePanel.LeftOf="CommentButton"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
+                    Style="{StaticResource BaseButtonStyle}">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Like"/>
                         <TextBlock Text="{x:Bind Blog.Diggs}"
+                                   Style="{StaticResource StackPanelTextBlockStyle}">
+                        </TextBlock>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+
+            <Button Name="CommentButton" Click="CommentButton_Click"
+                    Background="Transparent" 
+                    RelativePanel.AlignRightWithPanel="True"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
+                    Style="{StaticResource BaseButtonStyle}">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Comment" />
+                        <TextBlock Text="{x:Bind Blog.Comments}"
                                    Style="{StaticResource StackPanelTextBlockStyle}">
                         </TextBlock>
                     </StackPanel>

@@ -83,12 +83,9 @@ namespace CnBlogs.UI
 
         }
 
-        private void BackButton_Click(object sender, RoutedEventArgs e)
+        private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.Frame.CanGoBack)
-            {
-                this.Frame.GoBack();
-            }
+
         }
     }
 }
