@@ -27,27 +27,32 @@ namespace CnBlogs.UI
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public readonly string deviceFamily = Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily;
         public MainPage()
         {
             this.InitializeComponent();
-            var appView = Windows.UI.ViewManagement.ApplicationView.GetForCurrentView();
-            appView.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
             MasterFrame.Navigating += (sender, e) =>
             {
+                LoadingProgressRing.Visibility = Visibility.Visible;
                 LoadingProgressRing.IsIndeterminate = true;
             };
             MasterFrame.Navigated += (sender, e) =>
             {
                 LoadingProgressRing.IsIndeterminate = false;
-                UpdateForVisualState(AdaptiveStates.CurrentState);
+                LoadingProgressRing.Visibility = Visibility.Collapsed;
+                //根据当前状态更新界面，手机无需根据大小进行改变，因此AdaptiveStates为null
+                UpdateForVisualState(AdaptiveStates?.CurrentState);
             };
-            App.InitNavigationService(MasterFrame, DetailFrame);
-            DetailFrame.Navigated += (sender,e)=> 
+            //导航及界面主次Frame切换等都由NavigationService进行控制
+            bool isNarrow = AdaptiveStates?.CurrentState == NarrowState;
+            App.InitNavigationService(MasterFrame, DetailFrame, CnBlogSplitView, isNarrow);
+
+            DetailFrame.Navigated += (sender, e) =>
             {
-                UpdateForVisualState(AdaptiveStates.CurrentState);
+                UpdateForVisualState(AdaptiveStates?.CurrentState);
             };
+            //打开程序是跳转到博客列表
             App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
+            //打开缓存。
             this.NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
@@ -59,6 +64,7 @@ namespace CnBlogs.UI
 
         private void UpdateForVisualState(VisualState newState, VisualState oldState = null)
         {
+            if (newState == null && oldState == null) return;
             if (newState == NarrowState && 
                 oldState == MediumState)
             {
@@ -70,10 +76,7 @@ namespace CnBlogs.UI
             {
                 //从小变大
                 App.NavigationService.NarrowToMedium();
-                
             }
-            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = DetailFrame.CanGoBack || MasterFrame.CanGoBack 
-                ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
         }
         private void FirstMenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {   
@@ -83,12 +86,11 @@ namespace CnBlogs.UI
             }
             if (HomeListItem.IsSelected)
             {
-                MasterFrame.Navigate(typeof(BlogListPage));
-                //MasterFrame.Navigate(typeof(BlogListPage), DetailFrame);
+                App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
             }
             else if (NewsListItem.IsSelected)
             {
-                MasterFrame.Navigate(typeof(NewsPage));
+                App.NavigationService.MasterFrameNavigate(typeof(NewsPage));
             }
         }
         private void SecondMenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

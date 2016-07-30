@@ -41,7 +41,7 @@ namespace CnBlogs.Factories
 
             _busy = true;
 
-            return AsyncInfo.Run((c) => LoadMoreItemsAsync(c, count));
+            return AsyncInfo.Run(c => LoadMoreItemsAsync(c, count));
         }
 
         protected async Task<LoadMoreItemsResult> LoadMoreItemsAsync(CancellationToken c, uint count)

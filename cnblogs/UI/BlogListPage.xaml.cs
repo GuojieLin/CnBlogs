@@ -52,7 +52,7 @@ namespace CnBlogs.UI
         }
         private void RefreshBlogListButton_Click(object sender, RoutedEventArgs e)
         {
-
+            BlogFactory.Refresh();
         }
     }
 }

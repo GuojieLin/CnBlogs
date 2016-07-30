@@ -9,6 +9,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -24,6 +25,7 @@ namespace CnBlogs
     /// </summary>
     sealed partial class App : Application
     {
+        public static string DeviceFamily = Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily;
         public static NavigationService NavigationService;
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -37,9 +39,9 @@ namespace CnBlogs
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
-        public static void InitNavigationService(Frame masterFrame, Frame detailFrame)
+        public static void InitNavigationService(Frame masterFrame, Frame detailFrame,SplitView splitView, bool isNarrow)
         {
-            App.NavigationService = new NavigationService(masterFrame, detailFrame);
+            App.NavigationService = new NavigationService(masterFrame, detailFrame, splitView, isNarrow);
         }
 
         /// <summary>
@@ -74,15 +76,8 @@ namespace CnBlogs
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
-            //if ("Windows.Mobile" == Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily)
-                //Windows.Phone.UI.Input.HardwareButtons.BackPressed += HardwareButtons_BackPressed;
-
-            rootFrame.Navigated += (s, arg) =>
-            {
-                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = NavigationService.CanGoBack ?
-                AppViewBackButtonVisibility.Visible :
-                AppViewBackButtonVisibility.Collapsed;
-            };
+            var appView = ApplicationView.GetForCurrentView();
+            appView.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, args) =>
             {
                 if (NavigationService.CanGoBack)
