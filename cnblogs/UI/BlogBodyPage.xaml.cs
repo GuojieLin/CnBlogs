@@ -1,4 +1,5 @@
-﻿using CnBlogs.Entities;
+﻿using CnBlogs.Common;
+using CnBlogs.Entities;
 using CnBlogs.Service;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace CnBlogs.UI
             Blog = e.Parameter as Blog;
             DataLoading();
             var body = await BlogService.GetBlogBodyAsync(Blog.Id);
-            Blog.Body = body;
+            Blog.Body = OptimizationDisplayHelper.OptimizationHtmlDisplay(body); ;
             BlogBodyWebView.NavigateToString(Blog.Body);
 
             //if (blog_body != null)

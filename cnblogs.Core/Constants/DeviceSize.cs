@@ -14,8 +14,8 @@ namespace CnBlogs.Core.Constants
 {
     public class DeviceSize
     {
-        public const int Narrow = 640;
-        public const int Medium = 960;
-        public const int Wide = 1280;
+        public const int Narrow = 960;
+        public const int Medium = 1366;
+        //public const int Wide = 2048;
     }
 }

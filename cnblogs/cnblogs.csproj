@@ -98,9 +98,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Contants.cs" />
     <Compile Include="Factories\BlogFactory.cs" />
     <Compile Include="Factories\SupportIncreamentalLoading.cs" />
     <Compile Include="NavigationService.cs" />
+    <Compile Include="UI\BlankPage.xaml.cs">
+      <DependentUpon>BlankPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\BlogBodyPage.xaml.cs">
       <DependentUpon>BlogBodyPage.xaml</DependentUpon>
     </Compile>
@@ -125,6 +129,8 @@
     <None Include="Cnblogs_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\default_image.png" />
+    <Content Include="Assets\default_image_loading.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

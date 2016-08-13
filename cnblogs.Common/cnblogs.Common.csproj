@@ -107,6 +107,8 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControlHelper.cs" />
+    <Compile Include="OptimizationDisplayHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Cnblogs.Common.rd.xml" />
   </ItemGroup>

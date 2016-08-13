@@ -53,15 +53,14 @@ namespace CnBlogs.UI
             //打开程序是跳转到博客列表
             App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
             //打开缓存。
-            this.NavigationCacheMode = NavigationCacheMode.Enabled;
+            this.NavigationCacheMode = NavigationCacheMode.Required;
         }
 
-
+        #region 桌面需要用
         private void AdaptiveStates_CurrentStateChanged(object sender, VisualStateChangedEventArgs e)
         {
             UpdateForVisualState(e.NewState, e.OldState);
         }
-
         private void UpdateForVisualState(VisualState newState, VisualState oldState = null)
         {
             if (newState == null && oldState == null) return;
@@ -80,10 +79,6 @@ namespace CnBlogs.UI
         }
         private void FirstMenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {   
-            if (HamburgerButton.IsSelected)
-            {
-                CnBlogSplitView.IsPaneOpen = !CnBlogSplitView.IsPaneOpen;
-            }
             if (HomeListItem.IsSelected)
             {
                 App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
@@ -96,6 +91,29 @@ namespace CnBlogs.UI
         private void SecondMenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             
+        }
+        private void HamburgerButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            CnBlogSplitView.IsPaneOpen = !CnBlogSplitView.IsPaneOpen;
+        }
+        #endregion
+        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            var appBarButton = sender as AppBarButton;
+            switch (appBarButton.Name)
+            {
+                case Contants.HomeAppBarButton:
+                    App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
+                    break;
+                case Contants.NewAppBarButton:
+                    App.NavigationService.MasterFrameNavigate(typeof(NewsPage));
+                    break;
+                case Contants.MessagesAppBarButton:
+                    break;
+                default:
+                    break;
+            }
+
         }
     }
 }

@@ -25,11 +25,11 @@
                 </VisualState>
                 <VisualState x:Name="MediumState">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="640" />
+                        <AdaptiveTrigger MinWindowWidth="960" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="LeftColumn.Width" Value="320" />
-                        <Setter Target="RightColumn.Width" Value="*" />
+                        <Setter Target="LeftColumn.Width" Value="2*" />
+                        <Setter Target="RightColumn.Width" Value="3*" />
                         <Setter Target="DetailFrame.(Grid.Column)" Value="1" />
                     </VisualState.Setters>
                 </VisualState>
@@ -49,7 +49,10 @@
                     <ListBox Grid.Row ="0" Name="FirstMenuListBox"
                              SelectionMode="Single"
                              SelectionChanged="FirstMenuListBox_SelectionChanged">
-                        <ListBoxItem Name="HamburgerButton" Height="40">
+                        <ListBoxItem Name="HamburgerButton"
+                                     Height="40"
+                                     Tapped="HamburgerButton_Tapped"
+                                     >
                             <!--首页-->
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="&#xE700;" Style="{StaticResource ListBoxIconTextBlockStyle}"/>
@@ -72,7 +75,7 @@
                         <ListBoxItem Name="NoticeListItem">
                             <!--首页-->
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE8C3;"  Style="{StaticResource ListBoxIconTextBlockStyle}"/>
+                                <TextBlock Text="&#xE15F;"  Style="{StaticResource ListBoxIconTextBlockStyle}"/>
                                 <TextBlock Text="消息" Style="{StaticResource ListBoxNameTextBlockStyle}"/>
                             </StackPanel>
                         </ListBoxItem>
@@ -127,12 +130,13 @@
                         <ColumnDefinition Width="2*" x:Name="LeftColumn"/>
                         <ColumnDefinition Width="3*" x:Name="RightColumn"/>
                     </Grid.ColumnDefinitions>
-                    <Frame Name="MasterFrame"></Frame>
+
+                        <Frame Name="MasterFrame"></Frame>
+                        <Frame Name="DetailFrame" Grid.Column="1"></Frame>
                     <ProgressBar Name="LoadingProgressRing"
                                  VerticalAlignment="Top"
                                  IsIndeterminate="False">
                     </ProgressBar>
-                    <Frame Name="DetailFrame" Grid.Column="1"></Frame>
                 </Grid>
             </SplitView.Content>
         </SplitView>

@@ -111,6 +111,7 @@
     <Compile Include="Constants\DeviceSize.cs" />
     <Compile Include="Extentsions\StringExtensions.cs" />
     <Compile Include="HttpHelper.cs" />
+    <Compile Include="NetWorkHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Cnblogs.Core.rd.xml" />
   </ItemGroup>

@@ -1,5 +1,7 @@
-﻿using CnBlogs.Core.Constants;
+﻿using CnBlogs.Common;
+using CnBlogs.Core.Constants;
 using CnBlogs.Core.Enums;
+using CnBlogs.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -102,10 +104,40 @@ namespace CnBlogs
         }
         public void UpdateBackButton()
         {
-            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = CanGoBack ?
-            AppViewBackButtonVisibility.Visible :
-            AppViewBackButtonVisibility.Collapsed;
-            CnBlogSplitView.DisplayMode = IsNarrow && CanGoBack ? SplitViewDisplayMode.Overlay : SplitViewDisplayMode.CompactOverlay;
+            if (CanGoBack)
+            {
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+
+                //电脑
+                if (CnBlogSplitView != null)
+                {
+                    CnBlogSplitView.DisplayMode = IsNarrow ?
+                        SplitViewDisplayMode.Overlay : 
+                        SplitViewDisplayMode.CompactOverlay;
+                }
+                else
+                {
+                    DetailFrame.Visibility = Visibility.Visible;
+                }
+                //int zIndex = DetailFrame.GetAttachedPropertyValue<int>(typeof(Canvas), "ZIndex");
+                //DetailFrame.SetAttachedPropertyValue(typeof(Canvas),"ZIndex", 2 * zIndex);
+            }
+            else
+            {
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+
+                if (CnBlogSplitView != null)
+                {
+                    CnBlogSplitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
+                    if (IsNarrow) DetailFrame.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    DetailFrame.Visibility = Visibility.Collapsed;
+                }
+                //int zIndex = DetailFrame.GetAttachedPropertyValue<int>(typeof(Canvas),"ZIndex");
+                //DetailFrame.SetAttachedPropertyValue(typeof(Canvas),"ZIndex", zIndex / 2);
+            }
         }
         /// <summary>
         /// 从小变大，从主导航窗口分离详情页面至右侧
@@ -125,6 +157,7 @@ namespace CnBlogs
         private void InitDetailFrame()
         {
             DetailFrame.Navigate(typeof(BlankPage));
+            //DetailFrame.SetAttachedPropertyValue(typeof(Canvas),"ZIndex", Contants.DetailFrameDefaultZIndex);
         }
         /// <summary>
         /// 当主Frame跳转时，清空明细Frame
