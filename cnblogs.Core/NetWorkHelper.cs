@@ -47,27 +47,28 @@ namespace CnBlogs.Core
         public NetworkManager()
         {
             NetworkInformation.NetworkStatusChanged += NetworkInformation_NetworkStatusChanged;
-            _network = GetConnectionGeneration();
+            _network = GetNewWorkType();
         }
 
         private void NetworkInformation_NetworkStatusChanged(object sender)
         {
-            _network = GetConnectionGeneration();
+            _network = GetNewWorkType();
             if (NetworkStatusChanged != null)
             {
                 NetworkStatusChanged(this);
             }
         }
 
-        /// <summary>
-        ///  0:2G 1:3G 2:4G  3:wifi  4:无连接
-        /// </summary>
-        /// <returns></returns>
-        private NewWorkType GetConnectionGeneration()
+        private NewWorkType GetNewWorkType()
         {
             try
             {
                 ConnectionProfile profile = NetworkInformation.GetInternetConnectionProfile();
+
+                if (profile.IsWlanConnectionProfile)
+                {
+                    return NewWorkType.WIFI;
+                }
                 if (profile.IsWwanConnectionProfile)
                 {
                     WwanDataClass connectionClass = profile.WwanConnectionProfileDetails.GetCurrentDataClass();
@@ -92,20 +93,14 @@ namespace CnBlogs.Core
                         //4G-equivalent
                         case WwanDataClass.LteAdvanced:
                             return NewWorkType._4G;
-
                         //not connected
                         case WwanDataClass.None:
                             return NewWorkType.None;
-
                         //unknown
                         case WwanDataClass.Custom:
                         default:
                             return NewWorkType.WIFI;
                     }
-                }
-                else if (profile.IsWlanConnectionProfile)
-                {
-                    return NewWorkType.WIFI;
                 }
                 return NewWorkType.None;
             }

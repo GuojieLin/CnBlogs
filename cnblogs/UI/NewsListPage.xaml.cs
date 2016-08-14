@@ -1,9 +1,6 @@
-﻿using CnBlogs.Entities;
-using CnBlogs.ViewModels;
-using CnBlogs.Service;
+﻿using CnBlogs.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -24,16 +21,16 @@ namespace CnBlogs.UI
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class BlogListPage : Page
+    public sealed partial class NewsListPage : Page
     {
-        internal BlogViewModel BlogViewModel;
-        public BlogListPage()
+        internal NewsViewModel NewsViewModel;
+        public NewsListPage()
         {
             this.InitializeComponent();
-            BlogViewModel = new BlogViewModel();
-            BlogViewModel.OnLoadMoreStarted += count=> LoadingProgressRing.IsActive = true;
-            BlogViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
-            BlogViewModel.Refresh();
+            NewsViewModel = new NewsViewModel();
+            NewsViewModel.OnLoadMoreStarted += count => LoadingProgressRing.IsActive = true;
+            NewsViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
+            NewsViewModel.Refresh();
         }
 
         /// <summary>
@@ -46,13 +43,13 @@ namespace CnBlogs.UI
             App.NavigationService.DetailFrame.Navigated += (sender, args) => LoadingProgressRing.IsActive = false;
             base.OnNavigatedTo(e);
         }
-        private void BlogsGridView_ItemClick(object sender, ItemClickEventArgs e)
+        private void NewsListView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            App.NavigationService.DetailFrameNavigate(typeof(BlogBodyPage),e.ClickedItem );
+            App.NavigationService.DetailFrameNavigate(typeof(NewsBodyPage), e.ClickedItem);
         }
-        private void RefreshBlogListButton_Click(object sender, RoutedEventArgs e)
+        private void RefreshNewsListButton_Click(object sender, RoutedEventArgs e)
         {
-            BlogViewModel.Refresh();
+            NewsViewModel.Refresh();
         }
     }
 }

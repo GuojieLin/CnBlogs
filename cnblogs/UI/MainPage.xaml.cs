@@ -1,4 +1,4 @@
-﻿using CnBlogs.Core.Constants;
+﻿using CnBlogs.Core.Enums;
 using CnBlogs.Core.Enums;
 using CnBlogs.Entities;
 using System;
@@ -85,7 +85,7 @@ namespace CnBlogs.UI
             }
             else if (NewsListItem.IsSelected)
             {
-                App.NavigationService.MasterFrameNavigate(typeof(NewsPage));
+                App.NavigationService.MasterFrameNavigate(typeof(NewsListPage));
             }
         }
         private void SecondMenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -106,7 +106,7 @@ namespace CnBlogs.UI
                     App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
                     break;
                 case Contants.NewAppBarButton:
-                    App.NavigationService.MasterFrameNavigate(typeof(NewsPage));
+                    App.NavigationService.MasterFrameNavigate(typeof(NewsListPage));
                     break;
                 case Contants.MessagesAppBarButton:
                     break;

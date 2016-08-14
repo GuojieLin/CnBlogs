@@ -110,6 +110,7 @@
     <Compile Include="ControlHelper.cs" />
     <Compile Include="OptimizationDisplayHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingManager.cs" />
     <EmbeddedResource Include="Properties\Cnblogs.Common.rd.xml" />
   </ItemGroup>
   <ItemGroup>

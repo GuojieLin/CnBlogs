@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 using Windows.Foundation;
 using CnBlogs.Service;
-using CnBlogs.Factories;
 using System.Threading;
+using CnBlogs.Core.Data;
 
 //======================================================//
 //			作者中文名:	林国杰				            //
@@ -17,29 +17,14 @@ using System.Threading;
 //			创建时间:	6/19/2016 11:10:43 PM			//
 //			创建日期:	2016				            //
 //======================================================//
-namespace CnBlogs.Factories
+namespace CnBlogs.ViewModels
 {
-    internal class BlogFactory : SupportIncreamentalLoading<Blog>
+    internal class BlogViewModel : BaseViewModel<Blog>
     {
-        private bool _isLoading = false;
-        private bool _hasMoreItems = false;
-        private int _pageSize = 0;
-        private int _currentPage = 1;
 
-        public int TotalCount { get; set; }
-        public BlogFactory()
+        public BlogViewModel():base()
         {
-            _pageSize = 20;
-            _hasMoreItems = true;
         }
-        public void Refresh()
-        {
-            _currentPage = 1;
-            TotalCount = 0;
-            Clear();
-            _hasMoreItems = true;
-        }
-
         protected override async Task<IList<Blog>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
         {
             _isLoading = true;
@@ -57,7 +42,7 @@ namespace CnBlogs.Factories
             if (blogs != null && blogs.Any())
             {
                 actualCount = blogs.Count;
-                TotalCount += actualCount;
+                base.AddTotalCount(actualCount);
                 _currentPage++;
                 _hasMoreItems = true;
                 blogs.ForEach(this.Add);

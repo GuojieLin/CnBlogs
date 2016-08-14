@@ -1,0 +1,90 @@
+﻿<Page
+    x:Class="CnBlogs.UI.NewsBodyPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CnBlogs.UI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <ResourceDictionary Source="..\Resources\Dictionary.xaml"></ResourceDictionary>
+    </Page.Resources>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <RelativePanel Grid.Row="0"
+                       Style="{StaticResource TopRelativePanel}">
+            <TextBlock Name="TitleTextBlock"
+                       Text="{StaticResource ArticleTopRelativePanleTitle}"
+                       RelativePanel.AlignLeftWithPanel="True"
+                       RelativePanel.AlignVerticalCenterWithPanel="True"
+                       Style="{StaticResource TopRelativePanelTextBlockStyle}">
+            </TextBlock>
+            <StackPanel Orientation="Horizontal"
+                        RelativePanel.LeftOf="DiggsButton"
+                        RelativePanel.AlignVerticalCenterWithPanel="True">
+                <SymbolIcon Symbol="View"/>
+                <TextBlock Text="{x:Bind News.Views}"
+                           Style="{StaticResource StackPanelTextBlockStyle}">
+                </TextBlock>
+            </StackPanel>
+            <Button Name="DiggsButton" Click="DiggsButton_Click" 
+                    Background="Transparent" 
+                    RelativePanel.LeftOf="CommentButton"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
+                    Style="{StaticResource BaseButtonStyle}">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Like"/>
+                        <TextBlock Text="{x:Bind News.Diggs}"
+                                   Style="{StaticResource StackPanelTextBlockStyle}">
+                        </TextBlock>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button Name="CommentButton" Click="CommentButton_Click"
+                    Background="Transparent" 
+                    RelativePanel.AlignRightWithPanel="True"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
+                    Style="{StaticResource BaseButtonStyle}">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <SymbolIcon Symbol="Comment" />
+                        <TextBlock Text="{x:Bind News.Comments}"
+                                   Style="{StaticResource StackPanelTextBlockStyle}">
+                        </TextBlock>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+        </RelativePanel>
+        <StackPanel Orientation="Vertical" 
+                    Name="TitleStack" 
+                    HorizontalAlignment="Center"
+                    Padding="5"
+                    Grid.Row="1">
+            <TextBlock Name="BlogTitle"
+                        Text="{x:Bind News.Title}"
+                        FontSize="15"></TextBlock>            
+            <StackPanel Name="BlogSecondTitle" Orientation="Horizontal">
+                <TextBlock Name="AuthorName" Text="{StaticResource ItWriter}"></TextBlock>
+                <TextBlock Name="PublishTime" Text="{x:Bind News.Body.SubmitDate}"></TextBlock>
+                <TextBlock Name="Views" Text="{x:Bind News.Views}"></TextBlock>
+                <TextBlock Name="Comments" Text="{x:Bind News.Comments}"></TextBlock>
+            </StackPanel>
+        </StackPanel>
+        <Rectangle Grid.Row="1" Height="1" VerticalAlignment="Bottom"
+                   Fill="LightGray">
+        </Rectangle>
+        <WebView Grid.Row="2" Name="NewsBodyWebView"></WebView>
+        <ProgressRing Grid.Row="2"
+                      Name="LoadingProgressRing"
+                      Width="100"
+                      Height="100"
+                      IsActive="False">
+        </ProgressRing>
+    </Grid>
+</Page>

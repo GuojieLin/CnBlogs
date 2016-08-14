@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace CnBlogs
 {
-     class Contants
+    internal class Contants
     {
         internal const string HomeAppBarButton = "HomeAppBarButton";
         internal const string NewAppBarButton = "NewAppBarButton";
         internal const string MessagesAppBarButton = "MessagesAppBarButton";
 
         internal const int DetailFrameDefaultZIndex = 10;
+
     }
 }

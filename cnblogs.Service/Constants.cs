@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 //======================================================//
 namespace CnBlogs.Service
 {
-    public class Constants
+    public static class Constants
     {
         public const string DefaultAvatar = "http://pic.blogs.com/avatar/simple_avatar.gif";
         public const string XmlNameSpace = "xmlns=\"http://www.w3.org/2005/Atom\"";

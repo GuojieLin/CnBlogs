@@ -1,0 +1,14 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CnBlogs.Resources"
+    xmlns:service="using:CnBlogs.Service">
+
+    <x:String x:Key="ItWriterUrl">http://www.cnblogs.com/itwriter/</x:String>
+    <x:String x:Key="ItWriter">ItWriter</x:String>
+    <x:String x:Key="BlogListTitle">博客园</x:String>
+    <x:String x:Key="NewsListTitle">新闻</x:String>
+    <x:String x:Key="ArticleTopRelativePanleTitle">正文</x:String>
+
+    
+</ResourceDictionary>

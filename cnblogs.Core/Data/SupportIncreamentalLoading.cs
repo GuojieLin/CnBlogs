@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Data;
 //			创建时间:	6/20/2016 12:32:55 AM			//
 //			创建日期:	2016				            //
 //======================================================//
-namespace CnBlogs.Factories
+namespace CnBlogs.Core.Data
 {
     public abstract class SupportIncreamentalLoading<T> : ObservableCollection<T>, ISupportIncrementalLoading
     {

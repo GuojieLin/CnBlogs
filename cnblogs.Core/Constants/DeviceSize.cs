@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 //			创建时间:	6/26/2016 10:58:19 PM			//
 //			创建日期:	2016				            //
 //======================================================//
-namespace CnBlogs.Core.Constants
+namespace CnBlogs.Core.Enums
 {
     public class DeviceSize
     {

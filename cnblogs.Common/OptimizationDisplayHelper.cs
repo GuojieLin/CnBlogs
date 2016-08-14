@@ -10,90 +10,102 @@ namespace CnBlogs.Common
 {
     public class OptimizationDisplayHelper
     {
-        public const string BaseCss = "<style>"
-                        + "html{-ms-content-zooming:none;font-family:微软雅黑;}"
-                        + ".author{font-weight:bold;} .bio{color:gray;}"
-                        + "body{padding:10px;word-break:break-all;} p{margin:10px auto;} a{color:skyblue;} img{width:100% !important; }"
-                        + "body{line-height:150%;}"
-                        + "p{ word-wrap: break-word;word-break: normal; }"
-                        + "pre{ word-wrap: break-word;word-break: normal; font-size:30px !important; }"
-                        //word-break设置强行换行;normal 亚洲语言和非亚洲语言的文本规则，允许在字内换行
-                        + "</style>";   //基础css
+        public const string BaseCss = @"<style>html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {{
+                                    margin: 2px; padding: 5px; border: 0; font: inherit; vertical-align: baseline; outline: none; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;}}" +
+                                    "html {{ font-size:{0}px; -ms-content-zooming:none;font-family:微软雅黑;}}" +
+                                    "body {{  word-wrap: break-word;word-break: normal; }}" +
+                                    "article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {{ display: block; }}" +
+                                    "strong {{ font-weight: bold; }}" +
+                                    "table {{ border-collapse: collapse; border-spacing: 0; }}" +
+                                    "img {{ border: 0; width: 100%; }}" +
+                                    "p {{ color: #333;}}" +
+                                    "</style>"; 
         public const string DarkThemeCss = "<style>"
                         + "body{background-color:black !important;color:gray !important;}"
                         + "</style>";
-        public const string BigFontSizeCss = "<style>body{font-size:45px;} h1{font-size:62px;} h2{font-size:58px;} h3{font-size:52px;} h4,h5,h6{font-size:48px;}</style>";
-        public const string SmallFontSizeCss = "<style>body{font-size:35px !important;} h1{font-size:45px !important;} h2{font-size:42px !important;} h3{font-size:40px !important;} h4,h5,h6{font-size:38px !important;}</style>";
+        public const string FontSizeCss = "<style>body{line-height: 1.2em;font-size:1.0em !important;} h1{font-size:1.4em !important;} h2{font-size:1.3em !important;} h3{font-size:1.2em !important;} h4,h5,h6{font-size:1.1em !important;}pre {font-size:1.0em ;background-color: #f5f5f5; border: #cccccc 1px solid; padding: 8px; margin:5px;}</style>";
+
+        public const string ClickToLoadImageJs = "<script>"  //点击加载图片
+                        + "function click2loadimage(obj,source)"
+                        + "{"
+                        + "obj.setAttribute('src','ms-appx-web:///Assets/default_image_loading.png');"
+                        + "obj.setAttribute('src',source);"
+                        + "}"
+                        + "</script>";
         public static string OptimizationHtmlDisplay(string html)
         {
             string ex_mark = "<base target='_blank'/>";
-            string js = "";   //图片加载脚本
             string body = html;
 
-            //#region 移除自带标签属性
-
-            //body = Regex.Replace(html, @"<p(/<[^>]*>/g", (m) =>
-            //{
-            //    //if (m.Value.Contains("avatar"))
-            //    //{
-            //    //    return m.Value;
-            //    //}
-            //    //else
-            //    Match match = Regex.Match(m.Value.ToString(), @"<p(/<[^>]*>/g>");
-            //    if (match.Success)
-            //    {
-            //        //移除长宽标签 最大化图片
-            //        return "<p>";
-            //    }
-            //    else
-            //    {
-            //        return m.Value;
-            //    }
-            //}, RegexOptions.IgnoreCase);  //替换所有img标签 为本地图片
-
-
-            //#endregion
-
-            #region 无图模式
-            //if (DataShareManager.Current.NOImagesMode)  //无图模式
-            //{
-            if (NetworkManager.Current.Network != NewWorkType.WIFI)  //非wifi
+            #region 移除自带标签属性
+            
+            html = Regex.Replace(html, @"<.* style=['|""].*(font[\s]*-[\s]*size.*)['|""]>", (m) =>
             {
-                body = Regex.Replace(html, @"<img.*?src=(['""]?)(?<url>[^'"" ]+)(?=\1)[^>]*>", (m) =>
+                return m.Groups[0].Value.Replace(m.Groups[1].Value, "");
+            }, RegexOptions.IgnoreCase);  //移除所有font-size
+            
+            html = Regex.Replace(html, "<pre[^>]+>([^<]+)</pre>", (m) =>
+            {
+                if (string.IsNullOrEmpty(m.Groups[1].Value.Trim()))
                 {
-                    //if (m.Value.Contains("avatar"))
-                    //{
-                    //    return m.Value;
-                    //}
+                    return "";
+                }
+                else return m.Groups[0].Value;
+            }, RegexOptions.IgnoreCase);  //替换所有img标签 为本地图片
+
+            #endregion
+
+                html = Regex.Replace(html, @"<img.*?src=(['""]?)(?<url>[^'"" ]+)(?=\1)[^>]*>", (m) =>
+                {
                     //else
-                    Match match = Regex.Match(m.Value.ToString(), @"<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>");
-                    if (match.Success)
+
+                    #region 无图模式
+                    string url = m.Groups["url"].Value;
+                    if (m.Groups["url"].Value.StartsWith("//", StringComparison.CurrentCultureIgnoreCase))
                     {
-                        //移除长宽标签 最大化图片
-                        //return "<img src='" + match.Groups["imgUrl"].Value + "'/>";
-                        return @"<img src=""ms-appx-web:///Assets/default_image.png"" onclick=""click2loadimage(this,'" + match.Groups["imgUrl"].Value + @"');""/>";
+                        url = "http:" + url;
                     }
+
+                    if (SettingManager.Current.IsNoImagesMode)  //无图模式
+                    {
+                        if (NetworkManager.Current.Network != NewWorkType.WIFI)  //非wifi
+                        {
+                            Match match = Regex.Match(m.Value.ToString(), @"<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>");
+                            if (match.Success)
+                            {
+                                //移除长宽标签 最大化图片
+                                //return "<img src='" + match.Groups["imgUrl"].Value + "'/>";
+                                return @"<img src=""ms-appx-web:///Assets/default_image.png"" onclick=""click2loadimage(this,'" + url + @"');""/>";
+                            }
+                            else
+                            {
+                                return @"<img src='" + url + @"'>";
+                            }
+                        }
+                    }
+                    #endregion
                     else
                     {
-                        return m.Value;
+                        return @"<img src='" + url + @"'>";
                     }
+                    return url;
+
                 }, RegexOptions.IgnoreCase);  //替换所有img标签 为本地图片
 
-                js = "<script>"  //点击加载图片
-                    + "function click2loadimage(obj,source)"
-                    + "{"
-                    + "obj.setAttribute('src','ms-appx-web:///Assets/default_image_loading.png');"
-                    + "obj.setAttribute('src',source);"
-                    + "}"
-                    + "</script>";
-            }
-            //else
-            //{
-            //    body = sc.Body;
-            //}
-            #endregion
+
+            StringBuilder builder = new StringBuilder();
+            builder.Append("<html>");
+            builder.Append("<head>");
+            builder.Append(ex_mark);
+            builder.AppendFormat(BaseCss, (int)SettingManager.Current.FontSize);
+            builder.Append(FontSizeCss);
+            builder.Append(ClickToLoadImageJs);
+            builder.Append("</head><body>");
+            builder.Append(html);
+            builder.Append("</body></html>");
+            return builder.ToString();
             //合并
-            return "<html><head>" + ex_mark + BaseCss + SmallFontSizeCss + js + "</head>" + "<body>" + body + "</body></html>";  //附加css
+            //附加css
 
         }
     }

@@ -110,6 +110,8 @@
     <Compile Include="Author.cs" />
     <Compile Include="Blog.cs" />
     <Compile Include="BlogComment.cs" />
+    <Compile Include="News.cs" />
+    <Compile Include="NewsBody.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Cnblogs.Entities.rd.xml" />
   </ItemGroup>

@@ -99,8 +99,21 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Contants.cs" />
-    <Compile Include="Factories\BlogFactory.cs" />
-    <Compile Include="Factories\SupportIncreamentalLoading.cs" />
+    <Compile Include="UI\NewsBodyPage.xaml.cs">
+      <DependentUpon>NewsBodyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\BlogListPage.xaml.cs">
+      <DependentUpon>BlogListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\NewsListPage.xaml.cs">
+      <DependentUpon>NewsListPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\NewsItemUserControl.xaml.cs">
+      <DependentUpon>NewsItemUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\NewsViewModel.cs" />
+    <Compile Include="ViewModels\BlogViewModel.cs" />
     <Compile Include="NavigationService.cs" />
     <Compile Include="UI\BlankPage.xaml.cs">
       <DependentUpon>BlankPage.xaml</DependentUpon>
@@ -108,14 +121,8 @@
     <Compile Include="UI\BlogBodyPage.xaml.cs">
       <DependentUpon>BlogBodyPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\BlogListPage.xaml.cs">
-      <DependentUpon>BlogListPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\NewsPage.xaml.cs">
-      <DependentUpon>NewsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserControls\BlogItemUserControl.xaml.cs">
@@ -145,9 +152,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Resources\Dictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
     <Page Include="UI\BlankPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\NewsBodyPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\BlogBodyPage.xaml">
       <SubType>Designer</SubType>
@@ -169,11 +185,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UI\NewsPage.xaml">
+    <Page Include="UI\NewsListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\BlogItemUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\NewsItemUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -196,9 +216,7 @@
       <Name>CnBlogs.Service</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

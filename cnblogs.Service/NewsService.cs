@@ -22,27 +22,26 @@ namespace CnBlogs.Service
     public class NewsService
     {
         /// <summary>
-        /// 分页获取首页博客
+        /// 分页获取首页新闻
         /// </summary>
         /// <param name="page_index"></param>
         /// <param name="page_size"></param>
         /// <returns></returns>
-        public async static Task<List<Blog>> GetSiteHomeArticlesAsync(int pageIndex, int pageSize)
+        public async static Task<List<News>> GetSiteHomeArticlesAsync(int pageIndex, int pageSize)
         {
             try
             {
-                string url = string.Format(WcfApiUrlConstants.SiteHomeArticles, pageIndex, pageSize);
+                string url = string.Format(WcfApiUrlConstants.RecentNewsByPaging, pageIndex, pageSize);
                 string xml = await HttpHelper.Get(url);
-                List<Blog> blogs = new List<Blog>();
+                List<News> newses = new List<News>();
                 xml = xml.Replace(Constants.XmlNameSpace,"");
                 XElement xElement = XElement.Parse(xml);
                 foreach (XElement entry in xElement.Elements("entry"))
                 {
-                    Blog Blog=  Blog.Load(entry);
-                    if (Blog.Author.Avatar.IsNullOrEmpty()) Blog.Author.Avatar = Constants.DefaultAvatar;
-                    blogs.Add(Blog);
+                    News news = News.Load(entry);
+                    newses.Add(news);
                 }
-                return blogs;
+                return newses;
             }
             catch
             {
@@ -56,14 +55,14 @@ namespace CnBlogs.Service
         /// <param name="page_index"></param>
         /// <param name="page_size"></param>
         /// <returns></returns>
-        public async static Task<string> GetBlogBodyAsync(string id)
+        public async static Task<NewsBody> GetNewsBodyAsync(string id)
         {
             try
             {
-                string url = string.Format(WcfApiUrlConstants.GetBlogBody, id);
+                string url = string.Format(WcfApiUrlConstants.NewsContent, id);
                 string xml = await HttpHelper.Get(url);
                 XElement xElement = XElement.Parse(xml);
-                return xElement.Value;
+                return NewsBody.Load(xElement);
             }
             catch
             {
@@ -77,11 +76,11 @@ namespace CnBlogs.Service
         /// <param name="page_index"></param>
         /// <param name="page_size"></param>
         /// <returns></returns>
-        public async static Task<List<BlogComment>> GetBlogCommentsAsync(string id,int pageIndex,int pageSize)
+        public async static Task<List<BlogComment>> GetNewsCommentsAsync(string id,int pageIndex,int pageSize)
         {
             try
             {
-                string url = string.Format(WcfApiUrlConstants.GetBlogComments, id, pageIndex,pageSize);
+                string url = string.Format(WcfApiUrlConstants.GetNewsComment, id, pageIndex,pageSize);
                 string xml = await HttpHelper.Get(url);
                 List<BlogComment> blogComments = new List<BlogComment>();
                 XElement xElement = XElement.Parse(xml);

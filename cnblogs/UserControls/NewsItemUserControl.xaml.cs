@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CnBlogs.Entities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,16 +16,38 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace CnBlogs.UI
+namespace CnBlogs.UserControls
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class NewsPage : Page
+    public sealed partial class NewsItemUserControl : Page
     {
-        public NewsPage()
+        public News News => this.DataContext as News;
+        public NewsItemUserControl()
         {
             this.InitializeComponent();
+            this.DataContextChanged += (s, e) => Bindings.Update();
+        }
+
+        private void HyperlinkButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CommentButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ViewButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void DiggsButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

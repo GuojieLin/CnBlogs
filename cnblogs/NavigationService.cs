@@ -1,5 +1,5 @@
 ﻿using CnBlogs.Common;
-using CnBlogs.Core.Constants;
+using CnBlogs.Core.Enums;
 using CnBlogs.Core.Enums;
 using CnBlogs.UI;
 using System;
