@@ -40,7 +40,6 @@ namespace CnBlogs.Core.Data
             }
 
             _busy = true;
-
             return AsyncInfo.Run(c => LoadMoreItemsAsync(c, count));
         }
 

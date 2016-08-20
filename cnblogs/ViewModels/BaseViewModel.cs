@@ -41,7 +41,7 @@ namespace CnBlogs.ViewModels
             _hasMoreItems = true;
         }
 
-        protected override async Task<IList<T>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
+        protected override Task<IList<T>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
         {
             throw new NotImplementedException("基类方法未实现");
         }

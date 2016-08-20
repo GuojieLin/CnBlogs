@@ -45,7 +45,6 @@ namespace CnBlogs.ViewModels
                 base.AddTotalCount(actualCount);
                 _currentPage++;
                 _hasMoreItems = true;
-                blogs.ForEach(this.Add);
             }
             else
             {
