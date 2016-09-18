@@ -24,17 +24,12 @@ namespace CnBlogs.UI
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class BlogListPage : Page
+    public sealed partial class BlogCommentListPage : Page
     {
-        internal BlogViewModel BlogViewModel;
-        public BlogListPage()
+        internal BlogCommentViewModel BlogCommentViewModel { get; private set; }
+        public BlogCommentListPage()
         {
             this.InitializeComponent();
-            NavigationCacheMode = NavigationCacheMode.Required;
-            BlogViewModel = new BlogViewModel();
-            BlogViewModel.OnLoadMoreStarted += count=> LoadingProgressRing.IsActive = true;
-            BlogViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
-            BlogViewModel.Refresh();
         }
 
         /// <summary>
@@ -43,17 +38,18 @@ namespace CnBlogs.UI
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            Blog blog = (Blog)e.Parameter;
+            BlogCommentViewModel = new BlogCommentViewModel(blog);
+            BlogCommentViewModel.OnLoadMoreStarted += count => LoadingProgressRing.IsActive = true;
+            BlogCommentViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
+            BlogCommentViewModel.Refresh();
             //App.NavigationService.DetailFrame.Navigating += (sender, args) => LoadingProgressRing.IsActive = true;
             //App.NavigationService.DetailFrame.Navigated += (sender, args) => LoadingProgressRing.IsActive = false;
             base.OnNavigatedTo(e);
         }
         private void BlogsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            App.NavigationService.DetailFrameNavigate(typeof(BlogBodyPage),e.ClickedItem );
-        }
-        private void RefreshBlogListButton_Click(object sender, RoutedEventArgs e)
-        {
-            BlogViewModel.Refresh();
+            //App.NavigationService.DetailFrameNavigate(typeof(BlogBodyPage),e.ClickedItem );
         }
     }
 }

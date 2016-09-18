@@ -25,6 +25,7 @@ namespace CnBlogs.UI
         public BlankPage()
         {
             this.InitializeComponent();
+            NavigationCacheMode = NavigationCacheMode.Required;
         }
     }
 }

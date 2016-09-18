@@ -98,7 +98,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BaseNavigationTransitionInfo.cs" />
     <Compile Include="Contants.cs" />
+    <Compile Include="UI\BlogCommentListPage.xaml.cs">
+      <DependentUpon>BlogCommentListPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\NewsBodyPage.xaml.cs">
       <DependentUpon>NewsBodyPage.xaml</DependentUpon>
     </Compile>
@@ -108,10 +112,14 @@
     <Compile Include="UI\NewsListPage.xaml.cs">
       <DependentUpon>NewsListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\BlogCommentItemUserControl.xaml.cs">
+      <DependentUpon>BlogCommentItemUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\NewsItemUserControl.xaml.cs">
       <DependentUpon>NewsItemUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\BlogCommentViewModel.cs" />
     <Compile Include="ViewModels\NewsViewModel.cs" />
     <Compile Include="ViewModels\BlogViewModel.cs" />
     <Compile Include="NavigationService.cs" />
@@ -161,6 +169,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\BlogCommentListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UI\NewsBodyPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -188,6 +200,10 @@
     <Page Include="UI\NewsListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\BlogCommentItemUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\BlogItemUserControl.xaml">
       <SubType>Designer</SubType>

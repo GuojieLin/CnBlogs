@@ -15,8 +15,9 @@
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
             <Frame Name="MasterFrame" Grid.Row="0"></Frame>
-            <Frame Name="DetailFrame" Grid.Row="0" Visibility="Collapsed"></Frame>
-            <ProgressBar Name="LoadingProgressRing"
+        <Frame Name="DetailFrame" Grid.Row="0" Visibility="Collapsed"></Frame>
+        <Frame Name="TertiaryFrame" Grid.Column="0" Visibility="Collapsed"></Frame>
+        <ProgressBar Name="LoadingProgressRing"
                                  VerticalAlignment="Top"
                                  IsIndeterminate="False"
                                   Grid.Row="0">

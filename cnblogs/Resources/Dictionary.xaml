@@ -7,6 +7,7 @@
     <x:String x:Key="ItWriterUrl">http://www.cnblogs.com/itwriter/</x:String>
     <x:String x:Key="ItWriter">ItWriter</x:String>
     <x:String x:Key="BlogListTitle">博客园</x:String>
+    <x:String x:Key="BlogCommentTitle">评论</x:String>
     <x:String x:Key="NewsListTitle">新闻</x:String>
     <x:String x:Key="ArticleTopRelativePanleTitle">正文</x:String>
 

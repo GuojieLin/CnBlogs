@@ -44,7 +44,7 @@ namespace CnBlogs.UI
             };
             //导航及界面主次Frame切换等都由NavigationService进行控制
             bool isNarrow = AdaptiveStates?.CurrentState == NarrowState;
-            App.InitNavigationService(MasterFrame, DetailFrame, CnBlogSplitView, isNarrow);
+            App.InitNavigationService(MasterFrame, DetailFrame, TertiaryFrame, CnBlogSplitView, isNarrow);
 
             DetailFrame.Navigated += (sender, e) =>
             {
@@ -53,7 +53,6 @@ namespace CnBlogs.UI
             //打开程序是跳转到博客列表
             App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
             //打开缓存。
-            this.NavigationCacheMode = NavigationCacheMode.Required;
         }
 
         #region 桌面需要用

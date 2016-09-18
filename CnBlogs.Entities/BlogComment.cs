@@ -55,6 +55,7 @@ namespace CnBlogs.Entities
         /// 评论内容
         /// </summary>
         public string Content { get; set; }
+        public int FloorNumber { get; set; }
         /// <summary>
         /// <entry>
         ///   <id>3454999</id>
@@ -71,7 +72,7 @@ namespace CnBlogs.Entities
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public static BlogComment Load(XElement element)
+        public static BlogComment Load(XElement element,int floorNumber)
         {
             if (element == null) throw new ArgumentNullException("element");
             BlogComment blogComment = new BlogComment();
@@ -80,6 +81,7 @@ namespace CnBlogs.Entities
             blogComment.Updated = Convert.ToDateTime(element?.Element("updated").Value);
             blogComment.Author = Author.Load(element?.Element("author"));
             blogComment.Content = element?.Element("content").Value;
+            blogComment.FloorNumber = floorNumber;
             return blogComment;
         }
     }

@@ -111,6 +111,8 @@
     <Compile Include="OptimizationDisplayHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingManager.cs" />
+    <Compile Include="ValueConverters\DateTimeConverter.cs" />
+    <Compile Include="ValueConverters\FloorNumberConverter.cs" />
     <EmbeddedResource Include="Properties\Cnblogs.Common.rd.xml" />
   </ItemGroup>
   <ItemGroup>

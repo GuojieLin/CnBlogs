@@ -1,6 +1,7 @@
 ﻿using CnBlogs.Common;
 using CnBlogs.Entities;
 using CnBlogs.Service;
+using CnBlogs.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,6 +32,7 @@ namespace CnBlogs.UI
         public BlogBodyPage()
         {
             this.InitializeComponent();
+            //NavigationCacheMode = NavigationCacheMode.Enabled;
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -39,7 +41,8 @@ namespace CnBlogs.UI
             var body = await BlogService.GetBlogBodyAsync(Blog.Id);
             Blog.Body = OptimizationDisplayHelper.OptimizationHtmlDisplay(body); ;
             BlogBodyWebView.NavigateToString(Blog.Body);
-
+            //BlogCommentViewModel = new BlogCommentViewModel(Blog);
+            //BlogCommentViewModel.Refresh();
             //if (blog_body != null)
             //{
             //    if (App.Theme == ApplicationTheme.Dark)  //暗主题
@@ -50,19 +53,6 @@ namespace CnBlogs.UI
             //}
             DataLoaded();
             base.OnNavigatedTo(e);
-        }
-        private void FixImage()
-        {
-            XElement xelement = XElement.Parse(Blog.Body);
-            //foreach (XElement imageXElement in xelement.Elements("img"))
-            //{
-            //    //width="685" height="89" 
-            //    int width = Convert.ToInt32(imageXElement.Attribute("width").Value);
-            //    int height = Convert.ToInt32(imageXElement.Attribute("height").Value);
-            //    imageXElement.Attribute("width").SetValue(BlogBodyWebView.ActualWidth);
-            //    imageXElement.Attribute("height").SetValue(BlogBodyWebView.ActualWidth / width * height);
-
-            //}
         }
         /// <summary>
         /// 博客列表开始加载
@@ -85,6 +75,11 @@ namespace CnBlogs.UI
         }
 
         private void CommentButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.NavigationService.TertiaryFrameNavigate(typeof(BlogCommentListPage), this.Blog);
+        }
+
+        private void BlogsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
 
         }

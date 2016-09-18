@@ -84,9 +84,10 @@ namespace CnBlogs.Service
                 string xml = await HttpHelper.Get(url);
                 List<BlogComment> blogComments = new List<BlogComment>();
                 XElement xElement = XElement.Parse(xml);
+                int i = 0;
                 foreach (XElement entry in xElement.Elements("entry"))
                 {
-                    BlogComment blogComment= BlogComment.Load(entry);
+                    BlogComment blogComment = BlogComment.Load(entry, i++);
                     blogComments.Add(blogComment);
                 }
                 return blogComments;

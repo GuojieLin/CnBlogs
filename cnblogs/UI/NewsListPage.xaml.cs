@@ -27,6 +27,7 @@ namespace CnBlogs.UI
         public NewsListPage()
         {
             this.InitializeComponent();
+            NavigationCacheMode = NavigationCacheMode.Required;
             NewsViewModel = new NewsViewModel();
             NewsViewModel.OnLoadMoreStarted += count => LoadingProgressRing.IsActive = true;
             NewsViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;

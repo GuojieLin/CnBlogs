@@ -39,9 +39,9 @@ namespace CnBlogs
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
-        public static void InitNavigationService(Frame masterFrame, Frame detailFrame,SplitView splitView, bool isNarrow)
+        public static void InitNavigationService(Frame masterFrame, Frame detailFrame,Frame tertiaryFrame, SplitView splitView, bool isNarrow)
         {
-            App.NavigationService = new NavigationService(masterFrame, detailFrame, splitView, isNarrow);
+            App.NavigationService = new NavigationService(masterFrame, detailFrame, tertiaryFrame, splitView, isNarrow);
         }
 
         /// <summary>

@@ -50,9 +50,9 @@ namespace CnBlogs.Entities
         {
             if (element == null) throw new ArgumentNullException("element");
             Author author = new Author();
-            author.Name = element?.Element("name").Value;
-            author.Uri = element?.Element("uri").Value;
-            author.Avatar = element?.Element("avatar").Value;
+            author.Name = element?.Element("name")?.Value;
+            author.Uri = element?.Element("uri")?.Value;
+            author.Avatar = element?.Element("avatar")?.Value;
             return author;
         }
     }

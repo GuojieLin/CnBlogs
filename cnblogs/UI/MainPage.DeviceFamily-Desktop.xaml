@@ -21,6 +21,7 @@
                         <Setter Target="LeftColumn.Width" Value="*" />
                         <Setter Target="RightColumn.Width" Value="0" />
                         <Setter Target="DetailFrame.(Grid.Column)" Value="0" />
+                        <Setter Target="TertiaryFrame.(Grid.Column)" Value="0" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="MediumState">
@@ -31,6 +32,7 @@
                         <Setter Target="LeftColumn.Width" Value="2*" />
                         <Setter Target="RightColumn.Width" Value="3*" />
                         <Setter Target="DetailFrame.(Grid.Column)" Value="1" />
+                        <Setter Target="TertiaryFrame.(Grid.Column)" Value="1" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -133,6 +135,7 @@
 
                         <Frame Name="MasterFrame"></Frame>
                         <Frame Name="DetailFrame" Grid.Column="1"></Frame>
+                    <Frame Name="TertiaryFrame" Grid.Column="1" Visibility="Collapsed"></Frame>
                     <ProgressBar Name="LoadingProgressRing"
                                  VerticalAlignment="Top"
                                  IsIndeterminate="False">
