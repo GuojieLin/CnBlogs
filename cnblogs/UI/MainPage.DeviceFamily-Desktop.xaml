@@ -42,7 +42,7 @@
                    DisplayMode="CompactOverlay"
                    OpenPaneLength="100"
                    CompactPaneLength="43">
-            <SplitView.Pane>
+            <SplitView.Pane >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
@@ -140,6 +140,15 @@
                                  VerticalAlignment="Top"
                                  IsIndeterminate="False">
                     </ProgressBar>
+
+                    <CommandBar Grid.Row="1" IsOpen="False">
+                        <AppBarButton Name="HomeAppBarButton" Icon="Home" Label="主页" Click="AppBarButton_Click"></AppBarButton>
+                        <AppBarButton Name="NewAppBarButton" Icon="List" Label="新闻" Click="AppBarButton_Click"></AppBarButton>
+                        <AppBarButton Name="MessagesAppBarButton" Icon="Message" Label="新闻" Click="AppBarButton_Click"></AppBarButton>
+                        <CommandBar.SecondaryCommands>
+                            <AppBarButton Icon="Setting" Label="设置"></AppBarButton>
+                        </CommandBar.SecondaryCommands>
+                    </CommandBar>
                 </Grid>
             </SplitView.Content>
         </SplitView>

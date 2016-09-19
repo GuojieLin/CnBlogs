@@ -17,6 +17,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <RelativePanel Grid.Row="0"
                        Style="{StaticResource TopRelativePanel}" Height="40">
@@ -47,5 +48,6 @@
                       Height="100"
                       IsActive="False">
         </ProgressRing>
+        <RelativePanel Grid.Row="2"></RelativePanel>
     </Grid>
 </Page>

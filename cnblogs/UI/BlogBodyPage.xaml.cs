@@ -83,5 +83,22 @@ namespace CnBlogs.UI
         {
 
         }
+
+        private void ShareButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CommandBarPanel_Opening(object sender, object e)
+        {
+            CommandBar cb = sender as CommandBar;
+            if (cb != null) cb.Background.Opacity = 1.0;
+        }
+
+        private void CommandBarPanel_Closing(object sender, object e)
+        {
+            CommandBar cb = sender as CommandBar;
+            if (cb != null) cb.Background.Opacity = 0.5;
+        }
     }
 }
