@@ -19,6 +19,8 @@ namespace CnBlogs
         /// 当前设备是否是手机设备
         /// </summary>
         public bool IsMobile { get { return AnalyticsInfo.VersionInfo.DeviceFamily == DeviceFamily.WindowsMobile; } }
+        public Action NavigateToDetailAction { get; set; }
+        public Action NavigateToMasterAction { get; set; }
         public bool IsNarrow { get; private set; }
         public int MasterFrameDepth;
         public int DetailFrameDepth;
@@ -94,6 +96,7 @@ namespace CnBlogs
             //CnBlogSplitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
             UpdateBackButton();
             UpdateFrame();
+            NavigateToMasterAction?.Invoke();
         }
 
 
@@ -121,6 +124,7 @@ namespace CnBlogs
             //{
             //    CnBlogSplitView.DisplayMode = SplitViewDisplayMode.Overlay;
             //}
+            NavigateToDetailAction?.Invoke();
         }
 
         public void TertiaryFrameNavigate(Type type, object parameter = null)
@@ -158,10 +162,12 @@ namespace CnBlogs
             if (CanGoBack)
             {
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+                if(!IsMobile) NavigateToDetailAction?.Invoke();
             }
             else
             {
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+                if (!IsMobile) NavigateToMasterAction?.Invoke();
             }
         }
         /// <summary>

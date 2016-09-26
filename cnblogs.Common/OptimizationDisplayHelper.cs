@@ -34,6 +34,7 @@ namespace CnBlogs.Common
                         + "</script>";
         public static string OptimizationHtmlDisplay(string html)
         {
+            if (html == null) throw new ArgumentNullException("html");
             string ex_mark = "<base target='_blank'/>";
             string body = html;
 

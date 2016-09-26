@@ -1,5 +1,4 @@
 ﻿using CnBlogs.Core.Enums;
-using CnBlogs.Core.Enums;
 using CnBlogs.Entities;
 using System;
 using System.Collections.Generic;
@@ -54,6 +53,15 @@ namespace CnBlogs.UI
             }
             else
             {
+                App.NavigationService.NavigateToDetailAction = () =>
+                {
+                    CommandBar.Visibility = Visibility.Collapsed;
+                };
+
+                App.NavigationService.NavigateToMasterAction = () =>
+                {
+                    CommandBar.Visibility = Visibility.Visible;
+                };
                 CommandBar.Visibility = Visibility.Visible;
                 AdaptiveStates.CurrentStateChanged += AdaptiveStates_CurrentStateChanged;
             }
@@ -62,6 +70,7 @@ namespace CnBlogs.UI
                 //CommandBar.Visibility = Visibility.Collapsed;
                 //UpdateForVisualState(AdaptiveStates?.CurrentState);
             };
+
             //打开程序是跳转到博客列表
             App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
             //打开缓存。

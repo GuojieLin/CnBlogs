@@ -99,7 +99,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Contants.cs" />
-    <Compile Include="UserControls\ExtendSplitView.cs" />
     <Compile Include="UI\BlogCommentListPage.xaml.cs">
       <DependentUpon>BlogCommentListPage.xaml</DependentUpon>
     </Compile>
@@ -160,10 +159,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="UserControls\ExtendSplitView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Resources\Dictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
