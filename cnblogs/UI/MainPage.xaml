@@ -12,7 +12,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="AdaptiveStates" CurrentStateChanged="AdaptiveStates_CurrentStateChanged">
+            <VisualStateGroup x:Name="AdaptiveStates">
                 <VisualState x:Name="NarrowState">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="0" />
@@ -21,26 +21,30 @@
                         <Setter Target="LeftColumn.Width" Value="*" />
                         <Setter Target="RightColumn.Width" Value="0" />
                         <Setter Target="DetailFrame.(Grid.Column)" Value="0" />
+                        <Setter Target="TertiaryFrame.(Grid.Column)" Value="0" />
+                        <Setter Target="CnBlogSplitView.DisplayMode" Value="Overlay" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="MediumState">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="640" />
+                        <AdaptiveTrigger MinWindowWidth="960" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="LeftColumn.Width" Value="320" />
-                        <Setter Target="RightColumn.Width" Value="*" />
+                        <Setter Target="LeftColumn.Width" Value="2*" />
+                        <Setter Target="RightColumn.Width" Value="3*" />
                         <Setter Target="DetailFrame.(Grid.Column)" Value="1" />
+                        <Setter Target="TertiaryFrame.(Grid.Column)" Value="1" />
+                        <Setter Target="CnBlogSplitView.DisplayMode" Value="CompactOverlay" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <SplitView Grid.Column="0"
                    Name="CnBlogSplitView" 
-                   DisplayMode="CompactOverlay"
+                   IsPaneOpen="False"
                    OpenPaneLength="100"
                    CompactPaneLength="43">
-            <SplitView.Pane>
+            <SplitView.Pane >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
@@ -49,7 +53,10 @@
                     <ListBox Grid.Row ="0" Name="FirstMenuListBox"
                              SelectionMode="Single"
                              SelectionChanged="FirstMenuListBox_SelectionChanged">
-                        <ListBoxItem Name="HamburgerButton">
+                        <ListBoxItem Name="HamburgerButton"
+                                     Height="40"
+                                     Tapped="HamburgerButton_Tapped"
+                                     >
                             <!--首页-->
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="&#xE700;" Style="{StaticResource ListBoxIconTextBlockStyle}"/>
@@ -67,14 +74,14 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="&#xE14C;" Style="{StaticResource ListBoxIconTextBlockStyle}"/>
                                 <TextBlock Text="新闻"  Style="{StaticResource ListBoxNameTextBlockStyle}"/>
-                            </StackPanel> 
+                            </StackPanel>
                         </ListBoxItem>
                         <ListBoxItem Name="NoticeListItem">
                             <!--首页-->
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE8C3;"  Style="{StaticResource ListBoxIconTextBlockStyle}"/>
+                                <TextBlock Text="&#xE15F;"  Style="{StaticResource ListBoxIconTextBlockStyle}"/>
                                 <TextBlock Text="消息" Style="{StaticResource ListBoxNameTextBlockStyle}"/>
-                            </StackPanel> 
+                            </StackPanel>
                         </ListBoxItem>
                     </ListBox>
                     <ListBox  Grid.Row="1"
@@ -82,14 +89,14 @@
                               SelectionMode="Single"
                               SelectionChanged="SecondMenuListBox_SelectionChanged">
                         <ListBoxItem IsEnabled="False" Padding="0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="——————————————————————"
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="——————————————————————"
                                        Padding="0"
                                        Margin="0"/>
-                        </StackPanel>
-                    </ListBoxItem>
-                    <ListBoxItem Name="LoginListItem" Visibility="Collapsed">
-                        <!--登录-->
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem Name="LoginListItem" Visibility="Collapsed">
+                            <!--登录-->
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="&#xE2AF;" 
                                            Name="LoginIcon"
@@ -104,35 +111,51 @@
                                 <TextBlock Text="登录"  Style="{StaticResource ListBoxNameTextBlockStyle}"/>
                             </StackPanel>
                         </ListBoxItem>
-                    <ListBoxItem Visibility="Collapsed" Name="LogOutItem">
-                        <!--注销-->
-                        <StackPanel Orientation="Horizontal">
+                        <ListBoxItem Visibility="Collapsed" Name="LogOutItem">
+                            <!--注销-->
+                            <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="&#xE25B;"  Style="{StaticResource ListBoxIconTextBlockStyle}"/>
                                 <TextBlock Text="注销"  Style="{StaticResource ListBoxNameTextBlockStyle}"/>
-                        </StackPanel>
-                    </ListBoxItem>
-                    <ListBoxItem Name="SettingListItem">
-                        <!--设置-->
-                        <StackPanel Orientation="Horizontal">
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem Name="SettingListItem">
+                            <!--设置-->
+                            <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="&#xE713;"  Style="{StaticResource ListBoxIconTextBlockStyle}"/>
                                 <TextBlock Text="设置"  Style="{StaticResource ListBoxNameTextBlockStyle}"/>
-                        </StackPanel>
-                    </ListBoxItem>
-                </ListBox>
+                            </StackPanel>
+                        </ListBoxItem>
+                    </ListBox>
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
                 <Grid Name="MainGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" x:Name="LeftColumn"/>
                         <ColumnDefinition Width="3*" x:Name="RightColumn"/>
                     </Grid.ColumnDefinitions>
-                    <Frame Name="MasterFrame"></Frame>
-                    <ProgressBar Name="LoadingProgressRing"
+
+                    <Frame Grid.Row="0" Name="MasterFrame"></Frame>
+                    <Frame Grid.Row="0" Name="DetailFrame" Grid.Column="1"></Frame>
+                    <Frame Grid.Row="0" Name="TertiaryFrame" Grid.Column="1" Visibility="Collapsed"></Frame>
+                    <ProgressBar Grid.Row="0"
+                                 Name="LoadingProgressRing"
                                  VerticalAlignment="Top"
                                  IsIndeterminate="False">
                     </ProgressBar>
-                    <Frame Name="DetailFrame" Grid.Column="1"></Frame>
+
+                    <CommandBar Name="CommandBar" Grid.Row="1" IsOpen="False" Visibility="Collapsed">
+                        <AppBarButton Name="HomeAppBarButton" Icon="Home" Label="主页" Click="AppBarButton_Click"></AppBarButton>
+                        <AppBarButton Name="NewAppBarButton" Icon="List" Label="新闻" Click="AppBarButton_Click"></AppBarButton>
+                        <AppBarButton Name="MessagesAppBarButton" Icon="Message" Label="新闻" Click="AppBarButton_Click"></AppBarButton>
+                        <CommandBar.SecondaryCommands>
+                            <AppBarButton Icon="Setting" Label="设置"></AppBarButton>
+                        </CommandBar.SecondaryCommands>
+                    </CommandBar>
                 </Grid>
             </SplitView.Content>
         </SplitView>

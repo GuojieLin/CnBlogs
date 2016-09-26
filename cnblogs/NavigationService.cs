@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.System.Profile;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -14,6 +15,10 @@ namespace CnBlogs
 {
     public class NavigationService
     {
+        /// <summary>
+        /// 当前设备是否是手机设备
+        /// </summary>
+        public bool IsMobile { get { return AnalyticsInfo.VersionInfo.DeviceFamily == DeviceFamily.WindowsMobile; } }
         public bool IsNarrow { get; private set; }
         public int MasterFrameDepth;
         public int DetailFrameDepth;
@@ -54,19 +59,21 @@ namespace CnBlogs
                     TertiaryFrameDepth > 0 );
             }
         }
-        public Frame MasterFrame;
-        public Frame DetailFrame;
-        public Frame TertiaryFrame;
-        public SplitView CnBlogSplitView;
+        public Frame MasterFrame { get; private set; }
+        public Frame DetailFrame { get; private set; }
+        public Frame TertiaryFrame { get; private set; }
+        //public SplitView CnBlogSplitView { get; private set; }
+        //public CommandBar CommandBar { get; private set; }
         //private Stack<Type> _mainPageStack;
         //private Stack<Type> _detailPageStack;
-        public NavigationService(Frame masterFrame, Frame detailFrame, Frame tertiaryFrame,SplitView splitView,bool isNarrow)
+        public NavigationService(Frame masterFrame, Frame detailFrame, Frame tertiaryFrame,bool isNarrow)
         {
             MasterFrame = masterFrame;
             DetailFrame = detailFrame;
-            CnBlogSplitView = splitView;
+            //CnBlogSplitView = splitView;
             TertiaryFrame = tertiaryFrame;
             IsNarrow = isNarrow;
+            //CommandBar = commandBar;
         }
 
         public void MasterFrameNavigate(Type type, object parameter = null)
@@ -163,6 +170,8 @@ namespace CnBlogs
         public void NarrowToMedium()
         {
             IsNarrow = false;
+            //CnBlogSplitView.Visibility = Visibility.Visible;
+            //CommandBar.Visibility = Visibility.Collapsed;
             //if (TertiaryFrameCanGoBack)
             //{
 
@@ -244,12 +253,12 @@ namespace CnBlogs
             if (CanGoBack)
             {
                 //电脑
-                if (CnBlogSplitView != null)
-                {
-                    CnBlogSplitView.DisplayMode = IsNarrow ?
-                        SplitViewDisplayMode.Overlay :
-                        SplitViewDisplayMode.CompactOverlay;
-                }
+                //if (CnBlogSplitView != null)
+                //{
+                //    CnBlogSplitView.DisplayMode = IsNarrow ?
+                //        SplitViewDisplayMode.Overlay :
+                //        SplitViewDisplayMode.CompactOverlay;
+                //}
 
                 //三级Frame能后退
                 if (TertiaryFrameCanGoBack)
@@ -268,10 +277,10 @@ namespace CnBlogs
             }
             else
             {
-                if (CnBlogSplitView != null)
-                {
-                    CnBlogSplitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
-                }
+                //if (CnBlogSplitView != null)
+                //{
+                //    CnBlogSplitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
+                //}
                 if (IsNarrow) DetailFrame.Visibility = Visibility.Collapsed;
                 else DetailFrame.Visibility = Visibility.Visible;
                 TertiaryFrame.Visibility = Visibility.Collapsed;

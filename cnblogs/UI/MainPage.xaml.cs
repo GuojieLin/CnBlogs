@@ -44,11 +44,23 @@ namespace CnBlogs.UI
             };
             //导航及界面主次Frame切换等都由NavigationService进行控制
             bool isNarrow = AdaptiveStates?.CurrentState == NarrowState;
-            App.InitNavigationService(MasterFrame, DetailFrame, TertiaryFrame, CnBlogSplitView, isNarrow);
-
+            App.InitNavigationService(MasterFrame, DetailFrame, TertiaryFrame, isNarrow);
+            
+            //是手机设备则显示CommandBar，否则显示SplitView
+            if (App.NavigationService.IsMobile)
+            {
+                CnBlogSplitView.DisplayMode = SplitViewDisplayMode.Overlay;
+                CommandBar.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                CommandBar.Visibility = Visibility.Visible;
+                AdaptiveStates.CurrentStateChanged += AdaptiveStates_CurrentStateChanged;
+            }
             DetailFrame.Navigated += (sender, e) =>
             {
-                UpdateForVisualState(AdaptiveStates?.CurrentState);
+                //CommandBar.Visibility = Visibility.Collapsed;
+                //UpdateForVisualState(AdaptiveStates?.CurrentState);
             };
             //打开程序是跳转到博客列表
             App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
@@ -63,16 +75,23 @@ namespace CnBlogs.UI
         private void UpdateForVisualState(VisualState newState, VisualState oldState = null)
         {
             if (newState == null && oldState == null) return;
-            if (newState == NarrowState && 
-                oldState == MediumState)
+            //若当前设备是手机则无需根据宽度变化
+            if (App.NavigationService.IsMobile) return;
+            if (newState == NarrowState &&
+            oldState == MediumState)
             {
                 //从大变小
+                CnBlogSplitView.DisplayMode = SplitViewDisplayMode.Overlay;
+                CnBlogSplitView.IsPaneOpen = false;
+                CommandBar.Visibility = Visibility.Visible;
                 App.NavigationService.MediumToNarrow();
             }
-            else if(newState == MediumState &&
+            else if (newState == MediumState &&
                 oldState == NarrowState)
             {
-                //从小变大
+                //从小变大  
+                CnBlogSplitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
+                CommandBar.Visibility = Visibility.Collapsed;
                 App.NavigationService.NarrowToMedium();
             }
         }
