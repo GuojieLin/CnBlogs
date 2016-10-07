@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CnBlogs</RootNamespace>
     <AssemblyName>CnBlogs</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
+    <DefaultLanguage>zh-CN</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10586.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
@@ -99,6 +99,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Contants.cs" />
+    <Compile Include="UI\NewsCommentListPage.xaml.cs">
+      <DependentUpon>NewsCommentListPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\BlogCommentListPage.xaml.cs">
       <DependentUpon>BlogCommentListPage.xaml</DependentUpon>
     </Compile>
@@ -117,8 +120,12 @@
     <Compile Include="UserControls\NewsItemUserControl.xaml.cs">
       <DependentUpon>NewsItemUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ShareDialog.xaml.cs">
+      <DependentUpon>ShareDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BlogCommentViewModel.cs" />
+    <Compile Include="ViewModels\NewsCommentViewModel.cs" />
     <Compile Include="ViewModels\NewsViewModel.cs" />
     <Compile Include="ViewModels\BlogViewModel.cs" />
     <Compile Include="NavigationService.cs" />
@@ -143,8 +150,16 @@
     <None Include="Cnblogs_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\BadgeLogo.scale-100.png" />
+    <Content Include="Assets\BadgeLogo.scale-125.png" />
+    <Content Include="Assets\BadgeLogo.scale-150.png" />
+    <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\default_image.png" />
     <Content Include="Assets\default_image_loading.png" />
+    <Content Include="Assets\Square150x150Logo.scale-100.png" />
+    <Content Include="Assets\Square300x300Logo.scale-100.png" />
+    <Content Include="Assets\Square300x300Logo.scale-200.png" />
+    <Content Include="Assets\WechatLogo.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -171,6 +186,10 @@
     <Page Include="UI\BlankPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\NewsCommentListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\BlogCommentListPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -205,6 +224,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\NewsItemUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ShareDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

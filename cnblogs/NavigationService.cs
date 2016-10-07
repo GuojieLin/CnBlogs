@@ -96,7 +96,7 @@ namespace CnBlogs
             //CnBlogSplitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
             UpdateBackButton();
             UpdateFrame();
-            NavigateToMasterAction?.Invoke();
+            //NavigateToMasterAction?.Invoke();
         }
 
 
@@ -124,12 +124,13 @@ namespace CnBlogs
             //{
             //    CnBlogSplitView.DisplayMode = SplitViewDisplayMode.Overlay;
             //}
-            NavigateToDetailAction?.Invoke();
+            //NavigateToDetailAction?.Invoke();
         }
 
         public void TertiaryFrameNavigate(Type type, object parameter = null)
         {
             //ClearDetailFrameStack();
+
             if (parameter == null)
             {
                 TertiaryFrame.Navigate(type);
@@ -162,12 +163,12 @@ namespace CnBlogs
             if (CanGoBack)
             {
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
-                if(!IsMobile) NavigateToDetailAction?.Invoke();
+                NavigateToDetailAction?.Invoke();
             }
             else
             {
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
-                if (!IsMobile) NavigateToMasterAction?.Invoke();
+                NavigateToMasterAction?.Invoke();
             }
         }
         /// <summary>

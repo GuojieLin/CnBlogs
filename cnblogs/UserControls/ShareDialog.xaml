@@ -1,0 +1,21 @@
+﻿<ContentDialog
+    x:Class="CnBlogs.UserControls.ShareDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CnBlogs.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="分享">
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+        <AppBarButton Label="微信分享" 
+                          Name="ShareByWeChatAppBarButton"
+                          Tapped="ShareByWeChatAppBarButton_Tapped">
+            <AppBarButton.Icon>
+                <BitmapIcon UriSource="ms-appx:///Assets/WechatLogo.png"></BitmapIcon>
+            </AppBarButton.Icon>
+        </AppBarButton>
+        <AppBarButton Label="复制链接" Name="ShareByCopyUriAppBarButton" Icon="Copy" Tapped="ShareByCopyUriAppBarButton_Tapped"></AppBarButton>
+        <AppBarButton Label="更多" Name="ShareByMoreWayAppBarButton" Icon="More" Tapped="ShareByMoreWayAppBarButton_Tapped"></AppBarButton>
+    </StackPanel>
+</ContentDialog>

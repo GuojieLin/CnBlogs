@@ -26,7 +26,7 @@ namespace CnBlogs.UI
     /// </summary>
     public sealed partial class NewsBodyPage : Page
     {
-        public News News{ get; private set; }
+        public News News { get; private set; }
 
         public NewsBodyPage()
         {
@@ -72,7 +72,33 @@ namespace CnBlogs.UI
 
         }
 
+        private void ShareButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void CommentButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.NavigationService.TertiaryFrameNavigate(typeof(NewsCommentListPage), this.News);
+        }
+        private void CommandBarPanel_Opening(object sender, object e)
+        {
+            CommandBar cb = sender as CommandBar;
+            if (cb != null) cb.Background.Opacity = 1.0;
+        }
+
+        private void CommandBarPanel_Closing(object sender, object e)
+        {
+            CommandBar cb = sender as CommandBar;
+            if (cb != null) cb.Background.Opacity = 0.5;
+        }
+
+        private void DarkModeButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void JumpToBrown_Click(object sender, RoutedEventArgs e)
         {
 
         }

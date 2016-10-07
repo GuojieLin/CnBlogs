@@ -24,17 +24,12 @@ namespace CnBlogs.UI
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class BlogListPage : Page
+    public sealed partial class NewsCommentListPage : Page
     {
-        internal BlogViewModel BlogViewModel;
-        public BlogListPage()
+        internal NewsCommentViewModel NewsCommentViewModel { get; private set; }
+        public NewsCommentListPage()
         {
             this.InitializeComponent();
-            NavigationCacheMode = NavigationCacheMode.Required;
-            BlogViewModel = new BlogViewModel();
-            BlogViewModel.OnLoadMoreStarted += count=> LoadingProgressRing.IsActive = true;
-            BlogViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
-            BlogViewModel.Refresh();
         }
 
         /// <summary>
@@ -43,22 +38,18 @@ namespace CnBlogs.UI
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            News news = (News)e.Parameter;
+            NewsCommentViewModel = new NewsCommentViewModel(news);
+            NewsCommentViewModel.OnLoadMoreStarted += count => LoadingProgressRing.IsActive = true;
+            NewsCommentViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
+            NewsCommentViewModel.Refresh();
             //App.NavigationService.DetailFrame.Navigating += (sender, args) => LoadingProgressRing.IsActive = true;
             //App.NavigationService.DetailFrame.Navigated += (sender, args) => LoadingProgressRing.IsActive = false;
             base.OnNavigatedTo(e);
         }
         private void BlogsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            App.NavigationService.DetailFrameNavigate(typeof(BlogBodyPage),e.ClickedItem );
-        }
-        private void RefreshBlogListButton_Click(object sender, RoutedEventArgs e)
-        {
-            BlogViewModel.Refresh();
-        }
-
-        private void PullToRefreshBox_RefreshInvoked(DependencyObject sender, object args)
-        {
-            BlogViewModel.Refresh();
+            //App.NavigationService.DetailFrameNavigate(typeof(BlogBodyPage),e.ClickedItem );
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿{
   "dependencies": {
-    "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0"
+    "Google.ProtocolBuffersLite": "2.4.1.555",
+    "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
+    "WeChatSDK": "2.0.1"
   },
   "frameworks": {
     "uap10.0": {}

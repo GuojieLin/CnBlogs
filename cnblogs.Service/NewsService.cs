@@ -83,6 +83,7 @@ namespace CnBlogs.Service
                 string url = string.Format(WcfApiUrlConstants.GetNewsComment, id, pageIndex,pageSize);
                 string xml = await HttpHelper.Get(url);
                 List<BlogComment> blogComments = new List<BlogComment>();
+                xml = xml.Replace(Constants.XmlNameSpace, "");
                 XElement xElement = XElement.Parse(xml);
                 int i = 0;
                 foreach (XElement entry in xElement.Elements("entry"))

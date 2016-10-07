@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="CnBlogs.UserControls.BlogCommentItemUserControl"
+    x:Class="CnBlogs.UserControls.NewsCommentItemUserControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CnBlogs.UserControls"
@@ -12,25 +12,27 @@
         <valueconverter:FloorNumberConverter x:Key="floorNumberConverter"></valueconverter:FloorNumberConverter>
         <valueconverter:DateTimeConverter x:Key="dateTimeConverter"></valueconverter:DateTimeConverter>
     </Page.Resources>
-    <Grid Padding="0,2" >
+    <Grid Padding="5,2,5,2" >
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <RelativePanel Grid.Row="0" HorizontalAlignment="Stretch">
+        <RelativePanel Grid.Row="0">
 
             <TextBlock Name="FloorNumberTextBlock"
                 Text="{x:Bind BlogComment.FloorNumber,Converter={StaticResource floorNumberConverter}}"
                        FontSize="10"                   
-                       Margin="2,10"
+                       Margin="2"
+                       VerticalAlignment="Center"
                        RelativePanel.AlignLeftWithPanel="True">
             </TextBlock>
 
             <TextBlock Name="PublishedTimeTextBlock"
                 Text="{x:Bind  BlogComment.Published,Converter={StaticResource dateTimeConverter}}"
-                       FontSize="10"            
-                       Margin="2,10"
+                       FontSize="10"                   
+                       Margin="2"
                        VerticalAlignment="Center"
                        RelativePanel.RightOf="FloorNumberTextBlock"></TextBlock>
 
@@ -42,16 +44,37 @@
                              Margin="2"
                              Tag="{x:Bind BlogComment.Author.Uri}"
                              RelativePanel.RightOf="PublishedTimeTextBlock"></HyperlinkButton>
+
             <Button Name="SendToMessageButton" 
                     Background="Transparent"  Margin="2"
                     RelativePanel.RightOf="AutorNameHyperlinkButton">
                 <Button.Content>
-                    <SymbolIcon Symbol="Message" />
+                    <SymbolIcon Symbol="Send" />
                 </Button.Content>
             </Button>
-            <Button Name="SupportCommentButton" 
+
+            <Button Name="ReplyButton" 
                     Background="Transparent"  Margin="2"
                     RelativePanel.RightOf="SendToMessageButton"
+                    RelativePanel.LeftOf="ReferenceCommentButton"
+                    Content="回复">
+            </Button>
+            <Button Name="ReferenceCommentButton" 
+                    Background="Transparent"  Margin="2"
+                    RelativePanel.AlignRightWithPanel="True"
+                    Content="引用">
+            </Button>
+        </RelativePanel>
+
+        <TextBlock Text="{x:Bind BlogComment.Content}"
+                   Style="{StaticResource BaseTextBlock}"
+                   TextWrapping="Wrap"
+                   Grid.Row="1">
+        </TextBlock>
+
+        <RelativePanel Grid.Row="2" >
+            <Button Name="SupportCommentButton" 
+                    Background="Transparent"  Margin="2"
                     RelativePanel.LeftOf="DisSupportCommentButton">
                 <Button.Content>
                     <SymbolIcon Symbol="Like" />
@@ -67,10 +90,5 @@
             </Button>
         </RelativePanel>
 
-        <TextBlock Text="{x:Bind BlogComment.Content}"
-                   Style="{StaticResource BaseTextBlock}"
-                   TextWrapping="Wrap"
-                   Grid.Row="1">
-        </TextBlock>
     </Grid>
 </Page>

@@ -1,12 +1,14 @@
 ﻿using CnBlogs.Common;
 using CnBlogs.Entities;
 using CnBlogs.Service;
+using CnBlogs.UserControls;
 using CnBlogs.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Windows.Input;
 using System.Xml.Linq;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -84,9 +86,10 @@ namespace CnBlogs.UI
 
         }
 
-        private void ShareButton_Click(object sender, RoutedEventArgs e)
+        private async void ShareButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ShareDialog.Default.Init(Blog.BlogUrl, Blog.Title);
+            ContentDialogResult result = await ShareDialog.Default.ShowAsync();
         }
 
         private void CommandBarPanel_Opening(object sender, object e)

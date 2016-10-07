@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:data="using:CnBlogs.Entities"
-    xmlns:usercontrol="using:CnBlogs.UserControls">
+    xmlns:usercontrol="using:CnBlogs.UserControls"
+    xmlns:pulltorefresh="using:PullToRefresh.UWP">
 
     <Page.Resources>
         <ResourceDictionary Source="..\Resources\Dictionary.xaml"></ResourceDictionary>
@@ -35,19 +36,23 @@
                     Click="RefreshNewsListButton_Click">
             </Button>
         </RelativePanel>
-        <ListView  Name="NewsListView" 
+        <pulltorefresh:PullToRefreshBox 
+            Grid.Row="1" x:Name="pr" 
+            RefreshInvoked="PullToRefreshBox_RefreshInvoked">
+            <ListView  Name="NewsListView" 
                    Grid.Row="1"
                    ItemsSource="{x:Bind NewsViewModel}"
                    HorizontalAlignment="Stretch"
                    IsItemClickEnabled="True"
                    ItemClick="NewsListView_ItemClick"
                    SelectionMode="Extended">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="data:News">
-                    <usercontrol:NewsItemUserControl></usercontrol:NewsItemUserControl>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="data:News">
+                        <usercontrol:NewsItemUserControl></usercontrol:NewsItemUserControl>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </pulltorefresh:PullToRefreshBox>
         <ProgressRing Grid.Row="1"
                       Name="LoadingProgressRing"
                       Width="100"

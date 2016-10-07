@@ -52,5 +52,10 @@ namespace CnBlogs.UI
         {
             NewsViewModel.Refresh();
         }
+
+        private void PullToRefreshBox_RefreshInvoked(DependencyObject sender, object args)
+        {
+            NewsViewModel.Refresh();
+        }
     }
 }

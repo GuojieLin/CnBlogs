@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:data="using:CnBlogs.Entities"
-    xmlns:usercontrol="using:CnBlogs.UserControls">
+    xmlns:usercontrol="using:CnBlogs.UserControls"
+    xmlns:pulltorefresh="using:PullToRefresh.UWP">
 
     <Page.Resources>
         <ResourceDictionary Source="..\Resources\Dictionary.xaml"></ResourceDictionary>
@@ -35,19 +36,22 @@
                     Click="RefreshBlogListButton_Click">
             </Button>
         </RelativePanel>
-        <ListView  Name="BlogsGridView" 
-                   Grid.Row="1"
+        <pulltorefresh:PullToRefreshBox 
+            Grid.Row="1" x:Name="pr" 
+            RefreshInvoked="PullToRefreshBox_RefreshInvoked">
+            <ListView  Name="BlogsGridView" 
                    ItemsSource="{x:Bind BlogViewModel}"
                    HorizontalAlignment="Stretch"
                    IsItemClickEnabled="True"
                    ItemClick="BlogsGridView_ItemClick"
                    SelectionMode="Single">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="data:Blog">
-                    <usercontrol:BlogItemUserControl></usercontrol:BlogItemUserControl>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="data:Blog">
+                        <usercontrol:BlogItemUserControl></usercontrol:BlogItemUserControl>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </pulltorefresh:PullToRefreshBox>
         <ProgressRing Grid.Row="1"
                       Name="LoadingProgressRing"
                       Width="100"
