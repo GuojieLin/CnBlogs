@@ -8,7 +8,8 @@
     mc:Ignorable="d"
     xmlns:data="using:CnBlogs.Entities"
     xmlns:usercontrol="using:CnBlogs.UserControls"
-    xmlns:pulltorefresh="using:PullToRefresh.UWP">
+    xmlns:pulltorefresh="using:PullToRefresh.UWP"
+    RequestedTheme="{x:Bind NewsViewModel.SettingManager.Theme}">
 
     <Page.Resources>
         <ResourceDictionary Source="..\Resources\Dictionary.xaml"></ResourceDictionary>

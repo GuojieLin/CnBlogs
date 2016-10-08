@@ -14,35 +14,28 @@ namespace CnBlogs.Common
     {
         
     }
-    public sealed class SettingManager : ISettingManager
+    public sealed class SettingManager : NotifyPropertyChanged, ISettingManager
     {
         public ElementTheme Theme { get; private set; }
-
         public FontSize FontSize { get; private set; }
-
         public bool IsNoImagesMode { get; private set; }
         public bool IsFullWindows { get; private set; }
         public int PageSize { get; private set; }
 
-        private static SettingManager _current;
-
-        public static SettingManager Current
-        {
-            get { return _current ?? (_current = new SettingManager()); }
-        }
-        public SettingManager()
+        public readonly static SettingManager Current = new SettingManager();
+        private SettingManager()
         {
             _configurationManager = new ConfigurationManager();
             LoadSetting();
         }
-        public event SettingChangedEventHandler ShareDataChanged;
+        public event SettingChangedEventHandler SettingChanged;
         private IRoamingSetting _configurationManager;
         private void LoadSetting()
         {
-            ElementTheme theme;
+            int theme;
             if (_configurationManager.FindConfiguration(Configuration.Theme, out theme))
             {
-                Theme = theme;
+                Theme = (ElementTheme)theme;
             }
             else
             {
@@ -90,12 +83,12 @@ namespace CnBlogs.Common
         }
         private void OnShareDataChanged()
         {
-            ShareDataChanged?.Invoke();
+            SettingChanged?.Invoke();
         }
-        public void UpdateTheme(bool dark)
+        public void UpdateTheme(ElementTheme theme)
         {
-            Theme = dark ? ElementTheme.Dark : ElementTheme.Light;
-            _configurationManager.SetConfiguration(Configuration.Theme, Theme);
+            Theme = theme;
+            _configurationManager.SetConfiguration(Configuration.Theme, (int)Theme);
             OnShareDataChanged();
         }
         public void UpdateFontSize(FontSize fontSize)
@@ -104,16 +97,16 @@ namespace CnBlogs.Common
             _configurationManager.SetConfiguration(Configuration.FontSize, FontSize);
             OnShareDataChanged();
         }
-        public void UpdateNoImagesMode(bool no_images)
+        public void UpdateNoImagesMode(bool isNoImages)
         {
-            IsNoImagesMode = no_images;
+            IsNoImagesMode = isNoImages;
             _configurationManager.SetConfiguration(Configuration.IsNoImagesMode, IsNoImagesMode);
             OnShareDataChanged();
         }
 
-        public void UpdateFullWindows(bool no_images)
+        public void UpdateFullWindows(bool isFullWindows)
         {
-            IsNoImagesMode = no_images;
+            IsFullWindows = isFullWindows;
             _configurationManager.SetConfiguration(Configuration.IsFullWindows, IsNoImagesMode);
             OnShareDataChanged();
         }

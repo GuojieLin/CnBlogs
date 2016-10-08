@@ -7,8 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:data="using:CnBlogs.Entities"
-    xmlns:usercontrol="using:CnBlogs.UserControls">
+    xmlns:usercontrol="using:CnBlogs.UserControls"
+    xmlns:valueconverter="using:CnBlogs.Common.ValueConverters"
+    RequestedTheme="{x:Bind SettingManager.Theme}">
 
+    <Page.Resources>
+        <valueconverter:ThemeConverter x:Key="themeConverter"></valueconverter:ThemeConverter>
+    </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <VisualStateManager.VisualStateGroups>
@@ -54,12 +59,12 @@
             </AppBarButton>
             <AppBarToggleButton Icon="Like" Label="支持" Name="DiggsButton" Click="DiggsButton_Click" />
             <AppBarButton Icon="Edit" Label="评论" Name="CommentButton" Click="CommentButton_Click"/>
-            <CommandBar.SecondaryCommands>
-                <AppBarButton Label="刷新" Name="UpdateButton" Click="ShareButton_Click"/>
-                <AppBarToggleButton Label="夜间模式" Name="NightModeButton" Click="DiggsButton_Click" />
-                <AppBarButton Label="转到浏览器" Name="NavigateBrowserButton" Click="CommentButton_Click"/>
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
+        <CommandBar.SecondaryCommands>
+            <AppBarButton Label="刷新" Name="UpdateButton" Click="ShareButton_Click"/>
+            <AppBarToggleButton Label="{x:Bind SettingManager.Theme,Converter={StaticResource themeConverter}}" Name="NightModeButton" Click="NightModeButton_Click" />
+            <AppBarButton Label="转到浏览器" Name="NavigateBrowserButton" Click="NavigateBrowserButton_Click"/>
+        </CommandBar.SecondaryCommands>
+    </CommandBar>
         <Grid Name="ContentGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>

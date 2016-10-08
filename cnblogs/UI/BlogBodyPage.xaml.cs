@@ -30,10 +30,12 @@ namespace CnBlogs.UI
     public sealed partial class BlogBodyPage : Page
     {
         public Blog Blog { get; private set; }
+        public SettingManager SettingManager;
 
         public BlogBodyPage()
         {
             this.InitializeComponent();
+            SettingManager = SettingManager.Current;
             //NavigationCacheMode = NavigationCacheMode.Enabled;
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
@@ -102,6 +104,24 @@ namespace CnBlogs.UI
         {
             CommandBar cb = sender as CommandBar;
             if (cb != null) cb.Background.Opacity = 0.5;
+        }
+
+        private void NightModeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ElementTheme theme = ElementTheme.Default;
+            if (SettingManager.Theme == ElementTheme.Dark)
+                theme = ElementTheme.Light;
+            else if (SettingManager.Theme == ElementTheme.Light)
+                theme = ElementTheme.Dark;
+            SettingManager.UpdateTheme(theme);
+        }
+
+        private async void NavigateBrowserButton_Click(object sender, RoutedEventArgs e)
+        {
+            // The URI to launch
+            var blogUri = new Uri(Blog.BlogUrl);
+            // Launch the URI
+            var success = await Windows.System.Launcher.LaunchUriAsync(blogUri);
         }
     }
 }

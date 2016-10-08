@@ -26,10 +26,11 @@ namespace CnBlogs.ViewModels
         protected bool _hasMoreItems = false;
         protected int _pageSize = 0;
         protected int _currentPage = 1;
-
+        public SettingManager SettingManager;
         public int TotalCount { get; private set; }
         public BaseViewModel()
         {
+            SettingManager = SettingManager.Current;
             _pageSize = SettingManager.Current.PageSize;
             _hasMoreItems = true;
         }

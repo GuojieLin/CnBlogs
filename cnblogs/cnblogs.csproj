@@ -114,6 +114,9 @@
     <Compile Include="UI\NewsListPage.xaml.cs">
       <DependentUpon>NewsListPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\SettingPage.xaml.cs">
+      <DependentUpon>SettingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\BlogCommentItemUserControl.xaml.cs">
       <DependentUpon>BlogCommentItemUserControl.xaml</DependentUpon>
     </Compile>
@@ -212,6 +215,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\NewsListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\SettingPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

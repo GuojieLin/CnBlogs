@@ -1,4 +1,5 @@
-﻿using CnBlogs.Core.Enums;
+﻿using CnBlogs.Common;
+using CnBlogs.Core.Enums;
 using CnBlogs.Entities;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,8 @@ namespace CnBlogs.UI
         public MainPage()
         {
             this.InitializeComponent();
+            //设置Dispatcher,使得更新操作可以异步进行
+            SettingManager.Current.SetDispatcher(this.Dispatcher);
             MasterFrame.Navigating += (sender, e) =>
             {
                 LoadingProgressRing.Visibility = Visibility.Visible;
@@ -43,7 +46,7 @@ namespace CnBlogs.UI
             //导航及界面主次Frame切换等都由NavigationService进行控制
             bool isNarrow = AdaptiveStates?.CurrentState == NarrowState;
             App.InitNavigationService(MasterFrame, DetailFrame, TertiaryFrame, isNarrow);
-
+            
             //是手机设备则显示CommandBar，否则显示SplitView
 
             App.NavigationService.NavigateToDetailAction = () =>
