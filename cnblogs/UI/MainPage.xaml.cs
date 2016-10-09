@@ -6,8 +6,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -87,6 +89,53 @@ namespace CnBlogs.UI
             //打开程序是跳转到博客列表
             App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
             //打开缓存。
+
+
+            bool isExit = false;
+            SystemNavigationManager.GetForCurrentView().BackRequested += async (sender, args) =>
+            {
+                if (App.NavigationService.CanGoBack)
+                {
+                    args.Handled = true;
+                    App.NavigationService.GoBack(args);
+                    isExit = false;
+                }
+                else if (!args.Handled)
+                {
+                    StatusBar statusBar = StatusBar.GetForCurrentView();
+                    await statusBar.ShowAsync();
+                    statusBar.ForegroundColor = Colors.White; // 前景色  
+                    statusBar.BackgroundOpacity = 0.9; // 透明度  
+                    statusBar.ProgressIndicator.Text = "再按一次返回键退出程序。"; // 文本  
+                    await statusBar.ProgressIndicator.ShowAsync();
+                    if (!isExit)
+                    {
+                        isExit = true;
+                        await Task.Run(async () =>
+                         {
+                             //Windows.Data.Xml.Dom. XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);  
+                             //Windows.Data.Xml.Dom.XmlNodeList elements = toastXml.GetElementsByTagName("text");  
+                             //elements[0].AppendChild(toastXml.CreateTextNode("再按一次返回键退出程序。"));  
+                             //ToastNotification toast = new ToastNotification(toastXml);  
+                             //ToastNotificationManager.CreateToastNotifier().Show(toast);       
+
+                             await Task.Delay(1500);
+                             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                             {
+                                 await statusBar.ProgressIndicator.HideAsync();
+                                 await statusBar.HideAsync();
+                             });
+                             isExit = false;
+                         });
+                        args.Handled = true;
+                    }
+                }
+            };
+            if (App.NavigationService.IsMobile)
+            {
+                StatusBar statusBar = StatusBar.GetForCurrentView();
+                statusBar.BackgroundOpacity = 1;
+            }
         }
 
         #region 桌面需要用

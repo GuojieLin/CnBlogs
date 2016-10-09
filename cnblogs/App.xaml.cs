@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -77,15 +79,7 @@ namespace CnBlogs
                 Window.Current.Content = rootFrame;
             }
             var appView = ApplicationView.GetForCurrentView();
-            appView.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
-            SystemNavigationManager.GetForCurrentView().BackRequested += (sender, args) =>
-            {
-                if (NavigationService.CanGoBack)
-                {
-                    args.Handled = true;
-                    NavigationService.GoBack(args);
-                }
-            };
+            appView.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
             if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
