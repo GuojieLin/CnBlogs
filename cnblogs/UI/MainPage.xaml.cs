@@ -94,7 +94,7 @@ namespace CnBlogs.UI
 
 
             bool isExit = false;
-            SystemNavigationManager.GetForCurrentView().BackRequested += async (sender, args) =>
+            SystemNavigationManager.GetForCurrentView().BackRequested += (sender, args) =>
             {
                 if (App.NavigationService.CanGoBack)
                 {
@@ -104,40 +104,41 @@ namespace CnBlogs.UI
                 }
                 else if (!args.Handled)
                 {
-                    StatusBar statusBar = StatusBar.GetForCurrentView();
-                    await statusBar.ShowAsync();
-                    statusBar.ForegroundColor = Colors.White; // 前景色  
-                    statusBar.BackgroundOpacity = 0.9; // 透明度  
-                    statusBar.ProgressIndicator.Text = "再按一次返回键退出程序。"; // 文本  
-                    await statusBar.ProgressIndicator.ShowAsync();
-                    if (!isExit)
-                    {
-                        isExit = true;
-                        await Task.Run(async () =>
-                         {
-                             //Windows.Data.Xml.Dom. XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);  
-                             //Windows.Data.Xml.Dom.XmlNodeList elements = toastXml.GetElementsByTagName("text");  
-                             //elements[0].AppendChild(toastXml.CreateTextNode("再按一次返回键退出程序。"));  
-                             //ToastNotification toast = new ToastNotification(toastXml);  
-                             //ToastNotificationManager.CreateToastNotifier().Show(toast);       
+                    //TODO:
+                    //StatusBar statusBar = StatusBar.GetForCurrentView();
+                    //await statusBar.ShowAsync();
+                    //statusBar.ForegroundColor = Colors.White; // 前景色  
+                    //statusBar.BackgroundOpacity = 0.9; // 透明度  
+                    //statusBar.ProgressIndicator.Text = "再按一次返回键退出程序。"; // 文本  
+                    //await statusBar.ProgressIndicator.ShowAsync();
+                    //if (!isExit)
+                    //{
+                    //    isExit = true;
+                    //    await Task.Run(async () =>
+                    //     {
+                    //         //Windows.Data.Xml.Dom. XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);  
+                    //         //Windows.Data.Xml.Dom.XmlNodeList elements = toastXml.GetElementsByTagName("text");  
+                    //         //elements[0].AppendChild(toastXml.CreateTextNode("再按一次返回键退出程序。"));  
+                    //         //ToastNotification toast = new ToastNotification(toastXml);  
+                    //         //ToastNotificationManager.CreateToastNotifier().Show(toast);       
 
-                             await Task.Delay(1500);
-                             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
-                             {
-                                 await statusBar.ProgressIndicator.HideAsync();
-                                 await statusBar.HideAsync();
-                             });
-                             isExit = false;
-                         });
-                        args.Handled = true;
-                    }
+                    //         await Task.Delay(1500);
+                    //         await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                    //         {
+                    //             await statusBar.ProgressIndicator.HideAsync();
+                    //             await statusBar.HideAsync();
+                    //         });
+                    //         //isExit = false;
+                    //     });
+                    //    //args.Handled = true;
+                    //}
                 }
             };
-            if (App.NavigationService.IsMobile)
-            {
-                StatusBar statusBar = StatusBar.GetForCurrentView();
-                statusBar.BackgroundOpacity = 1;
-            }
+            //if (App.NavigationService.IsMobile)
+            //{
+            //    StatusBar statusBar = StatusBar.GetForCurrentView();
+            //    statusBar.BackgroundOpacity = 1;
+            //}
         }
 
         #region 桌面需要用
