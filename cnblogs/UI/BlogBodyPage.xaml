@@ -9,7 +9,7 @@
     xmlns:data="using:CnBlogs.Entities"
     xmlns:usercontrol="using:CnBlogs.UserControls"
     xmlns:valueconverter="using:CnBlogs.Common.ValueConverters"
-    RequestedTheme="{x:Bind SettingManager.Theme}">
+    RequestedTheme="{x:Bind SettingManager.Theme,Mode=OneWay}">
 
     <Page.Resources>
         <valueconverter:ThemeConverter x:Key="themeConverter"></valueconverter:ThemeConverter>
@@ -61,7 +61,7 @@
             <AppBarButton Icon="Edit" Label="评论" Name="CommentButton" Click="CommentButton_Click"/>
         <CommandBar.SecondaryCommands>
             <AppBarButton Label="刷新" Name="UpdateButton" Click="ShareButton_Click"/>
-            <AppBarToggleButton Label="{x:Bind SettingManager.Theme,Converter={StaticResource themeConverter}}" Name="NightModeButton" Click="NightModeButton_Click" />
+            <AppBarButton Label="{x:Bind SettingManager.Theme,Converter={StaticResource themeConverter},Mode=OneWay}" Name="NightModeButton" Click="NightModeButton_Click" />
             <AppBarButton Label="转到浏览器" Name="NavigateBrowserButton" Click="NavigateBrowserButton_Click"/>
         </CommandBar.SecondaryCommands>
     </CommandBar>

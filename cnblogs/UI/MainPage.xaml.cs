@@ -27,11 +27,13 @@ namespace CnBlogs.UI
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public SettingManager SettingManager;
         public MainPage()
         {
             this.InitializeComponent();
+            SettingManager = SettingManager.Current;
             //设置Dispatcher,使得更新操作可以异步进行
-            SettingManager.Current.SetDispatcher(this.Dispatcher);
+            SettingManager.SetDispatcher(this.Dispatcher);
             MasterFrame.Navigating += (sender, e) =>
             {
                 LoadingProgressRing.Visibility = Visibility.Visible;
@@ -161,6 +163,11 @@ namespace CnBlogs.UI
                     break;
             }
 
+        }
+
+        private void SettingButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            App.NavigationService.DetailFrameNavigate(typeof(SettingPage));
         }
     }
 }

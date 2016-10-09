@@ -27,10 +27,11 @@ namespace CnBlogs.UI
     public sealed partial class NewsBodyPage : Page
     {
         public News News { get; private set; }
-
+        public SettingManager SettingManager;
         public NewsBodyPage()
         {
             this.InitializeComponent();
+            SettingManager = SettingManager.Current;
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {

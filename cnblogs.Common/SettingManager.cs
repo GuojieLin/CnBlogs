@@ -16,12 +16,56 @@ namespace CnBlogs.Common
     }
     public sealed class SettingManager : NotifyPropertyChanged, ISettingManager
     {
-        public ElementTheme Theme { get; private set; }
-        public FontSize FontSize { get; private set; }
-        public bool IsNoImagesMode { get; private set; }
-        public bool IsFullWindows { get; private set; }
-        public int PageSize { get; private set; }
-
+        private ElementTheme _theme;
+        public ElementTheme Theme
+        {
+            get { return _theme; }
+            set
+            {
+                _theme = value;
+                OnPropertyChanged();
+            }
+        }
+        private FontSize _fontSize;
+        public FontSize FontSize
+        {
+            get { return _fontSize; }
+            set
+            {
+                _fontSize = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool _isNoImagesMode;
+        public bool IsNoImagesMode
+        {
+            get { return _isNoImagesMode; }
+            set
+            {
+                _isNoImagesMode = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool _isFullWindows;
+        public bool IsFullWindows
+        {
+            get { return _isFullWindows; }
+            set
+            {
+                _isFullWindows = value;
+                OnPropertyChanged();
+            }
+        }
+        private int _pageSize;
+        public int PageSize
+        {
+            get { return _pageSize; }
+            set
+            {
+                _pageSize = value;
+                OnPropertyChanged();
+            }
+        }
         public readonly static SettingManager Current = new SettingManager();
         private SettingManager()
         {

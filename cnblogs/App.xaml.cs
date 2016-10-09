@@ -77,7 +77,7 @@ namespace CnBlogs
                 Window.Current.Content = rootFrame;
             }
             var appView = ApplicationView.GetForCurrentView();
-            appView.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
+            appView.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
             SystemNavigationManager.GetForCurrentView().BackRequested += (sender, args) =>
             {
                 if (NavigationService.CanGoBack)

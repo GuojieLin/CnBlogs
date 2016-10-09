@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CnBlogs.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,10 +23,11 @@ namespace CnBlogs.UI
     /// </summary>
     public sealed partial class SettingPage : Page
     {
-        //SettingViewModel _viewModel;
+        public SettingManager SettingManager;
         public SettingPage()
         {
             this.InitializeComponent();
+            SettingManager = SettingManager.Current;
         }
 
         private void DarkModeToggleSwitch_Toggled(object sender, RoutedEventArgs e)

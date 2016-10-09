@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:data="using:CnBlogs.Entities"
-    xmlns:usercontrol="using:CnBlogs.UserControls">
+    xmlns:usercontrol="using:CnBlogs.UserControls"
+    RequestedTheme="{x:Bind SettingManager.Theme,Mode=OneWay}">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -153,7 +154,7 @@
                         <AppBarButton Name="NewAppBarButton" Icon="List" Label="新闻" Click="AppBarButton_Click"></AppBarButton>
                         <AppBarButton Name="MessagesAppBarButton" Icon="Message" Label="新闻" Click="AppBarButton_Click"></AppBarButton>
                         <CommandBar.SecondaryCommands>
-                            <AppBarButton Icon="Setting" Label="设置"></AppBarButton>
+                            <AppBarButton Name="SettingButton" Icon="Setting" Label="设置" Tapped="SettingButton_Tapped"></AppBarButton>
                         </CommandBar.SecondaryCommands>
                     </CommandBar>
                 </Grid>

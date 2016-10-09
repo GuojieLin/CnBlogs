@@ -9,7 +9,7 @@
     xmlns:data="using:CnBlogs.Entities"
     xmlns:usercontrol="using:CnBlogs.UserControls"
     xmlns:pulltorefresh="using:PullToRefresh.UWP"
-    RequestedTheme="{x:Bind BlogViewModel.SettingManager.Theme}">
+    RequestedTheme="{x:Bind BlogViewModel.SettingManager.Theme,Mode=OneWay}">
 
     <Page.Resources>
         <ResourceDictionary Source="..\Resources\Dictionary.xaml"></ResourceDictionary>
