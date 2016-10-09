@@ -79,7 +79,15 @@ namespace CnBlogs
                 Window.Current.Content = rootFrame;
             }
             var appView = ApplicationView.GetForCurrentView();
-            appView.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
+            appView.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
+            SystemNavigationManager.GetForCurrentView().BackRequested += (sender, args) =>
+            {
+                if (NavigationService.CanGoBack)
+                {
+                    args.Handled = true;
+                    NavigationService.GoBack(args);
+                }
+            };
             if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
