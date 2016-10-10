@@ -145,6 +145,7 @@
     <Compile Include="UserControls\BlogItemUserControl.xaml.cs">
       <DependentUpon>BlogItemUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\SettingViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

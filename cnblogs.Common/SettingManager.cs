@@ -26,7 +26,7 @@ namespace CnBlogs.Common
                 OnPropertyChanged();
             }
         }
-        private FontSize _fontSize;
+        private FontSize _fontSize = FontSize.Small;
         public FontSize FontSize
         {
             get { return _fontSize; }
@@ -86,10 +86,10 @@ namespace CnBlogs.Common
                 Theme = ElementTheme.Light;
             }
 
-            FontSize fontSize;
+            int fontSize;
             if (_configurationManager.FindConfiguration(Configuration.FontSize, out fontSize))
             {
-                FontSize = fontSize;
+                FontSize = (FontSize)fontSize;
             }
             else
             {
@@ -138,7 +138,7 @@ namespace CnBlogs.Common
         public void UpdateFontSize(FontSize fontSize)
         {
             FontSize = fontSize;
-            _configurationManager.SetConfiguration(Configuration.FontSize, FontSize);
+            _configurationManager.SetConfiguration(Configuration.FontSize, (int)FontSize);
             OnShareDataChanged();
         }
         public void UpdateNoImagesMode(bool isNoImages)
