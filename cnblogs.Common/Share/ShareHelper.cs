@@ -9,7 +9,7 @@ namespace CnBlogs.Common.Share
 {
     public class ShareHelper
     {
-        public const string AppId= "987654321";
+        public const string AppId= "wx65edc1faa00e39fd";
         public const string StoreLogoUrl = "ms-appx:///Assets/StoreLogo.png";
         private static WeChatRequest CreateWeChatRequest()
         {

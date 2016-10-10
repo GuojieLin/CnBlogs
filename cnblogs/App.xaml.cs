@@ -79,7 +79,7 @@ namespace CnBlogs
                 Window.Current.Content = rootFrame;
             }
             var appView = ApplicationView.GetForCurrentView();
-            appView.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
+            appView.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
             
             if (e.PrelaunchActivated == false)
             {

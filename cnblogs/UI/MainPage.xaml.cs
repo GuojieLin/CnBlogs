@@ -36,23 +36,77 @@ namespace CnBlogs.UI
             SettingManager = SettingManager.Current;
             //设置Dispatcher,使得更新操作可以异步进行
             SettingManager.SetDispatcher(this.Dispatcher);
-            MasterFrame.Navigating += (sender, e) =>
-            {
-                LoadingProgressRing.Visibility = Visibility.Visible;
-                LoadingProgressRing.IsIndeterminate = true;
-            };
-            MasterFrame.Navigated += (sender, e) =>
-            {
-                LoadingProgressRing.IsIndeterminate = false;
-                LoadingProgressRing.Visibility = Visibility.Collapsed;
-                UpdateForVisualState(AdaptiveStates?.CurrentState);
-            };
+            InitFrame();
+            InitNavigationService();
             //导航及界面主次Frame切换等都由NavigationService进行控制
+
+            SystemNavigationManager.GetForCurrentView().BackRequested += BackRequest;
+            //若要全屏则隐藏顶部状态栏
+            if (App.NavigationService.IsMobile && SettingManager.IsFullWindows)
+            {
+                StatusBar statusBar = StatusBar.GetForCurrentView();
+                statusBar.HideAsync();
+            }
+        }
+
+
+        private bool isExit = false;
+        /// <summary>
+        /// 后退逻辑
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BackRequest(object sender, BackRequestedEventArgs e)
+        {
+            //有可以后退则后退，不可以后退则双击退出程序
+            if (App.NavigationService.CanGoBack)
+            {
+                e.Handled = true;
+                App.NavigationService.GoBack(e);
+                isExit = false;
+            }
+            else if (!e.Handled && !isExit)
+            {
+                DoubleBackExit(e);
+            }
+        }
+        /// <summary>
+        /// 手机双击退出到手机主页
+        /// </summary>
+        /// <param name="e"></param>
+        private void DoubleBackExit(BackRequestedEventArgs e)
+        {
+            StatusBar statusBar = StatusBar.GetForCurrentView();
+            //statusBar.ShowAsync();
+            //statusBar.ForegroundColor = Colors.White; // 前景色  
+            statusBar.BackgroundOpacity = 0.5; // 透明度  
+            statusBar.ProgressIndicator.Text = "再按一次返回键退出程序"; // 文本  
+            statusBar.ProgressIndicator.ShowAsync();
+            isExit = true;
+            Task.Run(async () =>
+            {
+                //Windows.Data.Xml.Dom. XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);  
+                //Windows.Data.Xml.Dom.XmlNodeList elements = toastXml.GetElementsByTagName("text");  
+                //elements[0].AppendChild(toastXml.CreateTextNode("再按一次返回键退出程序。"));  
+                //ToastNotification toast = new ToastNotification(toastXml);  
+                //ToastNotificationManager.CreateToastNotifier().Show(toast);       
+                await Task.Delay(1500);
+                Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+                {
+                    await statusBar.ProgressIndicator.HideAsync();
+                    //statusBar.HideAsync();
+                });
+                isExit = false;
+            });
+            e.Handled = true;
+        }
+
+        private void InitNavigationService()
+        {
             bool isNarrow = AdaptiveStates?.CurrentState == NarrowState;
             App.InitNavigationService(MasterFrame, DetailFrame, TertiaryFrame, isNarrow);
-            
-            //是手机设备则显示CommandBar，否则显示SplitView
 
+            //是手机设备或宽度为Narrow则显示CommandBar，否则显示SplitView
             App.NavigationService.NavigateToDetailAction = () =>
             {
                 if (App.NavigationService.IsMobile || App.NavigationService.IsNarrow)
@@ -87,58 +141,24 @@ namespace CnBlogs.UI
                 CommandBar.Visibility = Visibility.Visible;
                 AdaptiveStates.CurrentStateChanged += AdaptiveStates_CurrentStateChanged;
             }
-
-            //打开程序是跳转到博客列表
+            //打开程序时跳转到博客列表
             App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
-            //打开缓存。
+        }
 
-
-            bool isExit = false;
-            SystemNavigationManager.GetForCurrentView().BackRequested += (sender, args) =>
+        private void InitFrame()
+        {
+            MasterFrame.Navigating += (sender, e) =>
             {
-                if (App.NavigationService.CanGoBack)
-                {
-                    args.Handled = true;
-                    App.NavigationService.GoBack(args);
-                    isExit = false;
-                }
-                else if (!args.Handled)
-                {
-                    //TODO:
-                    //StatusBar statusBar = StatusBar.GetForCurrentView();
-                    //await statusBar.ShowAsync();
-                    //statusBar.ForegroundColor = Colors.White; // 前景色  
-                    //statusBar.BackgroundOpacity = 0.9; // 透明度  
-                    //statusBar.ProgressIndicator.Text = "再按一次返回键退出程序。"; // 文本  
-                    //await statusBar.ProgressIndicator.ShowAsync();
-                    //if (!isExit)
-                    //{
-                    //    isExit = true;
-                    //    await Task.Run(async () =>
-                    //     {
-                    //         //Windows.Data.Xml.Dom. XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);  
-                    //         //Windows.Data.Xml.Dom.XmlNodeList elements = toastXml.GetElementsByTagName("text");  
-                    //         //elements[0].AppendChild(toastXml.CreateTextNode("再按一次返回键退出程序。"));  
-                    //         //ToastNotification toast = new ToastNotification(toastXml);  
-                    //         //ToastNotificationManager.CreateToastNotifier().Show(toast);       
-
-                    //         await Task.Delay(1500);
-                    //         await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
-                    //         {
-                    //             await statusBar.ProgressIndicator.HideAsync();
-                    //             await statusBar.HideAsync();
-                    //         });
-                    //         //isExit = false;
-                    //     });
-                    //    //args.Handled = true;
-                    //}
-                }
+                LoadingProgressRing.Visibility = Visibility.Visible;
+                LoadingProgressRing.IsIndeterminate = true;
             };
-            //if (App.NavigationService.IsMobile)
-            //{
-            //    StatusBar statusBar = StatusBar.GetForCurrentView();
-            //    statusBar.BackgroundOpacity = 1;
-            //}
+            MasterFrame.Navigated += (sender, e) =>
+            {
+                LoadingProgressRing.IsIndeterminate = false;
+                LoadingProgressRing.Visibility = Visibility.Collapsed;
+                UpdateForVisualState(AdaptiveStates?.CurrentState);
+            };
+
         }
 
         #region 桌面需要用
