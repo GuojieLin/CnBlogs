@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CnBlogs.Core.Constants;
+using CnBlogs.Core.Extentsions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,6 +55,8 @@ namespace CnBlogs.Entities
             author.Name = element?.Element("name")?.Value;
             author.Uri = element?.Element("uri")?.Value;
             author.Avatar = element?.Element("avatar")?.Value;
+            if (author.Avatar.IsNullOrEmpty())
+                author.Avatar = Configuration.DefalutPath;
             return author;
         }
     }

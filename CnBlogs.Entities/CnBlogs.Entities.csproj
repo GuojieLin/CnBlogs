@@ -115,6 +115,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Cnblogs.Entities.rd.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cnblogs.Core\CnBlogs.Core.csproj">
+      <Project>{f980f830-4cd5-4276-b4b2-7197e7691f53}</Project>
+      <Name>CnBlogs.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

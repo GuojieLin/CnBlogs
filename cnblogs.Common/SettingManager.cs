@@ -66,6 +66,8 @@ namespace CnBlogs.Common
                 OnPropertyChanged();
             }
         }
+
+
         public readonly static SettingManager Current = new SettingManager();
         private SettingManager()
         {

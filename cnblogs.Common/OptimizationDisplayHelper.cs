@@ -1,4 +1,5 @@
 ﻿using CnBlogs.Core;
+using CnBlogs.Core.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,26 +63,24 @@ namespace CnBlogs.Common
 
                     #region 无图模式
                     string url = m.Groups["url"].Value;
+                    if (string.IsNullOrEmpty(url)) url = Configuration.DefalutPath;
                     if (m.Groups["url"].Value.StartsWith("//", StringComparison.CurrentCultureIgnoreCase))
                     {
                         url = "http:" + url;
                     }
-
-                    if (SettingManager.Current.IsNoImagesMode)  //无图模式
+                    if (NetworkManager.Current.Network != NetWorkType.WIFI &&
+                    SettingManager.Current.IsNoImagesMode)  //非wifi下无图模式，则不直接显示图片
                     {
-                        if (NetworkManager.Current.Network != NewWorkType.WIFI)  //非wifi
+                        Match match = Regex.Match(m.Value.ToString(), @"<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>");
+                        if (match.Success)
                         {
-                            Match match = Regex.Match(m.Value.ToString(), @"<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>");
-                            if (match.Success)
-                            {
-                                //移除长宽标签 最大化图片
-                                //return "<img src='" + match.Groups["imgUrl"].Value + "'/>";
-                                return @"<img src=""ms-appx-web:///Assets/default_image.png"" onclick=""click2loadimage(this,'" + url + @"');""/>";
-                            }
-                            else
-                            {
-                                return @"<img src='" + url + @"'>";
-                            }
+                            //移除长宽标签 最大化图片
+                            //return "<img src='" + match.Groups["imgUrl"].Value + "'/>";
+                            return @"<img src=""" + Configuration.DefalutPath + @""" onclick=""click2loadimage(this,'" + url + @"');""/>";
+                        }
+                        else
+                        {
+                            return @"<img src='" + url + @"'>";
                         }
                     }
                     #endregion
@@ -89,8 +88,6 @@ namespace CnBlogs.Common
                     {
                         return @"<img src='" + url + @"'>";
                     }
-                    return url;
-
                 }, RegexOptions.IgnoreCase);  //替换所有img标签 为本地图片
 
 

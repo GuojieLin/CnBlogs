@@ -107,16 +107,19 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppDomain.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Constants\Configuration.cs" />
     <Compile Include="Constants\DeviceFamily.cs" />
     <Compile Include="Constants\DeviceSize.cs" />
     <Compile Include="Data\SupportIncreamentalLoading.cs" />
     <Compile Include="Enums\FontSize.cs" />
+    <Compile Include="Extentsions\EnumExtensions.cs" />
     <Compile Include="Extentsions\StringExtensions.cs" />
     <Compile Include="HttpHelper.cs" />
     <Compile Include="IRoamingSetting.cs" />
-    <Compile Include="NetWorkHelper.cs" />
+    <Compile Include="NetworkManager.cs" />
+    <Compile Include="NotifyPropertyChanged.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Cnblogs.Core.rd.xml" />
   </ItemGroup>

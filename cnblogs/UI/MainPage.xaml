@@ -154,6 +154,7 @@
                         <AppBarButton Name="NewAppBarButton" Icon="List" Label="新闻" Click="AppBarButton_Click"></AppBarButton>
                         <AppBarButton Name="MessagesAppBarButton" Icon="Message" Label="新闻" Click="AppBarButton_Click"></AppBarButton>
                         <CommandBar.SecondaryCommands>
+                            <AppBarButton Name="RefreshListButton" Icon="Refresh" Label="刷新" Tapped="RefreshListButton_Tapped"></AppBarButton>
                             <AppBarButton Name="SettingButton" Icon="Setting" Label="设置" Tapped="SettingButton_Tapped"></AppBarButton>
                         </CommandBar.SecondaryCommands>
                     </CommandBar>

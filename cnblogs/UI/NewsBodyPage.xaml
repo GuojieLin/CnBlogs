@@ -72,11 +72,14 @@
                     Name="TitleStack" 
                     HorizontalAlignment="Center"
                     Padding="5"
-                    Grid.Row="1">
+                    Grid.Row="0">
                 <TextBlock Name="BlogTitle"
                         Text="{x:Bind News.Title}"
-                        FontSize="15"></TextBlock>
-                <StackPanel Name="BlogSecondTitle" Orientation="Horizontal">
+                        HorizontalAlignment="Center"
+                        FontSize="15"
+                        Padding="5"/>
+                <StackPanel Name="BlogSecondTitle" Orientation="Horizontal"
+                            HorizontalAlignment="Center">
                     <TextBlock Name="AuthorName" Text="{StaticResource ItWriter}"></TextBlock>
                     <TextBlock Name="PublishTime" Text="{x:Bind News.Body.SubmitDate}"></TextBlock>
                     <TextBlock Name="Views" Text="{x:Bind News.Views}"></TextBlock>

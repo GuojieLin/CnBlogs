@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,18 +8,22 @@ using Windows.Networking.Connectivity;
 
 namespace CnBlogs.Core
 {
-    public enum NewWorkType
+    public enum NetWorkType
     {
+        [Display(Name = "无网络")]
         None,
+        [Display(Name = "2G")]
         _2G,
+        [Display(Name = "3G")]
         _3G,
+        [Display(Name = "4G")]
         _4G,
+        [Display(Name = "Wifi")]
         WIFI,
     }
 
     public class NetworkManager
     {
-
         private static NetworkManager _current;
         public static NetworkManager Current
         {
@@ -32,9 +37,9 @@ namespace CnBlogs.Core
             }
         }
         
-        private NewWorkType _network;
+        private NetWorkType _network;
 
-        public NewWorkType Network
+        public NetWorkType Network
         {
             get
             {
@@ -53,13 +58,10 @@ namespace CnBlogs.Core
         private void NetworkInformation_NetworkStatusChanged(object sender)
         {
             _network = GetNewWorkType();
-            if (NetworkStatusChanged != null)
-            {
-                NetworkStatusChanged(this);
-            }
+            NetworkStatusChanged?.Invoke(this);
         }
 
-        private NewWorkType GetNewWorkType()
+        private NetWorkType GetNewWorkType()
         {
             try
             {
@@ -67,7 +69,7 @@ namespace CnBlogs.Core
 
                 if (profile.IsWlanConnectionProfile)
                 {
-                    return NewWorkType.WIFI;
+                    return NetWorkType.WIFI;
                 }
                 if (profile.IsWwanConnectionProfile)
                 {
@@ -77,7 +79,7 @@ namespace CnBlogs.Core
                         //2G-equivalent
                         case WwanDataClass.Edge:
                         case WwanDataClass.Gprs:
-                            return NewWorkType._2G;
+                            return NetWorkType._2G;
                         //3G-equivalent
                         case WwanDataClass.Cdma1xEvdo:
                         case WwanDataClass.Cdma1xEvdoRevA:
@@ -89,24 +91,24 @@ namespace CnBlogs.Core
                         case WwanDataClass.Umts:
                         case WwanDataClass.Hsdpa:
                         case WwanDataClass.Hsupa:
-                            return NewWorkType._3G;
+                            return NetWorkType._3G;
                         //4G-equivalent
                         case WwanDataClass.LteAdvanced:
-                            return NewWorkType._4G;
+                            return NetWorkType._4G;
                         //not connected
                         case WwanDataClass.None:
-                            return NewWorkType.None;
+                            return NetWorkType.None;
                         //unknown
                         case WwanDataClass.Custom:
                         default:
-                            return NewWorkType.WIFI;
+                            return NetWorkType.WIFI;
                     }
                 }
-                return NewWorkType.None;
+                return NetWorkType.None;
             }
             catch (Exception)
             {
-                return NewWorkType.None; //as default
+                return NetWorkType.None; //as default
             }
 
         }

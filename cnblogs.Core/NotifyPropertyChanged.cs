@@ -7,38 +7,36 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Core;
 
-namespace CnBlogs.Common
+namespace CnBlogs.Core
 {
 
     public class NotifyPropertyChanged : INotifyPropertyChanged
     {
-        private CoreDispatcher _coreDispatcher;
+        protected static CoreDispatcher CoreDispatcher;
         public event PropertyChangedEventHandler PropertyChanged;
         public void SetDispatcher(CoreDispatcher coreDispatcher)
         {
-            _coreDispatcher = coreDispatcher;
+            CoreDispatcher = coreDispatcher;
         }
         protected async void OnPropertyChanged([CallerMemberName]string propertyName = "")
         {
             if (PropertyChanged != null)
             {
-                if (_coreDispatcher == null)
+                if (CoreDispatcher == null)
                 {
                     PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
                 }
                 else
                 {
-                    if (_coreDispatcher.HasThreadAccess)
+                    if (CoreDispatcher.HasThreadAccess)
                     {
                         PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
                     }
                     else
                     {
-                        await _coreDispatcher.RunAsync(CoreDispatcherPriority.Normal,
-                            delegate ()
-                            {
-                                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-                            });
+                        await CoreDispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                            () => PropertyChanged(this, new PropertyChangedEventArgs(propertyName)));
+                            
                     }
                 }
             }

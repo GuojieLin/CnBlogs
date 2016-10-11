@@ -11,6 +11,7 @@ using CnBlogs.Service;
 using System.Threading;
 using CnBlogs.Core.Data;
 using CnBlogs.Common;
+using CnBlogs.Core;
 
 //======================================================//
 //			作者中文名:	林国杰				            //
@@ -27,10 +28,12 @@ namespace CnBlogs.ViewModels
         protected int _pageSize = 0;
         protected int _currentPage = 1;
         public SettingManager SettingManager;
+        public AppDomain AppDomain;
         public int TotalCount { get; private set; }
         public BaseViewModel()
         {
             SettingManager = SettingManager.Current;
+            AppDomain = AppDomain.Current;
             _pageSize = SettingManager.Current.PageSize;
             _hasMoreItems = true;
         }

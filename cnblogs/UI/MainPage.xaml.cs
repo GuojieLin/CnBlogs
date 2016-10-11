@@ -30,6 +30,7 @@ namespace CnBlogs.UI
     public sealed partial class MainPage : Page
     {
         public SettingManager SettingManager;
+        public Action RefreshList;
         public MainPage()
         {
             this.InitializeComponent();
@@ -238,6 +239,11 @@ namespace CnBlogs.UI
         private void SettingButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             App.NavigationService.DetailFrameNavigate(typeof(SettingPage));
+        }
+
+        private void RefreshListButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            RefreshList?.Invoke();
         }
     }
 }

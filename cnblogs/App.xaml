@@ -31,6 +31,12 @@
             <Setter Property="FontFamily" Value="微软雅黑"></Setter>
             <Setter Property="Margin" Value="12,0,0,0"></Setter>
         </Style>
+
+        <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}" x:Key="SmallRightOfTopRelativePanelTextBlockStyle">
+            <Setter Property="FontSize" Value="10"></Setter>
+            <Setter Property="FontFamily" Value="微软雅黑"></Setter>
+            <Setter Property="Margin" Value="5,0,0,5"></Setter>
+        </Style>
         <Style TargetType="RelativePanel" x:Key="TopRelativePanel">
             <Setter Property="Padding" Value="0,6,0,6"></Setter>
             <Setter Property="Background" Value="LightGray"></Setter>

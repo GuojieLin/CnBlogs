@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CnBlogs.Core.Constants;
+using CnBlogs.Core.Extentsions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -92,6 +94,7 @@ namespace CnBlogs.Entities
             blog.Comments = Convert.ToInt32(element?.Element("comments").Value);
             blog.Topic = element?.Element("topic").Value;
             blog.TopicIcon =  element?.Element("topicIcon").Value;
+            if (blog.TopicIcon.IsNullOrEmpty()) blog.TopicIcon = Configuration.DefalutPath;
             int errorIndex= blog.TopicIcon.IndexOf("///");
             if (errorIndex>0)
             {

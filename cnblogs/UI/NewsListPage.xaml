@@ -29,6 +29,12 @@
                         RelativePanel.AlignVerticalCenterWithPanel="True"
                        Style="{StaticResource TopRelativePanelTextBlockStyle}">
             </TextBlock>
+            <TextBlock Name="NetWorkTypeTextBlock"
+                    Text="{x:Bind NewsViewModel.AppDomain.NetWorkType,Mode=OneWay,Converter={StaticResource NetWorkTypeConverter}}"
+                    RelativePanel.RightOf="TitleTextBlock"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
+                    Style="{StaticResource SmallRightOfTopRelativePanelTextBlockStyle}"/>
+
             <Button Name="RefreshNewsListButton"
                     Content="&#xE72C;"
                     RelativePanel.AlignRightWithPanel="True"

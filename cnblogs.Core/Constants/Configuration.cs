@@ -13,5 +13,6 @@ namespace CnBlogs.Core.Constants
         public const string IsNoImagesMode = "IsNoImagesMode";
         public const string IsFullWindows = "IsFullWindows";
         public const int DefaultPageSize = 20;
+        public const string DefalutPath = "ms-appx-web:///Assets/default_image.png";
     }
 }

@@ -14,6 +14,7 @@
     <Page.Resources>
         <ResourceDictionary Source="..\Resources\Dictionary.xaml"></ResourceDictionary>
     </Page.Resources>
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <Grid.RowDefinitions>
@@ -29,6 +30,11 @@
                     RelativePanel.AlignVerticalCenterWithPanel="True"
                        Style="{StaticResource TopRelativePanelTextBlockStyle}">
             </TextBlock>
+            <TextBlock Name="NetWorkTypeTextBlock"
+                    Text="{x:Bind BlogViewModel.AppDomain.NetWorkType,Mode=OneWay,Converter={StaticResource NetWorkTypeConverter}}"
+                    RelativePanel.RightOf="TitleTextBlock"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
+                    Style="{StaticResource SmallRightOfTopRelativePanelTextBlockStyle}"/>
             <Button Name="RefreshBlogListButton"
                     Content="&#xE72C;"
                     RelativePanel.AlignRightWithPanel="True"
