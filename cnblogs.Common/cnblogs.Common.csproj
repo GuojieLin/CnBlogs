@@ -107,7 +107,9 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CacheManager.cs" />
     <Compile Include="ControlHelper.cs" />
+    <Compile Include="IManager.cs" />
     <Compile Include="OptimizationDisplayHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingManager.cs" />

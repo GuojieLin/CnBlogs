@@ -10,11 +10,10 @@ using Windows.UI.Xaml;
 
 namespace CnBlogs.Common
 {
-    public interface ISettingManager
-    {
-        
-    }
-    public sealed class SettingManager : NotifyPropertyChanged, ISettingManager
+    /// <summary>
+    /// 配置保留在云端,以便在不同设备上同步
+    /// </summary>
+    public sealed class SettingManager : NotifyPropertyChanged, IManager
     {
         private ElementTheme _theme;
         public ElementTheme Theme
@@ -67,19 +66,18 @@ namespace CnBlogs.Common
             }
         }
 
-
         public readonly static SettingManager Current = new SettingManager();
         private SettingManager()
         {
-            _configurationManager = new ConfigurationManager();
-            LoadSetting();
+            _configurationManager = new RoamingSetting();
+            Load();
         }
         public event SettingChangedEventHandler SettingChanged;
-        private IRoamingSetting _configurationManager;
-        private void LoadSetting()
+        private ISetting _configurationManager;
+        public void Load()
         {
             int theme;
-            if (_configurationManager.FindConfiguration(Configuration.Theme, out theme))
+            if (_configurationManager.GetSetting(Configuration.Theme, out theme))
             {
                 Theme = (ElementTheme)theme;
             }
@@ -89,7 +87,7 @@ namespace CnBlogs.Common
             }
 
             int fontSize;
-            if (_configurationManager.FindConfiguration(Configuration.FontSize, out fontSize))
+            if (_configurationManager.GetSetting(Configuration.FontSize, out fontSize))
             {
                 FontSize = (FontSize)fontSize;
             }
@@ -99,7 +97,7 @@ namespace CnBlogs.Common
             }
 
             bool isNoImageMode;
-            if (_configurationManager.FindConfiguration(Configuration.IsNoImagesMode, out isNoImageMode))
+            if (_configurationManager.GetSetting(Configuration.IsNoImagesMode, out isNoImageMode))
             {
                 IsNoImagesMode = isNoImageMode;
             }
@@ -108,7 +106,7 @@ namespace CnBlogs.Common
                 IsNoImagesMode = false;
             }
             bool isFullWindows;
-            if (_configurationManager.FindConfiguration(Configuration.IsFullWindows, out isFullWindows))
+            if (_configurationManager.GetSetting(Configuration.IsFullWindows, out isFullWindows))
             {
                 IsFullWindows = isFullWindows;
             }
@@ -118,7 +116,7 @@ namespace CnBlogs.Common
             }
 
             int pageSize;
-            if (_configurationManager.FindConfiguration(Configuration.IsFullWindows, out pageSize))
+            if (_configurationManager.GetSetting(Configuration.IsFullWindows, out pageSize))
             {
                 PageSize = pageSize;
             }
@@ -134,26 +132,26 @@ namespace CnBlogs.Common
         public void UpdateTheme(ElementTheme theme)
         {
             Theme = theme;
-            _configurationManager.SetConfiguration(Configuration.Theme, (int)Theme);
+            _configurationManager.SetSetting(Configuration.Theme, (int)Theme);
             OnShareDataChanged();
         }
         public void UpdateFontSize(FontSize fontSize)
         {
             FontSize = fontSize;
-            _configurationManager.SetConfiguration(Configuration.FontSize, (int)FontSize);
+            _configurationManager.SetSetting(Configuration.FontSize, (int)FontSize);
             OnShareDataChanged();
         }
         public void UpdateNoImagesMode(bool isNoImages)
         {
             IsNoImagesMode = isNoImages;
-            _configurationManager.SetConfiguration(Configuration.IsNoImagesMode, IsNoImagesMode);
+            _configurationManager.SetSetting(Configuration.IsNoImagesMode, IsNoImagesMode);
             OnShareDataChanged();
         }
 
         public void UpdateFullWindows(bool isFullWindows)
         {
             IsFullWindows = isFullWindows;
-            _configurationManager.SetConfiguration(Configuration.IsFullWindows, IsNoImagesMode);
+            _configurationManager.SetSetting(Configuration.IsFullWindows, IsNoImagesMode);
             OnShareDataChanged();
         }
     }

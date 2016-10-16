@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="33670373-ec24-45d7-b3bd-079d5a8a8257" Publisher="CN=Dm_ca" Version="0.1.0.0" />
+  <Identity Name="33670373-ec24-45d7-b3bd-079d5a8a8257" Publisher="CN=Dm_ca" Version="0.1.5.0" />
   <mp:PhoneIdentity PhoneProductId="33670373-ec24-45d7-b3bd-079d5a8a8257" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>博客园UWP</DisplayName>

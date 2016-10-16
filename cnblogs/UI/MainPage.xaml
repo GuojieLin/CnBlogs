@@ -13,7 +13,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="AdaptiveStates">
+            <VisualStateGroup x:Name="AdaptiveStates" CurrentStateChanged="AdaptiveStates_CurrentStateChanged">
                 <VisualState x:Name="NarrowState">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="0" />
@@ -153,6 +153,7 @@
                         <AppBarButton Name="HomeAppBarButton" Icon="Home" Label="主页" Click="AppBarButton_Click"></AppBarButton>
                         <AppBarButton Name="NewAppBarButton" Icon="List" Label="新闻" Click="AppBarButton_Click"></AppBarButton>
                         <AppBarButton Name="MessagesAppBarButton" Icon="Message" Label="新闻" Click="AppBarButton_Click"></AppBarButton>
+                        <AppBarButton Name="AccountAppBarButton" Icon="Account" Label="我" Click="AccountAppBarButton_Click"></AppBarButton>
                         <CommandBar.SecondaryCommands>
                             <AppBarButton Name="RefreshListButton" Icon="Refresh" Label="刷新" Tapped="RefreshListButton_Tapped"></AppBarButton>
                             <AppBarButton Name="SettingButton" Icon="Setting" Label="设置" Tapped="SettingButton_Tapped"></AppBarButton>

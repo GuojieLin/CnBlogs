@@ -108,7 +108,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDomain.cs" />
-    <Compile Include="Configuration.cs" />
+    <Compile Include="LocalSetting.cs" />
+    <Compile Include="RoamingSetting.cs" />
     <Compile Include="Constants\Configuration.cs" />
     <Compile Include="Constants\DeviceFamily.cs" />
     <Compile Include="Constants\DeviceSize.cs" />
@@ -117,7 +118,7 @@
     <Compile Include="Extentsions\EnumExtensions.cs" />
     <Compile Include="Extentsions\StringExtensions.cs" />
     <Compile Include="HttpHelper.cs" />
-    <Compile Include="IRoamingSetting.cs" />
+    <Compile Include="ISetting.cs" />
     <Compile Include="NetworkManager.cs" />
     <Compile Include="NotifyPropertyChanged.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

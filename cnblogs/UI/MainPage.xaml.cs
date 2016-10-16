@@ -137,11 +137,6 @@ namespace CnBlogs.UI
                     CommandBar.Visibility = Visibility.Collapsed;
                 }
             };
-            if (!App.NavigationService.IsMobile)
-            {
-                CommandBar.Visibility = Visibility.Visible;
-                AdaptiveStates.CurrentStateChanged += AdaptiveStates_CurrentStateChanged;
-            }
             //打开程序时跳转到博客列表
             App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
         }
@@ -167,34 +162,24 @@ namespace CnBlogs.UI
         {
             UpdateForVisualState(e.NewState, e.OldState);
         }
-        private void ApdateUI()
-        {
-            if (App.NavigationService.IsMobile || App.NavigationService.IsNarrow)
-            {
-                CnBlogSplitView.DisplayMode = SplitViewDisplayMode.Overlay;
-                CnBlogSplitView.IsPaneOpen = false;
-                CommandBar.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                CnBlogSplitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
-                CommandBar.Visibility = Visibility.Collapsed;
-            }
-        }
         private void UpdateForVisualState(VisualState newState, VisualState oldState = null)
         {
-            if (newState == null && oldState == null) return;
+            if (newState == null /*&& oldState == null*/) return;
             //若当前设备是手机则无需根据宽度变化
             if (App.NavigationService.IsMobile) return;
-            if (newState == NarrowState && oldState == MediumState)
+            if (newState == NarrowState)// && oldState == MediumState)
             {
                 //从大变小
                 App.NavigationService.MediumToNarrow();
             }
-            else if (newState == MediumState && oldState == NarrowState)
+            else if (newState == MediumState)// && oldState == NarrowState)
             {
                 //从小变大  
                 App.NavigationService.NarrowToMedium();
+            }
+            else
+            {
+                //程序启动时 
             }
         }
         private void FirstMenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -244,6 +229,11 @@ namespace CnBlogs.UI
         private void RefreshListButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             RefreshList?.Invoke();
+        }
+
+        private void AccountAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.NavigationService.DetailFrameNavigate(typeof(LoginPage));
         }
     }
 }
