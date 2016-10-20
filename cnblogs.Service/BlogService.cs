@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 
 //======================================================//
@@ -31,7 +32,7 @@ namespace CnBlogs.Service
                 string url = string.Format(WcfApiUrlConstants.SiteHomeArticles, pageIndex, pageSize);
                 string xml = await HttpHelper.Get(url);
                 List<Blog> blogs = new List<Blog>();
-                xml = xml.Replace(Constants.XmlNameSpace,"");
+                xml = xml.Replace(Constants.XmlNameSpace, "").Replace("&", "");
                 XElement xElement = XElement.Parse(xml);
                 foreach (XElement entry in xElement.Elements("entry"))
                 {
@@ -41,7 +42,7 @@ namespace CnBlogs.Service
                 }
                 return blogs;
             }
-            catch
+            catch(Exception exception)
             {
                 return null;
             }
@@ -80,7 +81,7 @@ namespace CnBlogs.Service
             {
                 string url = string.Format(WcfApiUrlConstants.GetBlogComments, id, pageIndex,pageSize);
                 string xml = await HttpHelper.Get(url);
-                xml = xml.Replace(Constants.XmlNameSpace, "");
+                xml = xml.Replace(Constants.XmlNameSpace, "").Replace("&", "");
                 List<BlogComment> blogComments = new List<BlogComment>();
                 XElement xElement = XElement.Parse(xml);
                 int i = 1;

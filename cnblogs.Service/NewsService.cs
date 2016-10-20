@@ -34,7 +34,7 @@ namespace CnBlogs.Service
                 string url = string.Format(WcfApiUrlConstants.RecentNewsByPaging, pageIndex, pageSize);
                 string xml = await HttpHelper.Get(url);
                 List<News> newses = new List<News>();
-                xml = xml.Replace(Constants.XmlNameSpace,"");
+                xml = xml.Replace(Constants.XmlNameSpace, "").Replace("&", "");
                 XElement xElement = XElement.Parse(xml);
                 foreach (XElement entry in xElement.Elements("entry"))
                 {
@@ -61,6 +61,7 @@ namespace CnBlogs.Service
             {
                 string url = string.Format(WcfApiUrlConstants.NewsContent, id);
                 string xml = await HttpHelper.Get(url);
+                xml = xml.Replace(Constants.XmlNameSpace, "").Replace("&", "");
                 XElement xElement = XElement.Parse(xml);
                 return NewsBody.Load(xElement);
             }
@@ -83,7 +84,7 @@ namespace CnBlogs.Service
                 string url = string.Format(WcfApiUrlConstants.GetNewsComment, id, pageIndex,pageSize);
                 string xml = await HttpHelper.Get(url);
                 List<BlogComment> blogComments = new List<BlogComment>();
-                xml = xml.Replace(Constants.XmlNameSpace, "");
+                xml = xml.Replace(Constants.XmlNameSpace, "").Replace("&", "");
                 XElement xElement = XElement.Parse(xml);
                 int i = 0;
                 foreach (XElement entry in xElement.Elements("entry"))

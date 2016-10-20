@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <Grid Padding="5,2,5,2" >
+    <Grid Padding="5,2,5,2" HorizontalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -34,21 +34,30 @@
                        RelativePanel.AlignRightWithPanel="True">
             </TextBlock>
         </RelativePanel>
-        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Left">
+        <RelativePanel Grid.Row="2" HorizontalAlignment="Stretch">
             <HyperlinkButton Content="{x:Bind Blog.Author.Name}"
                              FontSize="10"
                              VerticalAlignment="Center"
                              Click="HyperlinkButton_Click"
+                             RelativePanel.AlignVerticalCenterWithPanel="True"
+                             RelativePanel.AlignLeftWithPanel="True"
                              Margin="2"
+                             Name="AuthorNameHyperLinkButton"
                              Tag="{x:Bind Blog.BlogApp}">
             </HyperlinkButton>
             <TextBlock Text="{x:Bind Blog.Published}"
                        FontSize="10"                   
                        Margin="2"
-                       VerticalAlignment="Center">
+                       VerticalAlignment="Center"
+                       Name="PublishTimeTextBlock"
+                       RelativePanel.AlignVerticalCenterWithPanel="True"
+                       RelativePanel.RightOf="AuthorNameHyperLinkButton">
             </TextBlock>
 
-            <Button Name="CommentButton" Click="CommentButton_Click" Background="Transparent"  Margin="2">
+            <Button Name="CommentButton" Click="CommentButton_Click"
+                    Background="Transparent"  Margin="2" 
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
+                    RelativePanel.LeftOf="ViewsStackPanel">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Comment" />
@@ -58,13 +67,18 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Name="ViewsStackPanel"
+                        RelativePanel.LeftOf="DiggsButton"
+                    RelativePanel.AlignVerticalCenterWithPanel="True">
                 <SymbolIcon Symbol="View"/>
                 <TextBlock Text="{x:Bind Blog.Views}"
                                    Style="{StaticResource StackPanelTextBlockStyle}">
                 </TextBlock>
             </StackPanel>
-            <Button Name="DiggsButton" Click="DiggsButton_Click" Background="Transparent" Margin="2">
+            <Button Name="DiggsButton" Click="DiggsButton_Click"
+                    Background="Transparent" Margin="2"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
+                    RelativePanel.AlignRightWithPanel="True">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <SymbolIcon Symbol="Like"/>
@@ -74,6 +88,6 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-        </StackPanel>
+        </RelativePanel>
     </Grid>
 </Page>

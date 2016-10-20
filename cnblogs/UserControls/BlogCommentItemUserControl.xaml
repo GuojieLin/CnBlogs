@@ -12,18 +12,17 @@
         <valueconverter:FloorNumberConverter x:Key="floorNumberConverter"></valueconverter:FloorNumberConverter>
         <valueconverter:DateTimeConverter x:Key="dateTimeConverter"></valueconverter:DateTimeConverter>
     </Page.Resources>
-    <Grid Padding="0,2" >
+    <Grid Padding="0,2">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-
-        <RelativePanel Grid.Row="0" HorizontalAlignment="Stretch">
-
+        <RelativePanel  HorizontalAlignment="Stretch">
             <TextBlock Name="FloorNumberTextBlock"
                 Text="{x:Bind BlogComment.FloorNumber,Converter={StaticResource floorNumberConverter}}"
                        FontSize="10"                   
                        Margin="2,10"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
                        RelativePanel.AlignLeftWithPanel="True">
             </TextBlock>
 
@@ -31,7 +30,7 @@
                 Text="{x:Bind  BlogComment.Published,Converter={StaticResource dateTimeConverter}}"
                        FontSize="10"            
                        Margin="2,10"
-                       VerticalAlignment="Center"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
                        RelativePanel.RightOf="FloorNumberTextBlock"></TextBlock>
 
             <HyperlinkButton Name="AutorNameHyperlinkButton"
@@ -41,9 +40,12 @@
                              Click="HyperlinkButton_Click"
                              Margin="2"
                              Tag="{x:Bind BlogComment.Author.Uri}"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
                              RelativePanel.RightOf="PublishedTimeTextBlock"></HyperlinkButton>
+            
             <Button Name="SendToMessageButton" 
                     Background="Transparent"  Margin="2"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
                     RelativePanel.RightOf="AutorNameHyperlinkButton">
                 <Button.Content>
                     <SymbolIcon Symbol="Message" />
@@ -51,7 +53,7 @@
             </Button>
             <Button Name="SupportCommentButton" 
                     Background="Transparent"  Margin="2"
-                    RelativePanel.RightOf="SendToMessageButton"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
                     RelativePanel.LeftOf="DisSupportCommentButton">
                 <Button.Content>
                     <SymbolIcon Symbol="Like" />
@@ -60,6 +62,7 @@
 
             <Button Name="DisSupportCommentButton" 
                     Background="Transparent"  Margin="2"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
                     RelativePanel.AlignRightWithPanel="True">
                 <Button.Content>
                     <SymbolIcon Symbol="Dislike" />
