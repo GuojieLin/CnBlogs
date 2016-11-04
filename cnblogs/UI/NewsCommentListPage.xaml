@@ -29,14 +29,9 @@
                        RelativePanel.AlignVerticalCenterWithPanel="True"
                        Style="{StaticResource TopRelativePanelTextBlockStyle}">
             </TextBlock>
-
-            <Button Name="SendToMessageButton" 
-                    Background="Transparent"  Margin="2"
-                    RelativePanel.AlignRightWithPanel="True">
-                <Button.Content>
-                    <SymbolIcon Symbol="Send"/>
-                </Button.Content>
-            </Button>
+            <TextBlock  Margin="0,-8,0,0" Padding="3,0,0,0" Name="CommentAmountTextBlock"
+                       RelativePanel.AlignTopWith="TitleTextBlock" 
+                       RelativePanel.RightOf="TitleTextBlock">10</TextBlock>
         </RelativePanel>
 
         <ListView  Name="BlogCommentsGridView" 
@@ -46,6 +41,12 @@
                    ItemClick="BlogsGridView_ItemClick"
                    SelectionMode="Single"
                    HorizontalAlignment="Stretch">
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:BlogComment">
                     <usercontrol:BlogCommentItemUserControl></usercontrol:BlogCommentItemUserControl>
@@ -58,6 +59,26 @@
                       Height="100"
                       IsActive="False">
         </ProgressRing>
-        <RelativePanel Grid.Row="2"></RelativePanel>
+        <RelativePanel Grid.Row="2">
+            <RichEditBox  Name="CommentTextBox"
+                      HorizontalContentAlignment="Stretch"
+                      MaxHeight="100"
+                      TextWrapping="Wrap"
+                      AcceptsReturn="True"
+                      RelativePanel.AlignLeftWithPanel="True"
+                      RelativePanel.LeftOf="PostCommentButton"
+                      RelativePanel.AlignTopWithPanel="True"
+                      RelativePanel.AlignBottomWithPanel="True">
+            </RichEditBox>
+            <Button Name="PostCommentButton" 
+                    Tapped="PostCommentButton_Tapped"
+                    Background="Transparent"  Margin="2"
+                    RelativePanel.AlignRightWithPanel="True"
+                    RelativePanel.AlignVerticalCenterWithPanel="True">
+                <Button.Content>
+                    <SymbolIcon Symbol="Send"/>
+                </Button.Content>
+            </Button>
+        </RelativePanel>
     </Grid>
 </Page>

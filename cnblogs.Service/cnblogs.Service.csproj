@@ -107,7 +107,9 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthenticationService.cs" />
     <Compile Include="CacheService.cs" />
+    <Compile Include="NavigationService.cs" />
     <Compile Include="NewsService.cs" />
     <Compile Include="BlogService.cs" />
     <Compile Include="Constants.cs" />

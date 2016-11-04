@@ -41,6 +41,9 @@
           </uap:FileTypeAssociation>
         </uap:Extension>
       </Extensions>
+      <uap:ApplicationContentUriRules>
+        <uap:Rule Match="https://*.*.cnblogs.com" Type="exclude" />
+      </uap:ApplicationContentUriRules>
     </Application>
   </Applications>
   <Capabilities>

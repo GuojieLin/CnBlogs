@@ -53,6 +53,25 @@ namespace CnBlogs.Service
         /// 分页获取首页文章列表
         /// </summary>
         internal const string SiteHomeArticles = CnblogsWcfBlogUrl + "sitehome/paged/{0}/{1}";
+        /// <summary>
+        /// 评论
+        /// </summary>
+        internal const string PostBlogComment = "http://www.cnblogs.com/mvc/PostComment/Add.aspx";
+        /// <summary>
+        /// 投票博客
+        /// {"blogApp":"savorboard","postId":6029984,"voteType":"Digg","isAbandoned":false}
+        /// {"blogApp":"savorboard","postId":6029984,"voteType":"Bury","isAbandoned":false}
+        /// {"Id":0,"IsSuccess":true,"Message":"推荐成功","Data":null}
+        /// {"Id":0,"IsSuccess":false,"Message":"您已经推荐过","Data":null}
+        /// </summary>
+        internal const string VoteBlogPost = "http://www.cnblogs.com/mvc/vote/VoteBlogPost.aspx";
+        /// <summary>
+        /// {"commentId":3548659,"voteType":"Digg"}
+        /// {"commentId":3548659,"voteType":"Bury"}
+        /// {"Id":0,"IsSuccess":false,"Message":"不能推荐自己的内容","Data":null}
+        /// {"Id":0,"IsSuccess":false,"Message":"不能反对自己的内容","Data":null}
+        /// </summary>
+        internal const string VoteBlogComment = "http://www.cnblogs.com/mvc/vote/VoteComment.aspx";
         ///// <summary>
         /////
         ///// itemcount 
@@ -101,7 +120,20 @@ namespace CnBlogs.Service
         /// 分页获取推荐新闻列表
         /// </summary>
         internal const string RecentRecommendNewsByPaging = CnblogsWcfNewsUrl + "recommend/paged/{0}/{1}";
-        
+        /// <summary>
+        /// 投票新闻
+        /// {"contentId":556505,"commentId":350423,"action":"agree"}
+        /// {"contentId":556505,"commentId":350423,"action":"anti"}
+        /// {"IsSucceed":true,"Message":"推荐成功"}
+        /// {"IsSucceed":false,"Message":"您已经推荐过，不能再反对"}
+        /// </summary>
+        internal const string VoteNewsComment = "https://news.cnblogs.com/Comment/VoteNewsComment";
+
+        /// <summary>
+        /// {"contentId":556505,"action":"agree"}
+        /// {"IsSucceed":true,"Message":"推荐成功"}
+        /// </summary>
+        internal const string VoteNews = "https://news.cnblogs.com/News/VoteNews";
         #endregion
     }
 }

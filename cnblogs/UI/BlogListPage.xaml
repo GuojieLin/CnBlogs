@@ -48,13 +48,17 @@
             RefreshInvoked="PullToRefreshBox_RefreshInvoked">
             <ListView  Name="BlogsGridView" 
                    ItemsSource="{x:Bind BlogViewModel}"
-                   HorizontalAlignment="Stretch"
                    IsItemClickEnabled="True"
                    ItemClick="BlogsGridView_ItemClick"
                    SelectionMode="Single">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="data:Blog">
-                        <usercontrol:BlogItemUserControl></usercontrol:BlogItemUserControl>
+                    <DataTemplate x:DataType="data:Blog" >
+                        <usercontrol:BlogItemUserControl ></usercontrol:BlogItemUserControl>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Popups;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -50,6 +51,29 @@ namespace CnBlogs.UI
         private void BlogsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             //App.NavigationService.DetailFrameNavigate(typeof(BlogBodyPage),e.ClickedItem );
+        }
+
+
+        private async void PostCommentButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            string body;
+            CommentTextBox.Document.GetText(Windows.UI.Text.TextGetOptions.None, out body);
+            if (!AuthenticationService.IsLogin)
+            {
+                MessageDialog messageDialog = new MessageDialog("请先登录");
+                await messageDialog.ShowAsync();
+                AuthenticationService.RedictLoginPage();
+                return;
+            }
+            PostNewsComment postNewsComment = new PostNewsComment();
+           postNewsComment.ContentId= this.NewsCommentViewModel.News.Id;
+           postNewsComment.Content = body;
+           postNewsComment.StrComment = "";
+           postNewsComment.ParentCommentId = this.NewsCommentViewModel.News.Id;
+            postNewsComment.Title = this.NewsCommentViewModel.News.Title;
+            bool succeeded = await NewsService.PostCommentAsync(postNewsComment);
+            //{ "Id":0,"IsSuccess":false,"Message":"请先登录！","Data":null}
+            this.NewsCommentViewModel.Refresh();
         }
     }
 }

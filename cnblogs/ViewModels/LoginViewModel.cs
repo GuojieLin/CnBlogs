@@ -17,7 +17,8 @@ namespace CnBlogs.ViewModels
             this.UserName = loginUserInfo?.UserName;
             this.Password = loginUserInfo?.Password;
             this.IsLogin = loginUserInfo?.IsLogin ?? false;
-            this.Cookies = loginUserInfo?.Cookies;
+            this.Cookies = loginUserInfo?.Cookies ?? new CookieCollection();
+
         }
         private string _userName;
         public string UserName
@@ -68,11 +69,10 @@ namespace CnBlogs.ViewModels
 
         public void Login()
         {
-            CacheManager.Current.UpdateIsLogin(true);
         }
         public void LogOut()
         {
-            CacheManager.Current.UpdateIsLogin(false);
+            CacheManager.Current.UpdateLogout();
         }
     }
 }

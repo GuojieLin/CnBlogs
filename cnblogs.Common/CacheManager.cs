@@ -36,12 +36,10 @@ namespace CnBlogs.Common
                 //存在缓存
                 LoginUserInfo.UserName = (string)composite[nameof(LoginUserInfo.UserName)];
                 LoginUserInfo.Password = (string)composite[nameof(LoginUserInfo.Password)];
-                LoginUserInfo.IsLogin = (bool)(composite[nameof(LoginUserInfo.IsLogin)] ?? false);
                 ApplicationDataCompositeValue cookiesComposite;
                 //存在cookies则获取
                 if (_setting.GetSetting(nameof(LoginUserInfo.Cookies), out cookiesComposite))
                 {
-                    LoginUserInfo.Cookies = new CookieCollection();
                     foreach (string key in cookiesComposite.Keys)
                     {
                         LoginUserInfo.Cookies.Add(new Cookie(key, (string)cookiesComposite[key]));
@@ -74,16 +72,14 @@ namespace CnBlogs.Common
             composite[nameof(LoginUserInfo.Password)] = password;
             _setting.SetSetting(nameof(LoginUserInfo), composite);
         }
-        public void UpdateIsLogin(bool isLogin)
+        public void UpdateLogout()
         {
-            LoginUserInfo.IsLogin = isLogin;
-            ApplicationDataCompositeValue composite;
-            if (!_setting.GetSetting(nameof(LoginUserInfo), out composite))
+            ApplicationDataCompositeValue cookiesComposite;
+            if (!_setting.GetSetting(nameof(LoginUserInfo.Cookies), out cookiesComposite))
             {
-                composite = new ApplicationDataCompositeValue();
+                cookiesComposite = null;
             }
-            composite[nameof(LoginUserInfo.IsLogin)] = isLogin;
-            _setting.SetSetting(nameof(LoginUserInfo), composite);
+            _setting.SetSetting(nameof(LoginUserInfo.Cookies), cookiesComposite);
         }
         public void UpdateLoginUserInfo(string userName,string password,bool isRemerber = false)
         {

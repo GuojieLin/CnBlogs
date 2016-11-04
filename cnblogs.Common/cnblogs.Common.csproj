@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CacheManager.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="ControlHelper.cs" />
     <Compile Include="IManager.cs" />
     <Compile Include="OptimizationDisplayHelper.cs" />

@@ -39,28 +39,10 @@ namespace CnBlogs.Common
             string ex_mark = "<base target='_blank'/>";
             string body = html;
 
-            #region 移除自带标签属性
-            
-            html = Regex.Replace(html, @"<.* style=['|""].*(font[\s]*-[\s]*size.*)['|""]>", (m) =>
-            {
-                return m.Groups[0].Value.Replace(m.Groups[1].Value, "");
-            }, RegexOptions.IgnoreCase);  //移除所有font-size
-            
-            html = Regex.Replace(html, "<pre[^>]+>([^<]+)</pre>", (m) =>
-            {
-                if (string.IsNullOrEmpty(m.Groups[1].Value.Trim()))
+            html = RemoveAttributes(html);
+            //移除图片的其他标签
+            html = Regex.Replace(html, @"<img.*?src=(['""]?)(?<url>[^'"" ]+)(?=\1)[^>]*>", (m) =>
                 {
-                    return "";
-                }
-                else return m.Groups[0].Value;
-            }, RegexOptions.IgnoreCase);  //替换所有img标签 为本地图片
-
-            #endregion
-
-                html = Regex.Replace(html, @"<img.*?src=(['""]?)(?<url>[^'"" ]+)(?=\1)[^>]*>", (m) =>
-                {
-                    //else
-
                     #region 无图模式
                     string url = m.Groups["url"].Value;
                     if (string.IsNullOrEmpty(url)) url = Configuration.DefalutPath;
@@ -105,6 +87,28 @@ namespace CnBlogs.Common
             //合并
             //附加css
 
+        }
+        /// <summary>
+        /// 移除自带标签属性
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
+        private static string RemoveAttributes(string html)
+        {
+            html = Regex.Replace(html, @"<.* style=['|""].*(font[\s]*-[\s]*size.*)['|""]>", (m) =>
+            {
+                return m.Groups[0].Value.Replace(m.Groups[1].Value, "");
+            }, RegexOptions.IgnoreCase);  //移除所有font-size
+
+            html = Regex.Replace(html, "<pre[^>]+>([^<]+)</pre>", (m) =>
+            {
+                if (string.IsNullOrEmpty(m.Groups[1].Value.Trim()))
+                {
+                    return "";
+                }
+                else return m.Groups[0].Value;
+            }, RegexOptions.IgnoreCase);  //替换所有img标签 为本地图片
+            return html;
         }
     }
 }

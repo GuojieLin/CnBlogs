@@ -16,6 +16,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <RelativePanel  HorizontalAlignment="Stretch">
             <TextBlock Name="FloorNumberTextBlock"
@@ -69,7 +70,6 @@
                 </Button.Content>
             </Button>
         </RelativePanel>
-
         <TextBlock Text="{x:Bind BlogComment.Content}"
                    Style="{StaticResource BaseTextBlock}"
                    TextWrapping="Wrap"

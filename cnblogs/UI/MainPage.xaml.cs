@@ -1,6 +1,7 @@
 ﻿using CnBlogs.Common;
 using CnBlogs.Core.Enums;
 using CnBlogs.Entities;
+using CnBlogs.Service;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,6 +40,7 @@ namespace CnBlogs.UI
             SettingManager.SetDispatcher(this.Dispatcher);
             InitFrame();
             InitNavigationService();
+            AuthenticationService.SetLoginPage(typeof(LoginPage));
             //导航及界面主次Frame切换等都由NavigationService进行控制
 
             SystemNavigationManager.GetForCurrentView().BackRequested += BackRequest;
@@ -105,8 +107,7 @@ namespace CnBlogs.UI
         private void InitNavigationService()
         {
             bool isNarrow = AdaptiveStates?.CurrentState == NarrowState;
-            App.InitNavigationService(MasterFrame, DetailFrame, TertiaryFrame, isNarrow);
-
+            App.InitNavigationService(MasterFrame, DetailFrame, TertiaryFrame, typeof(BlankPage), isNarrow);
             //是手机设备或宽度为Narrow则显示CommandBar，否则显示SplitView
             App.NavigationService.NavigateToDetailAction = () =>
             {

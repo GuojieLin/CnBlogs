@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using CnBlogs.Common;
+using Windows.UI.Popups;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -51,6 +52,40 @@ namespace CnBlogs.UI
         private void BlogsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
             //App.NavigationService.DetailFrameNavigate(typeof(BlogBodyPage),e.ClickedItem );
+        }
+        private async void PostCommentButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            string body;
+            CommentTextBox.Document.GetText(Windows.UI.Text.TextGetOptions.None, out body);
+            if (!AuthenticationService.IsLogin)
+            {
+                MessageDialog messageDialog = new MessageDialog("请先登录");
+                await messageDialog.ShowAsync();
+                AuthenticationService.RedictLoginPage();
+                return;
+            }
+            PostBlogComment postBlogComment = new PostBlogComment();
+            postBlogComment.BlogApp = this.BlogCommentViewModel.Blog.BlogApp;
+            postBlogComment.Body = body;
+            postBlogComment.ParentCommentId = "0";
+            postBlogComment.PostId = this.BlogCommentViewModel.Blog.Id;
+            PostBlogCommentResponse postBlogCommentResponse = await BlogService.PostCommentAsync(postBlogComment);
+            if (!postBlogCommentResponse.IsSuccess)
+            {
+                MessageDialog messageDialog = new MessageDialog(postBlogCommentResponse.Message);
+                await messageDialog.ShowAsync();
+                //其他异常则不处理
+                if (postBlogCommentResponse.Message.Contains("登录"))
+                {
+                    AuthenticationService.RedictLoginPage();
+                }
+                return;
+            }
+            else
+            {
+                //{ "Id":0,"IsSuccess":false,"Message":"请先登录！","Data":null}
+                this.BlogCommentViewModel.Refresh();
+            }
         }
     }
 }

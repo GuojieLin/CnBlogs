@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Windows.Web.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 //======================================================//
 //			作者中文名:	林国杰				            //
@@ -16,6 +17,16 @@ namespace CnBlogs.Core
 {
     public class HttpHelper
     {
+        private static HttpClient _httpClient;
+        private static HttpClientHandler _httpClientHander;
+        private static CookieContainer _cookieContainer;
+        static HttpHelper()
+        {
+            _httpClientHander = new HttpClientHandler();
+            _cookieContainer = new CookieContainer();
+            _httpClientHander.CookieContainer = _cookieContainer;
+            _httpClient = new HttpClient(_httpClientHander);
+        }
         /// <summary>
         /// 访问服务器时的cookies
         /// </summary>
@@ -27,32 +38,14 @@ namespace CnBlogs.Core
         /// <returns></returns>
         public async static Task<string> Get(string url)
         {
-            try
-            {
-                HttpClient client = new HttpClient();
-                Uri uri = new Uri(url);
+            Uri uri = new Uri(url);
 
-                HttpResponseMessage response = await client.GetAsync(uri);
+            using (HttpResponseMessage response = await _httpClient.GetAsync(uri))
+            {
                 response.EnsureSuccessStatusCode();
 
                 return await response.Content.ReadAsStringAsync();
             }
-            catch (TaskCanceledException taskCanceledException)
-            {
-                // 因超时取消请求的逻辑
-                throw;
-            }
-            catch (System.Net.Http.HttpRequestException httpRequestException)
-            { 
-                // 处理其它可能异常的逻辑{
-                throw;
-            }
-            catch (Exception exception)
-            {
-                // 处理其它可能异常的逻辑{
-                throw;
-            }
-
         }
         /// <summary>
         /// 向服务器发送post请求 返回服务器回复数据
@@ -60,34 +53,19 @@ namespace CnBlogs.Core
         /// <param name="url"></param>
         /// <param name="body"></param>
         /// <returns></returns>
-        public async static Task<string> Post(string url, string body)
+        public async static Task<string> Post(string url, string data, CookieCollection cookieCollection)
         {
-            try
+            Uri uri = new Uri(url);
+            foreach (Cookie cookie in cookieCollection)
             {
-                HttpRequestMessage mSent = new HttpRequestMessage(HttpMethod.Post, new Uri(url));
-                mSent.Content = new HttpStringContent(body, Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json; charset=utf-8");
-                HttpClient client = new HttpClient();
-                HttpResponseMessage response = await client.SendRequestAsync(mSent);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
+                _cookieContainer.Add(uri, cookie);
             }
-
-            catch (TaskCanceledException taskCanceledException)
-            {
-                throw;
-                // 因超时取消请求的逻辑
-            }
-            catch (System.Net.Http.HttpRequestException httpRequestException)
-            {
-                throw;
-                // 处理其它可能异常的逻辑
-            }
-            catch (Exception exception)
-            {
-                throw;
-                // 处理其它可能异常的逻辑
-            }
-
+            HttpContent content = new StringContent(data,Encoding.UTF8, "application/json");
+            var userAgent = "Mozilla/5.0 (Windows Phone 10.0; Android 6.0.0; WebView/3.0; Microsoft; Virtual) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10240 sample/1.0";
+            _httpClient.DefaultRequestHeaders.Add("User-Agent", userAgent);
+            HttpResponseMessage response = await _httpClient.PostAsync(uri, content);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync();
         }
     }
 }

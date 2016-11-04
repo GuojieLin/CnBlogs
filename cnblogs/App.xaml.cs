@@ -1,4 +1,5 @@
-﻿using CnBlogs.UI;
+﻿using CnBlogs.Service;
+using CnBlogs.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,9 +42,9 @@ namespace CnBlogs
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
-        public static void InitNavigationService(Frame masterFrame, Frame detailFrame,Frame tertiaryFrame, bool isNarrow)
+        public static void InitNavigationService(Frame masterFrame, Frame detailFrame,Frame tertiaryFrame,Type type, bool isNarrow)
         {
-            App.NavigationService = new NavigationService(masterFrame, detailFrame, tertiaryFrame, isNarrow);
+            App.NavigationService = new NavigationService(masterFrame, detailFrame, tertiaryFrame, type, isNarrow);
         }
 
         /// <summary>

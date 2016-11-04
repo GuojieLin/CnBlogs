@@ -113,6 +113,8 @@
     <Compile Include="LoginUserInfo.cs" />
     <Compile Include="News.cs" />
     <Compile Include="NewsBody.cs" />
+    <Compile Include="PostBlogComment.cs" />
+    <Compile Include="PostNewsComment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Cnblogs.Entities.rd.xml" />
   </ItemGroup>

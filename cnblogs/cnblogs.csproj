@@ -136,7 +136,6 @@
     <Compile Include="ViewModels\NewsCommentViewModel.cs" />
     <Compile Include="ViewModels\NewsViewModel.cs" />
     <Compile Include="ViewModels\BlogViewModel.cs" />
-    <Compile Include="NavigationService.cs" />
     <Compile Include="UI\BlankPage.xaml.cs">
       <DependentUpon>BlankPage.xaml</DependentUpon>
     </Compile>

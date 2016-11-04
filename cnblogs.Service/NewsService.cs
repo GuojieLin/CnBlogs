@@ -1,4 +1,5 @@
-﻿using CnBlogs.Core;
+﻿using CnBlogs.Common;
+using CnBlogs.Core;
 using CnBlogs.Core.Extentsions;
 using CnBlogs.Entities;
 using System;
@@ -34,7 +35,7 @@ namespace CnBlogs.Service
                 string url = string.Format(WcfApiUrlConstants.RecentNewsByPaging, pageIndex, pageSize);
                 string xml = await HttpHelper.Get(url);
                 List<News> newses = new List<News>();
-                xml = xml.Replace(Constants.XmlNameSpace, "").Replace("&", "");
+                xml = xml.Replace(Constants.XmlNameSpace, "");
                 XElement xElement = XElement.Parse(xml);
                 foreach (XElement entry in xElement.Elements("entry"))
                 {
@@ -61,7 +62,7 @@ namespace CnBlogs.Service
             {
                 string url = string.Format(WcfApiUrlConstants.NewsContent, id);
                 string xml = await HttpHelper.Get(url);
-                xml = xml.Replace(Constants.XmlNameSpace, "").Replace("&", "");
+                xml = xml.Replace(Constants.XmlNameSpace, "");
                 XElement xElement = XElement.Parse(xml);
                 return NewsBody.Load(xElement);
             }
@@ -84,7 +85,7 @@ namespace CnBlogs.Service
                 string url = string.Format(WcfApiUrlConstants.GetNewsComment, id, pageIndex,pageSize);
                 string xml = await HttpHelper.Get(url);
                 List<BlogComment> blogComments = new List<BlogComment>();
-                xml = xml.Replace(Constants.XmlNameSpace, "").Replace("&", "");
+                xml = xml.Replace(Constants.XmlNameSpace, "");
                 XElement xElement = XElement.Parse(xml);
                 int i = 0;
                 foreach (XElement entry in xElement.Elements("entry"))
@@ -98,6 +99,14 @@ namespace CnBlogs.Service
             {
                 return null;
             }
+        }
+
+        public async static Task<bool> PostCommentAsync(PostNewsComment postNewsComment)
+        {
+            string data = JsonSerializeHelper.Serialize(postNewsComment);
+            string json = await HttpHelper.Post(WcfApiUrlConstants.PostBlogComment, data, CacheManager.LoginUserInfo.Cookies);
+            PostBlogCommentResponse response = JsonSerializeHelper.Deserialize<PostBlogCommentResponse>(json);
+            return response.IsSuccess;
         }
     }
 }

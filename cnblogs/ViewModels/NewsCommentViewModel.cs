@@ -21,10 +21,10 @@ namespace CnBlogs.ViewModels
 {
     internal class NewsCommentViewModel : BaseViewModel<BlogComment>
     {
-        private News _news;
+        public News News { get; private set; }
         public NewsCommentViewModel(News news):base()
         {
-            this._news = news;
+            this.News = news;
         }
         protected override async Task<IList<BlogComment>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
         {
@@ -33,7 +33,7 @@ namespace CnBlogs.ViewModels
             List<BlogComment> news = null;
             try
             {
-                news = await NewsService.GetNewsCommentsAsync(_news.Id, _currentPage, _pageSize);
+                news = await NewsService.GetNewsCommentsAsync(News.Id, _currentPage, _pageSize);
             }
             catch (Exception)
             {

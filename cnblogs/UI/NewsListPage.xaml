@@ -53,6 +53,12 @@
                    IsItemClickEnabled="True"
                    ItemClick="NewsListView_ItemClick"
                    SelectionMode="Extended">
+
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="data:News">
                         <usercontrol:NewsItemUserControl></usercontrol:NewsItemUserControl>

@@ -1,5 +1,6 @@
 ﻿using CnBlogs.Common;
 using CnBlogs.Entities;
+using CnBlogs.Service;
 using CnBlogs.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -46,8 +47,8 @@ namespace CnBlogs.UI
             LoginWebView.LoadCompleted += LoginWebView_LoadCompleted;
             LoginWebView.NavigationStarting += LoginWebView_NavigationStarting;
             NavigationWithCookies();
+            
         }
-
         private void LoadLoginUserInfoFromCache()
         {
             LoginUserInfo loginUserInfo = CacheManager.LoginUserInfo;
@@ -63,6 +64,7 @@ namespace CnBlogs.UI
             //var httpBaseProtocolFilter = new HttpBaseProtocolFilter();
             //httpBaseProtocolFilter.UseProxy = true;
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
+            
             var userAgent = "Mozilla/5.0 (Windows Phone 10.0; Android 6.0.0; WebView/3.0; Microsoft; Virtual) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10240 sample/1.0";
             httpRequestMessage.Headers.Add("User-Agent", userAgent);
             if (_loginViewModel.IsLogin && _loginViewModel.Cookies != null)
@@ -75,15 +77,56 @@ namespace CnBlogs.UI
                 }
             }
             LoginWebView.NavigateWithHttpRequestMessage(httpRequestMessage);
+            
         }
         bool isRemerberTemp;
         string userNameTemp;
         string passwordTemp;
         private async void LoginWebView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
         {
+            //登陆成功取消跳转 
+            LoadingProgressRing.IsActive = true;
             userNameTemp = await GetUserName();
             passwordTemp = await GetPassword();
             isRemerberTemp = args.Uri.Query.Contains("remember");
+            if (args.Uri.AbsoluteUri.StartsWith("https://home.cnblogs.com/"))
+            {
+                LoginCompeleted(args.Uri);
+                args.Cancel = true;
+            }
+        }
+
+        private void LoginCompeleted(Uri uri)
+        {//登录完成获取cookeis
+            var cookiesCollection = GetBrowserCookie(uri);
+            bool isLoginSucceeded = cookiesCollection.FirstOrDefault(c => c.Name.ToUpperInvariant()
+            .Contains(Common.Constants.AuthenticationCookiesName.ToUpperInvariant())) != null;
+
+            if (cookiesCollection != null)
+            {
+                if (_loginViewModel.Cookies == null) _loginViewModel.Cookies = new System.Net.CookieCollection();
+                foreach (var cookies in cookiesCollection)
+                {
+                    _loginViewModel.Cookies.Add(new System.Net.Cookie(cookies.Name, cookies.Value));
+                }
+                CacheManager.Current.UpdateCookies(_loginViewModel.Cookies);
+            }
+            if (isLoginSucceeded)//登录成功
+            {
+                //获取用户名和登录密码,是否记住密码
+                _loginViewModel.UserName = userNameTemp;
+                _loginViewModel.Password = passwordTemp;
+                _loginViewModel.IsRemerber = isRemerberTemp;
+                CacheManager.Current.UpdateLoginUserInfo(_loginViewModel.UserName, _loginViewModel.Password, isRemerberTemp);
+                if (AuthenticationService.NeedReturn)
+                {
+                    AuthenticationService.ReturnPreviousPage();
+                }
+            }
+            else
+            {
+                CacheManager.Current.UpdateLogout();
+            }
         }
 
         private async void LoginWebView_LoadCompleted(object sender, NavigationEventArgs e)
@@ -99,36 +142,8 @@ namespace CnBlogs.UI
                     password.value='" + _loginViewModel.Password + "';";
                 await LoginWebView.InvokeScriptAsync("eval", new string[] { js });
             }
-            //登录完成获取cookeis
-            var cookiesCollection = GetBrowserCookie(e.Uri);
-            bool isLoginSucceeded = cookiesCollection.FirstOrDefault(c => c.Name.ToUpperInvariant()
-            .Contains(".CNBlogsCookie".ToUpperInvariant())) != null;
-
-            if (cookiesCollection != null)
-            {
-                if (_loginViewModel.Cookies == null) _loginViewModel.Cookies = new System.Net.CookieCollection();
-                foreach (var cookies in cookiesCollection)
-                {
-                    _loginViewModel.Cookies.Add(new System.Net.Cookie(cookies.Name, cookies.Value));
-                }
-                CacheManager.Current.UpdateCookies(_loginViewModel.Cookies);
-            }
-            if (isLoginSucceeded)//登录成功
-            {
-                CacheManager.Current.UpdateIsLogin(true);
-                if (isLoginSucceeded)
-                {
-                    //获取用户名和登录密码,是否记住密码
-                    _loginViewModel.UserName = userNameTemp;
-                    _loginViewModel.Password = passwordTemp;
-                    _loginViewModel.IsRemerber = isRemerberTemp;
-                    CacheManager.Current.UpdateLoginUserInfo(_loginViewModel.UserName,_loginViewModel.Password,isRemerberTemp);
-                }
-            }
-            else
-            {
-                CacheManager.Current.UpdateIsLogin(false);
-            }
+            
+            LoadingProgressRing.IsActive = false;
         }
 
         private async Task<string> InvokeScriptAsync(string js)
