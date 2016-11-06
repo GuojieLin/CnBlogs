@@ -34,7 +34,7 @@
                        RelativePanel.RightOf="TitleTextBlock">10</TextBlock>
         </RelativePanel>
 
-        <ListView  Name="BlogCommentsGridView" 
+        <ListView  Name="NewsCommentsGridView" 
                    Grid.Row="1"
                    ItemsSource="{x:Bind NewsCommentViewModel}"
                    IsItemClickEnabled="True"

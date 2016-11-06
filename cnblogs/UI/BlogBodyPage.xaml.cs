@@ -29,32 +29,22 @@ namespace CnBlogs.UI
     /// </summary>
     public sealed partial class BlogBodyPage : Page
     {
-        public Blog Blog { get; private set; }
-        public SettingManager SettingManager;
+        internal BlogBodyViewModel BlogBodyViewModel;
 
         public BlogBodyPage()
         {
             this.InitializeComponent();
-            SettingManager = SettingManager.Current;
             //NavigationCacheMode = NavigationCacheMode.Enabled;
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            Blog = e.Parameter as Blog;
-            DataLoading();
-            var body = await BlogService.GetBlogBodyAsync(Blog.Id);
-            Blog.Body = OptimizationDisplayHelper.OptimizationHtmlDisplay(body); ;
-            BlogBodyWebView.NavigateToString(Blog.Body);
-            //BlogCommentViewModel = new BlogCommentViewModel(Blog);
-            //BlogCommentViewModel.Refresh();
-            //if (blog_body != null)
-            //{
-            //    if (App.Theme == ApplicationTheme.Dark)  //暗主题
-            //    {
-            //        blog_body += "<style>body{background-color:black;color:white;}</style>";
-            //    }
-            //    BlogContent.NavigateToString(blog_body);
-            //}
+            if (e.NavigationMode == NavigationMode.New)
+            {
+                BlogBodyViewModel = new BlogBodyViewModel(e.Parameter as Blog);
+                DataLoading();
+                await BlogBodyViewModel.LoadBlogBody();
+                BlogBodyWebView.NavigateToString(BlogBodyViewModel.Blog.Body);
+            }
             DataLoaded();
             base.OnNavigatedTo(e);
         }
@@ -73,14 +63,10 @@ namespace CnBlogs.UI
             LoadingProgressRing.IsActive = false;
         }
 
-        private void DiggsButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void CommentButton_Click(object sender, RoutedEventArgs e)
         {
-            App.NavigationService.TertiaryFrameNavigate(typeof(BlogCommentListPage), this.Blog);
+            App.NavigationService.TertiaryFrameNavigate(typeof(BlogCommentListPage), this.BlogBodyViewModel.Blog);
         }
 
         private void BlogsGridView_ItemClick(object sender, ItemClickEventArgs e)
@@ -90,7 +76,7 @@ namespace CnBlogs.UI
 
         private async void ShareButton_Click(object sender, RoutedEventArgs e)
         {
-            ShareDialog.Default.Init(Blog.BlogUrl, Blog.Title);
+            ShareDialog.Default.Init(this.BlogBodyViewModel.Blog.BlogUrl, this.BlogBodyViewModel.Blog.Title);
             ContentDialogResult result = await ShareDialog.Default.ShowAsync();
         }
 
@@ -109,19 +95,24 @@ namespace CnBlogs.UI
         private void NightModeButton_Click(object sender, RoutedEventArgs e)
         {
             ElementTheme theme = ElementTheme.Default;
-            if (SettingManager.Theme == ElementTheme.Dark)
+            if (this.BlogBodyViewModel.SettingManager.Theme == ElementTheme.Dark)
                 theme = ElementTheme.Light;
-            else if (SettingManager.Theme == ElementTheme.Light)
+            else if (this.BlogBodyViewModel.SettingManager.Theme == ElementTheme.Light)
                 theme = ElementTheme.Dark;
-            SettingManager.UpdateTheme(theme);
+            this.BlogBodyViewModel.SettingManager.UpdateTheme(theme);
         }
 
         private async void NavigateBrowserButton_Click(object sender, RoutedEventArgs e)
         {
             // The URI to launch
-            var blogUri = new Uri(Blog.BlogUrl);
+            var blogUri = new Uri(BlogBodyViewModel.Blog.BlogUrl);
             // Launch the URI
             var success = await Windows.System.Launcher.LaunchUriAsync(blogUri);
+        }
+
+        private void LikeButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

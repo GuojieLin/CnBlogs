@@ -43,6 +43,7 @@ namespace CnBlogs.Service
         /// 获取文章评论
         /// </summary>
         internal const string GetBlogComments = CnblogsWcfBlogUrl + "post/{0}/comments/{1}/{2}";
+        //http://www.cnblogs.com/mvc/blog/GetComments.aspx?postId=6029984&blogApp=savorboard&pageIndex=0&anchorCommentId=0&_=1478444141047
         /// <summary>
         /// postId
         /// 获取文章内容
@@ -72,6 +73,10 @@ namespace CnBlogs.Service
         /// {"Id":0,"IsSuccess":false,"Message":"不能反对自己的内容","Data":null}
         /// </summary>
         internal const string VoteBlogComment = "http://www.cnblogs.com/mvc/vote/VoteComment.aspx";
+        /// <summary>
+        /// 博客中获取用户信息，可以提取当前博客的反对数量
+        /// </summary>
+        internal const string BlogPostInfo = "http://www.cnblogs.com/mvc/blog/BlogPostInfo.aspx?blogId=280011&postId=6036786&blogApp=zhangxiongcn&blogUserGuid=b34ebaaa-1b02-e611-9fc1-ac853d9f53cc";
         ///// <summary>
         /////
         ///// itemcount 
@@ -134,6 +139,19 @@ namespace CnBlogs.Service
         /// {"IsSucceed":true,"Message":"推荐成功"}
         /// </summary>
         internal const string VoteNews = "https://news.cnblogs.com/News/VoteNews";
+        #endregion
+        #region User
+
+
+        /// <summary>
+        /// 获取用户信息
+        /// <div id="profile_block">昵称：<a href="http://home.cnblogs.com/u/Mangues/">mangues</a><br/>园龄：<a href="http
+        //://home.cnblogs.com/u/Mangues/" title="入园时间：2015-01-08">1年9个月</a><br/>粉丝：<a href="http://home.cnblogs
+        //.com/u/Mangues/followers/">4</a><br/>关注：<a href="http://home.cnblogs.com/u/Mangues/followees/">1</a>
+        //<div id = "p_b_follow" ></ div >< script > getFollowStatus('b5f14557-3d97-e411-b908-9dcfd8948a71') </ script ><
+        /// div >
+        /// </summary>
+        internal const string UserInfo = "http://www.cnblogs.com/mvc/blog/news.aspx?blogApp={0}";
         #endregion
     }
 }

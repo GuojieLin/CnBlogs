@@ -9,10 +9,13 @@
     xmlns:data="using:CnBlogs.Entities"
     xmlns:usercontrol="using:CnBlogs.UserControls"
     xmlns:valueconverter="using:CnBlogs.Common.ValueConverters"
-    RequestedTheme="{x:Bind SettingManager.Theme,Mode=OneWay}">
+    RequestedTheme="{x:Bind BlogBodyViewModel.SettingManager.Theme,Mode=OneWay}">
 
     <Page.Resources>
         <valueconverter:ThemeConverter x:Key="themeConverter"></valueconverter:ThemeConverter>
+        <valueconverter:CommentCountConverter x:Key="commentCountConverter"></valueconverter:CommentCountConverter>
+        <valueconverter:LikeCountConverter x:Key="likeCountConverter"></valueconverter:LikeCountConverter>
+        <valueconverter:DislikeCountConverter x:Key="dislikeCountConverter"></valueconverter:DislikeCountConverter>
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -57,11 +60,11 @@
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72D;"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarToggleButton Icon="Like" Label="支持" Name="DiggsButton" Click="DiggsButton_Click" />
-            <AppBarButton Icon="Edit" Label="评论" Name="CommentButton" Click="CommentButton_Click"/>
+            <AppBarToggleButton Icon="Like" Label="{x:Bind BlogBodyViewModel.Blog.Diggs,Converter={StaticResource likeCountConverter},Mode=OneWay}" Name="LikeButton" Click="LikeButton_Click" />
+            <AppBarButton Icon="Edit" Label="{x:Bind BlogBodyViewModel.Blog.Comments,Converter={StaticResource commentCountConverter},Mode=OneWay}" Name="CommentButton" Click="CommentButton_Click"/>
         <CommandBar.SecondaryCommands>
             <AppBarButton Label="刷新" Name="UpdateButton" Click="ShareButton_Click"/>
-            <AppBarButton Label="{x:Bind SettingManager.Theme,Converter={StaticResource themeConverter},Mode=OneWay}" Name="NightModeButton" Click="NightModeButton_Click" />
+                <AppBarButton Label="{x:Bind BlogBodyViewModel.SettingManager.Theme,Converter={StaticResource themeConverter},Mode=OneWay}" Name="NightModeButton" Click="NightModeButton_Click" />
             <AppBarButton Label="转到浏览器" Name="NavigateBrowserButton" Click="NavigateBrowserButton_Click"/>
         </CommandBar.SecondaryCommands>
     </CommandBar>
@@ -76,16 +79,16 @@
                         HorizontalAlignment="Center"
                         Padding="5">
                 <TextBlock Name="BlogTitle"
-                            Text="{x:Bind Blog.Title}"
+                            Text="{x:Bind BlogBodyViewModel.Blog.Title}"
                             FontSize="15"
                                HorizontalAlignment="Center"/>
                 <StackPanel Name="BlogSecondTitle"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center">
-                    <TextBlock Name="AuthorName" Text="{x:Bind Blog.Author.Name}"></TextBlock>
-                    <TextBlock Name="PublishTime" Text="{x:Bind Blog.Updated}"></TextBlock>
-                    <TextBlock Name="Views" Text="{x:Bind Blog.Views}"></TextBlock>
-                    <TextBlock Name="Comments" Text="{x:Bind Blog.Comments}"></TextBlock>
+                    <TextBlock Name="AuthorName" Text="{x:Bind BlogBodyViewModel.Blog.Author.Name}"></TextBlock>
+                    <TextBlock Name="PublishTime" Text="{x:Bind BlogBodyViewModel.Blog.Updated}"></TextBlock>
+                    <TextBlock Name="Views" Text="{x:Bind BlogBodyViewModel.Blog.Views}"></TextBlock>
+                    <TextBlock Name="Comments" Text="{x:Bind BlogBodyViewModel.Blog.Comments}"></TextBlock>
                 </StackPanel>
             </StackPanel>
             <Rectangle Height="1" Grid.Row="0" VerticalAlignment="Bottom" Fill="LightGray"/>
