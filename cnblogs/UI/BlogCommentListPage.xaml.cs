@@ -69,7 +69,7 @@ namespace CnBlogs.UI
             postBlogComment.Body = body;
             postBlogComment.ParentCommentId = "0";
             postBlogComment.PostId = this.BlogCommentViewModel.Blog.Id;
-            PostBlogCommentResponse postBlogCommentResponse = await BlogService.PostCommentAsync(postBlogComment);
+            PostResult postBlogCommentResponse = await BlogService.PostCommentAsync(postBlogComment);
             if (!postBlogCommentResponse.IsSuccess)
             {
                 MessageDialog messageDialog = new MessageDialog(postBlogCommentResponse.Message);

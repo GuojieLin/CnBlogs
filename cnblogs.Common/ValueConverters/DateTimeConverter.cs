@@ -11,7 +11,7 @@ namespace CnBlogs.Common.ValueConverters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return ((DateTime)value).ToString("yyyy-MM-dd HH:mm");
+            return $"发布于 {((DateTime)value).ToString("yyyy-MM-dd HH:mm")}";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

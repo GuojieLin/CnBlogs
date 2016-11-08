@@ -131,6 +131,7 @@
       <DependentUpon>ShareDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\NewsBodyViewModel.cs" />
     <Compile Include="ViewModels\BlogBodyViewModel.cs" />
     <Compile Include="ViewModels\BlogCommentViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />

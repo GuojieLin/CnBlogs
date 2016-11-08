@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    RequestedTheme="{x:Bind SettingManager.Theme,Mode=OneWay}">
+    RequestedTheme="{x:Bind NewsBodyViewModel.SettingManager.Theme,Mode=OneWay}">
 
     <Page.Resources>
         <ResourceDictionary Source="..\Resources\Dictionary.xaml"></ResourceDictionary>
@@ -50,15 +50,15 @@
                     HorizontalAlignment="Stretch"
                     Opening="CommandBarPanel_Opening"
                     Closing="CommandBarPanel_Closing">
-            <AppBarButton Label="分享" Name="ShareButton" Click="ShareButton_Click">
+            <AppBarButton Label="分享" Name="ShareAppBarButton" Tapped="ShareAppBarButton_Tapped">
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72D;"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarToggleButton Icon="Like" Label="支持" Name="DiggsButton" Click="DiggsButton_Click" />
-            <AppBarButton Icon="Edit" Label="评论" Name="CommentButton" Click="CommentButton_Click"/>
+            <AppBarButton Icon="Like" Label="{x:Bind  NewsBodyViewModel.News.Diggs,Converter={StaticResource likeCountConverter},Mode=OneWay}" Name="LikeAppBarButton" Tapped="LikeAppBarButton_Tapped" />
+            <AppBarButton Icon="Edit" Label="{x:Bind  NewsBodyViewModel.News.Comments,Converter={StaticResource commentCountConverter},Mode=OneWay}" Name="CommentAppBarButton" Tapped="CommentAppBarButton_Tapped"/>
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="刷新" Name="UpdateButton" Click="ShareButton_Click"/>
+                <AppBarButton Label="刷新" Name="UpdateButton"/>
                 <AppBarToggleButton Label="夜间模式" Name="NightModeButton" Click="DarkModeButton_Click" />
                 <AppBarButton Label="转到浏览器" Name="NavigateBrowserButton" Click="JumpToBrown_Click"/>
             </CommandBar.SecondaryCommands>
@@ -74,16 +74,21 @@
                     Padding="5"
                     Grid.Row="0">
                 <TextBlock Name="BlogTitle"
-                        Text="{x:Bind News.Title}"
+                        Text="{x:Bind  NewsBodyViewModel.News.Title}"
                         HorizontalAlignment="Center"
-                        FontSize="15"
-                        Padding="5"/>
+                        TextWrapping="Wrap" 
+                            Style="{StaticResource TitleTextBlock}"/>
                 <StackPanel Name="BlogSecondTitle" Orientation="Horizontal"
                             HorizontalAlignment="Center">
-                    <TextBlock Name="AuthorName" Text="{StaticResource ItWriter}"></TextBlock>
-                    <TextBlock Name="PublishTime" Text="{x:Bind News.Body.SubmitDate}"></TextBlock>
-                    <TextBlock Name="Views" Text="{x:Bind News.Views}"></TextBlock>
-                    <TextBlock Name="Comments" Text="{x:Bind News.Comments}"></TextBlock>
+                    <TextBlock Name="AuthorName" 
+                               Style="{StaticResource SubTitleTextBlock}"
+                               Text="{StaticResource ItWriter}"></TextBlock>
+                    <TextBlock Name="PublishTime" 
+                               Style="{StaticResource SubTitleTextBlock}"
+                               Text="{x:Bind  NewsBodyViewModel.News.Body.SubmitDate,Converter={StaticResource dateTimeConverter}}"></TextBlock>
+                    <TextBlock Name="Views" 
+                               Style="{StaticResource SubTitleTextBlock}"
+                               Text="{x:Bind  NewsBodyViewModel.News.Views,Converter={StaticResource viewCountConverter}}"></TextBlock>
                 </StackPanel>
             </StackPanel>
             <Rectangle Height="1" Grid.Row="0" VerticalAlignment="Bottom" Fill="LightGray"/>

@@ -29,14 +29,14 @@ namespace CnBlogs.Entities
     //.cnblogs.com/u/580757/\"\u003e\u003cb\u003e杰哥很忙\u003c/b\u003e\u003c/a\u003e:\u003cblockquote class=\"bq_post_comment
     //\"\u003etest\u003c/blockquote\u003e\u003c/div\u003e","Duration":"93"}
     /// </summary>
-    [DataContract]
-    public class PostBlogCommentResponse
-    {
-        [DataMember]
-        public bool IsSuccess { get; set; }
-        [DataMember]
-        public string Message { get; set; }
-        [DataMember]
-        public int Duration { get; set; }
-    }
+    //[DataContract]
+    //public class PostBlogCommentResponse
+    //{
+    //    [DataMember]
+    //    public bool IsSuccess { get; set; }
+    //    [DataMember]
+    //    public string Message { get; set; }
+    //    [DataMember]
+    //    public int Duration { get; set; }
+    //}
 }

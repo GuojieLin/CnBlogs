@@ -8,14 +8,10 @@
     mc:Ignorable="d"
     xmlns:data="using:CnBlogs.Entities"
     xmlns:usercontrol="using:CnBlogs.UserControls"
-    xmlns:valueconverter="using:CnBlogs.Common.ValueConverters"
     RequestedTheme="{x:Bind BlogBodyViewModel.SettingManager.Theme,Mode=OneWay}">
 
     <Page.Resources>
-        <valueconverter:ThemeConverter x:Key="themeConverter"></valueconverter:ThemeConverter>
-        <valueconverter:CommentCountConverter x:Key="commentCountConverter"></valueconverter:CommentCountConverter>
-        <valueconverter:LikeCountConverter x:Key="likeCountConverter"></valueconverter:LikeCountConverter>
-        <valueconverter:DislikeCountConverter x:Key="dislikeCountConverter"></valueconverter:DislikeCountConverter>
+        <ResourceDictionary Source="..\Resources\Dictionary.xaml"></ResourceDictionary>
     </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -55,15 +51,15 @@
                     HorizontalAlignment="Stretch"
                     Opening="CommandBarPanel_Opening"
                     Closing="CommandBarPanel_Closing">
-            <AppBarButton Label="分享" Name="ShareButton" Click="ShareButton_Click">
+            <AppBarButton Label="分享" Name="ShareAppBarButton" Tapped="ShareAppBarButton_Tapped">
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE72D;"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarToggleButton Icon="Like" Label="{x:Bind BlogBodyViewModel.Blog.Diggs,Converter={StaticResource likeCountConverter},Mode=OneWay}" Name="LikeButton" Click="LikeButton_Click" />
-            <AppBarButton Icon="Edit" Label="{x:Bind BlogBodyViewModel.Blog.Comments,Converter={StaticResource commentCountConverter},Mode=OneWay}" Name="CommentButton" Click="CommentButton_Click"/>
+            <AppBarButton Icon="Like" Label="{x:Bind BlogBodyViewModel.Blog.Diggs,Converter={StaticResource likeCountConverter},Mode=TwoWay}" Name="LikeAppBarButton" Tapped="LikeAppBarButton_Tapped" />
+            <AppBarButton Icon="Edit" Label="{x:Bind BlogBodyViewModel.Blog.Comments,Converter={StaticResource commentCountConverter},Mode=TwoWay}" Name="CommentAppBarButton" Tapped="CommentAppBarButton_Tapped"/>
         <CommandBar.SecondaryCommands>
-            <AppBarButton Label="刷新" Name="UpdateButton" Click="ShareButton_Click"/>
+            <AppBarButton Label="刷新" Name="UpdateButton"/>
                 <AppBarButton Label="{x:Bind BlogBodyViewModel.SettingManager.Theme,Converter={StaticResource themeConverter},Mode=OneWay}" Name="NightModeButton" Click="NightModeButton_Click" />
             <AppBarButton Label="转到浏览器" Name="NavigateBrowserButton" Click="NavigateBrowserButton_Click"/>
         </CommandBar.SecondaryCommands>
@@ -78,21 +74,27 @@
                         Name="TitleStack" 
                         HorizontalAlignment="Center"
                         Padding="5">
-                <TextBlock Name="BlogTitle"
+                <TextBlock Name="NewsTitle"
                             Text="{x:Bind BlogBodyViewModel.Blog.Title}"
-                            FontSize="15"
-                               HorizontalAlignment="Center"/>
-                <StackPanel Name="BlogSecondTitle"
+                            TextWrapping="Wrap" 
+                            Style="{StaticResource TitleTextBlock}"
+                            HorizontalAlignment="Center"/>
+                <StackPanel Name="NewsSecondTitle"
                             Orientation="Horizontal"
                             HorizontalAlignment="Center">
-                    <TextBlock Name="AuthorName" Text="{x:Bind BlogBodyViewModel.Blog.Author.Name}"></TextBlock>
-                    <TextBlock Name="PublishTime" Text="{x:Bind BlogBodyViewModel.Blog.Updated}"></TextBlock>
-                    <TextBlock Name="Views" Text="{x:Bind BlogBodyViewModel.Blog.Views}"></TextBlock>
-                    <TextBlock Name="Comments" Text="{x:Bind BlogBodyViewModel.Blog.Comments}"></TextBlock>
+                    <TextBlock Name="AuthorName" 
+                               Style="{StaticResource SubTitleTextBlock}"
+                               Text="{x:Bind BlogBodyViewModel.Blog.Author.Name}"></TextBlock>
+                    <TextBlock Name="PublishTime" 
+                               Style="{StaticResource SubTitleTextBlock}"
+                               Text="{x:Bind BlogBodyViewModel.Blog.Updated ,Converter={StaticResource dateTimeConverter}}"></TextBlock>
+                    <TextBlock Name="Views" 
+                               Style="{StaticResource SubTitleTextBlock}"
+                               Text="{x:Bind BlogBodyViewModel.Blog.Views,Converter={StaticResource viewCountConverter}}"></TextBlock>
                 </StackPanel>
             </StackPanel>
             <Rectangle Height="1" Grid.Row="0" VerticalAlignment="Bottom" Fill="LightGray"/>
-            <WebView Grid.Row="1" Name="BlogBodyWebView"></WebView>
+            <WebView Grid.Row="1" Name="BlogBodyWebView" ></WebView>
             <ProgressRing Grid.Row="1"
                       Name="LoadingProgressRing"
                       Width="100"

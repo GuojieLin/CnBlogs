@@ -1,6 +1,8 @@
 ﻿using CnBlogs.Common;
 using CnBlogs.Entities;
 using CnBlogs.Service;
+using CnBlogs.UserControls;
+using CnBlogs.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +11,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Xml.Linq;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -26,30 +29,21 @@ namespace CnBlogs.UI
     /// </summary>
     public sealed partial class NewsBodyPage : Page
     {
-        public News News { get; private set; }
-        public SettingManager SettingManager;
+        internal NewsBodyViewModel NewsBodyViewModel;
+
         public NewsBodyPage()
         {
             this.InitializeComponent();
-            SettingManager = SettingManager.Current;
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            News = e.Parameter as News;
-            DataLoading();
-            var body = await NewsService.GetNewsBodyAsync(News.Id);
-            News.SetBody(body);
-            News.Body.Content = OptimizationDisplayHelper.OptimizationHtmlDisplay(body.Content);
-            NewsBodyWebView.NavigateToString(News.Body.Content);
-
-            //if (blog_body != null)
-            //{
-            //    if (App.Theme == ApplicationTheme.Dark)  //暗主题
-            //    {
-            //        blog_body += "<style>body{background-color:black;color:white;}</style>";
-            //    }
-            //    BlogContent.NavigateToString(blog_body);
-            //}
+            if (e.NavigationMode == NavigationMode.New)
+            {
+                NewsBodyViewModel = new NewsBodyViewModel(e.Parameter as News);
+                DataLoading();
+                await NewsBodyViewModel.LoadNewsBody();
+                NewsBodyWebView.NavigateToString(NewsBodyViewModel.News.Body.Content);
+            }
             DataLoaded();
             base.OnNavigatedTo(e);
         }
@@ -68,20 +62,6 @@ namespace CnBlogs.UI
             LoadingProgressRing.IsActive = false;
         }
 
-        private void DiggsButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void ShareButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void CommentButton_Click(object sender, RoutedEventArgs e)
-        {
-            App.NavigationService.TertiaryFrameNavigate(typeof(NewsCommentListPage), this.News);
-        }
         private void CommandBarPanel_Opening(object sender, object e)
         {
             CommandBar cb = sender as CommandBar;
@@ -102,6 +82,35 @@ namespace CnBlogs.UI
         private void JumpToBrown_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private async void LikeAppBarButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            VoteNews voteNews= new VoteNews();
+            voteNews.VoteType = "agree";// voteType == VoteType.Support ? "agree" : "anti";
+            voteNews.Id = NewsBodyViewModel.News.Id;
+            var result = await NewsService.PostNewsVoteAsync(voteNews);
+            if (!result.IsSuccess)
+            {
+                MessageDialog messageDialog = new MessageDialog(result.Message);
+                await messageDialog.ShowAsync();
+            }
+            else
+            {
+                NewsBodyViewModel.News.Diggs++;
+                LikeAppBarButton.IsEnabled = false;
+            }
+        }
+
+        private void CommentAppBarButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            App.NavigationService.TertiaryFrameNavigate(typeof(NewsCommentListPage), this.NewsBodyViewModel.News);
+        }
+
+        private async void ShareAppBarButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            ShareDialog.Default.Init(this.NewsBodyViewModel.News.NewsUrl, this.NewsBodyViewModel.News.Title);
+            ContentDialogResult result = await ShareDialog.Default.ShowAsync();
         }
     }
 }

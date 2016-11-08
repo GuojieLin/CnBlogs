@@ -31,7 +31,8 @@
             </TextBlock>
             <TextBlock  Margin="0,-8,0,0" Padding="3,0,0,0" Name="CommentAmountTextBlock"
                        RelativePanel.AlignTopWith="TitleTextBlock" 
-                       RelativePanel.RightOf="TitleTextBlock">10</TextBlock>
+                       RelativePanel.RightOf="TitleTextBlock"
+                        Text="{x:Bind NewsCommentViewModel.Count}"></TextBlock>
         </RelativePanel>
 
         <ListView  Name="NewsCommentsGridView" 

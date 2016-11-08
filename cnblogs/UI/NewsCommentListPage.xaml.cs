@@ -66,14 +66,27 @@ namespace CnBlogs.UI
                 return;
             }
             PostNewsComment postNewsComment = new PostNewsComment();
-           postNewsComment.ContentId= this.NewsCommentViewModel.News.Id;
-           postNewsComment.Content = body;
-           postNewsComment.StrComment = "";
-           postNewsComment.ParentCommentId = this.NewsCommentViewModel.News.Id;
+            postNewsComment.ContentId = this.NewsCommentViewModel.News.Id;
+            postNewsComment.Content = body;
+            postNewsComment.StrComment = "";
+            postNewsComment.ParentCommentId = this.NewsCommentViewModel.News.Id;
             postNewsComment.Title = this.NewsCommentViewModel.News.Title;
-            bool succeeded = await NewsService.PostCommentAsync(postNewsComment);
-            //{ "Id":0,"IsSuccess":false,"Message":"请先登录！","Data":null}
-            this.NewsCommentViewModel.Refresh();
+            PostResult postBlogCommentResponse = await NewsService.PostCommentAsync(postNewsComment);
+            if (!postBlogCommentResponse.IsSuccess)
+            {
+                MessageDialog messageDialog = new MessageDialog(postBlogCommentResponse.Message);
+                await messageDialog.ShowAsync();
+                //其他异常则不处理
+                if (postBlogCommentResponse.Message.Contains("登录"))
+                {
+                    AuthenticationService.RedictLoginPage();
+                }
+                return;
+            }
+            else
+            {
+                this.NewsCommentViewModel.Refresh();
+            }
         }
     }
 }

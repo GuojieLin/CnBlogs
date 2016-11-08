@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -63,21 +64,9 @@ namespace CnBlogs.UI
             LoadingProgressRing.IsActive = false;
         }
 
-
-        private void CommentButton_Click(object sender, RoutedEventArgs e)
-        {
-            App.NavigationService.TertiaryFrameNavigate(typeof(BlogCommentListPage), this.BlogBodyViewModel.Blog);
-        }
-
         private void BlogsGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
 
-        }
-
-        private async void ShareButton_Click(object sender, RoutedEventArgs e)
-        {
-            ShareDialog.Default.Init(this.BlogBodyViewModel.Blog.BlogUrl, this.BlogBodyViewModel.Blog.Title);
-            ContentDialogResult result = await ShareDialog.Default.ShowAsync();
         }
 
         private void CommandBarPanel_Opening(object sender, object e)
@@ -110,9 +99,34 @@ namespace CnBlogs.UI
             var success = await Windows.System.Launcher.LaunchUriAsync(blogUri);
         }
 
-        private void LikeButton_Click(object sender, RoutedEventArgs e)
+        private async void LikeAppBarButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
+            VoteBlog voteBlog = new VoteBlog();
+            voteBlog.VoteType = "Digg";// voteType == VoteType.Support ? "Digg" : "Bury";
+            voteBlog.Id = BlogBodyViewModel.Blog.Id;
+            voteBlog.BlogApp = BlogBodyViewModel.Blog.BlogApp;
+            var result = await BlogService.PostBlogVoteAsync(voteBlog);
+            if (!result.IsSuccess)
+            {
+                MessageDialog messageDialog = new MessageDialog(result.Message);
+                await messageDialog.ShowAsync();
+            }
+            else
+            {
+                BlogBodyViewModel.Blog.Diggs++;
+                LikeAppBarButton.IsEnabled = false;
+            }
+        }
 
+        private void CommentAppBarButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            App.NavigationService.TertiaryFrameNavigate(typeof(BlogCommentListPage), this.BlogBodyViewModel.Blog);
+        }
+
+        private async void ShareAppBarButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            ShareDialog.Default.Init(this.BlogBodyViewModel.Blog.BlogUrl, this.BlogBodyViewModel.Blog.Title);
+            ContentDialogResult result = await ShareDialog.Default.ShowAsync();
         }
     }
 }

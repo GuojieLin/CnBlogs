@@ -115,7 +115,13 @@
     <Compile Include="NewsBody.cs" />
     <Compile Include="PostBlogComment.cs" />
     <Compile Include="PostNewsComment.cs" />
+    <Compile Include="PostResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VoteBlogComment.cs" />
+    <Compile Include="VoteNewsComment.cs" />
+    <Compile Include="VoteNews.cs" />
+    <Compile Include="VoteBlog.cs" />
+    <Compile Include="VoteType.cs" />
     <EmbeddedResource Include="Properties\Cnblogs.Entities.rd.xml" />
   </ItemGroup>
   <ItemGroup>

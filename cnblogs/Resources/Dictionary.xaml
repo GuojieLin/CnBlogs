@@ -11,7 +11,13 @@
     <x:String x:Key="BlogCommentTitle">评论</x:String>
     <x:String x:Key="NewsListTitle">新闻</x:String>
     <x:String x:Key="ArticleTopRelativePanleTitle">正文</x:String>
-    
+
+    <valueconverter:ViewCountConverter x:Key="viewCountConverter"></valueconverter:ViewCountConverter>
+    <valueconverter:ThemeConverter x:Key="themeConverter"></valueconverter:ThemeConverter>
+    <valueconverter:DateTimeConverter x:Key="dateTimeConverter"></valueconverter:DateTimeConverter>
+    <valueconverter:CommentCountConverter x:Key="commentCountConverter"></valueconverter:CommentCountConverter>
+    <valueconverter:LikeCountConverter x:Key="likeCountConverter"></valueconverter:LikeCountConverter>
+    <valueconverter:DislikeCountConverter x:Key="dislikeCountConverter"></valueconverter:DislikeCountConverter>
     <valueconverter:NetWorkTypeConverter x:Key="NetWorkTypeConverter"></valueconverter:NetWorkTypeConverter>
 
 </ResourceDictionary>

@@ -50,7 +50,7 @@
                              Margin="2"
                              Tag="{StaticResource ItWriterUrl}">
             </HyperlinkButton>
-            <TextBlock Text="{x:Bind  News.Published}"
+            <TextBlock Text="{x:Bind  News.Published,Converter={StaticResource dateTimeConverter}}"
                        FontSize="10"                   
                        Margin="2"
                        VerticalAlignment="Center">

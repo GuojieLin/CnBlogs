@@ -77,18 +77,18 @@ namespace CnBlogs.Service
             //return html;
         }
 
-        public static async Task<PostBlogCommentResponse> PostCommentAsync(PostBlogComment postBlogComment)
+        public static async Task<PostResult> PostCommentAsync(PostBlogComment postBlogComment)
         {
             try
             {
                 string data = JsonSerializeHelper.Serialize(postBlogComment);
                 string json = await HttpHelper.Post(WcfApiUrlConstants.PostBlogComment, data, CacheManager.LoginUserInfo.Cookies);
-                PostBlogCommentResponse response =  JsonSerializeHelper.Deserialize<PostBlogCommentResponse>(json);
+                PostResult response =  JsonSerializeHelper.Deserialize<PostResult>(json);
                 return response;
             }
             catch (Exception exception)
             {
-                return new PostBlogCommentResponse() { IsSuccess = false, Message = "提交时发送异常" };
+                return new PostResult() { IsSuccess = false, Message = "提交时发送异常" };
             }
         }
 
@@ -144,6 +144,35 @@ namespace CnBlogs.Service
             catch
             {
                 return null;
+            }
+        }
+
+        public async static Task<PostResult> PostBlogVoteAsync(VoteBlog voteBlog)
+        {
+            try
+            {
+                string data = JsonSerializeHelper.Serialize(voteBlog);
+                string json = await HttpHelper.Post(WcfApiUrlConstants.VoteBlogPost, data, CacheManager.LoginUserInfo.Cookies);
+                PostResult response = JsonSerializeHelper.Deserialize<PostResult>(json);
+                return response;
+            }
+            catch (Exception exception)
+            {
+                return new PostResult() { IsSuccess = false, Message = "提交时发送异常" };
+            }
+        }
+        public async static Task<PostResult> PostBlogCommentVoteAsync(VoteBlogComment voteBlogComment)
+        {
+            try
+            {
+                string data = JsonSerializeHelper.Serialize(voteBlogComment);
+                string json = await HttpHelper.Post(WcfApiUrlConstants.VoteBlogComment, data, CacheManager.LoginUserInfo.Cookies);
+                PostResult response = JsonSerializeHelper.Deserialize<PostResult>(json);
+                return response;
+            }
+            catch (Exception exception)
+            {
+                return new PostResult() { IsSuccess = false, Message = "提交时发送异常" };
             }
         }
     }

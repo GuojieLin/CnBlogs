@@ -101,12 +101,47 @@ namespace CnBlogs.Service
             }
         }
 
-        public async static Task<bool> PostCommentAsync(PostNewsComment postNewsComment)
+        public async static Task<PostResult> PostCommentAsync(PostNewsComment postNewsComment)
         {
-            string data = JsonSerializeHelper.Serialize(postNewsComment);
-            string json = await HttpHelper.Post(WcfApiUrlConstants.PostBlogComment, data, CacheManager.LoginUserInfo.Cookies);
-            PostBlogCommentResponse response = JsonSerializeHelper.Deserialize<PostBlogCommentResponse>(json);
-            return response.IsSuccess;
+            try
+            {
+                string data = JsonSerializeHelper.Serialize(postNewsComment);
+                string json = await HttpHelper.Post(WcfApiUrlConstants.PostBlogComment, data, CacheManager.LoginUserInfo.Cookies);
+                PostResult response = JsonSerializeHelper.Deserialize<PostResult>(json);
+                return response;
+            }
+            catch (Exception exception)
+            {
+                return new PostResult() { IsSuccess = false, Message = "提交时发送异常" };
+            }
+        }
+        public async static Task<PostResult> PostNewsVoteAsync(VoteNews voteNews)
+        {
+            try
+            {
+                string data = JsonSerializeHelper.Serialize(voteNews);
+                string json = await HttpHelper.Post(WcfApiUrlConstants.VoteNews, data, CacheManager.LoginUserInfo.Cookies);
+                PostResult response = JsonSerializeHelper.Deserialize<PostResult>(json);
+                return response;
+            }
+            catch (Exception exception)
+            {
+                return new PostResult() { IsSuccess = false, Message = "提交时发送异常" };
+            }
+        }
+        public async static Task<PostResult> PostNewsCommentVoteAsync(VoteNewsComment voteNewsComment)
+        {
+            try
+            {
+                string data = JsonSerializeHelper.Serialize(voteNewsComment);
+                string json = await HttpHelper.Post(WcfApiUrlConstants.VoteNewsComment, data, CacheManager.LoginUserInfo.Cookies);
+                PostResult response = JsonSerializeHelper.Deserialize<PostResult>(json);
+                return response;
+            }
+            catch (Exception exception)
+            {
+                return new PostResult() { IsSuccess = false, Message = "提交时发送异常" };
+            }
         }
     }
 }
