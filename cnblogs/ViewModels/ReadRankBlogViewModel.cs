@@ -10,8 +10,6 @@ using Windows.Foundation;
 using CnBlogs.Service;
 using System.Threading;
 using CnBlogs.Core.Data;
-using CnBlogs.Core;
-using CnBlogs.Common;
 
 //======================================================//
 //			作者中文名:	林国杰				            //
@@ -21,19 +19,25 @@ using CnBlogs.Common;
 //======================================================//
 namespace CnBlogs.ViewModels
 {
-    internal class NewsViewModel : BaseViewModel<News>
+    internal class ReadRankBlogViewModel : BaseViewModel<Blog>
     {
-        public NewsViewModel():base()
+
+        public ReadRankBlogViewModel():base()
         {
         }
-        protected override async Task<IList<News>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
+        protected override async Task<IList<Blog>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
         {
             _isLoading = true;
             var actualCount = 0;
-            List<News> newes = null;
+            if (base.Count > 0)
+            {
+                _hasMoreItems = false;
+                return new List<Blog>();
+            }
+            List<Blog> blogs = null;
             try
             {
-                newes = await NewsService.GetSiteHomeArticlesAsync(_currentPage, _pageSize);
+                blogs = await BlogService.GetFortyEightHoursTopViewPostsArticlesAsync(48);
                 HadLoading = true;
             }
             catch (Exception)
@@ -41,9 +45,9 @@ namespace CnBlogs.ViewModels
                 _hasMoreItems = false;
             }
 
-            if (newes != null && newes.Any())
+            if (blogs != null && blogs.Any())
             {
-                actualCount = newes.Count;
+                actualCount = blogs.Count;
                 base.AddTotalCount(actualCount);
                 _currentPage++;
                 _hasMoreItems = true;
@@ -53,8 +57,13 @@ namespace CnBlogs.ViewModels
                 _hasMoreItems = false;
             }
             _isLoading = false;
-            return newes;
+            return blogs;
         }
-        
+
+        protected override bool HasMoreItemsOverride()
+        {
+            if (_isLoading) return false;
+            else return _hasMoreItems;
+        }
     }
 }

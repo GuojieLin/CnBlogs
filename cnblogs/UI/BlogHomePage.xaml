@@ -1,0 +1,117 @@
+﻿<Page
+    x:Class="CnBlogs.UI.BlogHomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CnBlogs.UI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:data="using:CnBlogs.Entities"
+    xmlns:usercontrol="using:CnBlogs.UserControls"
+    xmlns:pulltorefresh="using:PullToRefresh.UWP"
+    RequestedTheme="{x:Bind BlogViewModel.SettingManager.Theme,Mode=OneWay}">
+
+    <Page.Resources>
+        <ResourceDictionary Source="..\Resources\Dictionary.xaml"></ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <RelativePanel Grid.Row="0"
+                       Style="{StaticResource TopRelativePanel}">
+            <!--顶部-->
+            <TextBlock Name="TitleTextBlock"
+                       Text="{StaticResource BlogListTitle}"
+                    RelativePanel.AlignLeftWithPanel="True"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
+                       Style="{StaticResource TopRelativePanelTextBlockStyle}">
+            </TextBlock>
+            <TextBlock Name="NetWorkTypeTextBlock"
+                    Text="{x:Bind BlogViewModel.AppDomain.NetWorkType,Mode=OneWay,Converter={StaticResource NetWorkTypeConverter}}"
+                    RelativePanel.RightOf="TitleTextBlock"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
+                    Style="{StaticResource SmallRightOfTopRelativePanelTextBlockStyle}"/>
+            <Button Name="RefreshBlogListButton"
+                    Content="&#xE72C;"
+                    RelativePanel.AlignRightWithPanel="True"
+                    RelativePanel.AlignVerticalCenterWithPanel="True"
+                    Style="{StaticResource BaseButtonStyle}"
+                    Click="RefreshBlogListButton_Click">
+            </Button>
+        </RelativePanel>
+        <Pivot x:Name="rootPivot" Grid.Row="1" SelectionChanged="rootPivot_SelectionChanged">
+            <PivotItem Header="博客" Name="BlogPivotItem">
+                <pulltorefresh:PullToRefreshBox x:Name="BlogPullToRefreshBox" 
+                                                    RefreshInvoked="PullToRefreshBox_RefreshInvoked">
+                        <ListView  Name="BlogGridView" 
+                                   ItemsSource="{x:Bind BlogViewModel}"
+                                   IsItemClickEnabled="True"
+                                   ItemClick="BlogGridView_ItemClick"
+                                   SelectionMode="Single">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="data:Blog" >
+                                    <usercontrol:BlogItemUserControl ></usercontrol:BlogItemUserControl>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </pulltorefresh:PullToRefreshBox>
+            </PivotItem>
+            <PivotItem Header="48小时阅读排行" Name="ReadRankPivotItem">
+                <pulltorefresh:PullToRefreshBox  x:Name="ReadRankPullToRefreshBox" 
+                                                RefreshInvoked="PullToRefreshBox_RefreshInvoked">
+                    <ListView  Name="ReadRankGridView" 
+                                ItemsSource="{x:Bind ReadRankBlogViewModel}"
+                                IsItemClickEnabled="True"
+                                ItemClick="BlogGridView_ItemClick"
+                                SelectionMode="Single">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="data:Blog" >
+                                <usercontrol:BlogItemUserControl ></usercontrol:BlogItemUserControl>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </pulltorefresh:PullToRefreshBox>
+            </PivotItem>
+            <PivotItem Header="阅读排行" Name="RecommendBlogPivotItem">
+                <pulltorefresh:PullToRefreshBox  x:Name="RecommendBlogPullToRefreshBox" 
+                                                RefreshInvoked="PullToRefreshBox_RefreshInvoked">
+                    <ListView  Name="RecommendBlogGridView" 
+                                ItemsSource="{x:Bind RecommendBlogViewModel}"
+                                IsItemClickEnabled="True"
+                                ItemClick="BlogGridView_ItemClick"
+                                SelectionMode="Single">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="data:Blog" >
+                                <usercontrol:BlogItemUserControl ></usercontrol:BlogItemUserControl>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </pulltorefresh:PullToRefreshBox>
+            </PivotItem>
+        </Pivot>
+        <ProgressRing Grid.Row="1"
+                                  Name="LoadingProgressRing"
+                                  Width="100"
+                                  Height="100"
+                                  IsActive="False">
+        </ProgressRing>
+    </Grid>
+</Page>

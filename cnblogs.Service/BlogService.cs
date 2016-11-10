@@ -29,9 +29,34 @@ namespace CnBlogs.Service
         /// <returns></returns>
         public async static Task<List<Blog>> GetSiteHomeArticlesAsync(int pageIndex, int pageSize)
         {
+            string url = string.Format(WcfApiUrlConstants.SiteHomeArticles, pageIndex, pageSize);
+            return await GeBlogArticlesAsync(url);
+        }
+        public async static Task<List<Blog>> GetFortyEightHoursTopViewPostsArticlesAsync(int count)
+        {
+            string url = string.Format(WcfApiUrlConstants.FortyEightHoursTopViewPosts, count);
+            return await GeBlogArticlesAsync(url);
+        }
+        /// <summary>
+        /// 加载推荐博客
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public async static Task<List<Blog>> GetRecommendedBlogsArticlesAsync(int pageIndex, int pageSize)
+        {
+            string url = string.Format(WcfApiUrlConstants.RecommendedBlogs, pageIndex, pageSize);
+            return await GeBlogArticlesAsync(url);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        private async static Task<List<Blog>> GeBlogArticlesAsync(string url)
+        {
             try
             {
-                string url = string.Format(WcfApiUrlConstants.SiteHomeArticles, pageIndex, pageSize);
                 string xml = await HttpHelper.Get(url);
                 List<Blog> blogs = new List<Blog>();
                 xml = xml.Replace(Constants.XmlNameSpace, "");//.Replace("&", "");
@@ -39,18 +64,17 @@ namespace CnBlogs.Service
                 XElement xElement = XElement.Parse(xml);
                 foreach (XElement entry in xElement.Elements("entry"))
                 {
-                    Blog Blog=  Blog.Load(entry);
+                    Blog Blog = Blog.Load(entry);
                     if (Blog.Author.Avatar.IsNullOrEmpty()) Blog.Author.Avatar = Constants.DefaultAvatar;
                     blogs.Add(Blog);
                 }
                 return blogs;
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 return null;
             }
         }
-
         private static string HtmlDecode(string xml)
         {
             var matche = Regex.Match(xml, @"&(.*?);");

@@ -33,6 +33,7 @@ namespace CnBlogs.ViewModels
             try
             {
                 blogs = await BlogService.GetSiteHomeArticlesAsync(_currentPage, _pageSize);
+                HadLoading = true;
             }
             catch (Exception)
             {

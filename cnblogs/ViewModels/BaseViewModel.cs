@@ -23,6 +23,7 @@ namespace CnBlogs.ViewModels
 {
     internal class BaseViewModel<T> : SupportIncreamentalLoading<T>
     {
+        public bool HadLoading { get; protected set; }
         protected bool _isLoading = false;
         protected bool _hasMoreItems = false;
         protected int _pageSize = 0;

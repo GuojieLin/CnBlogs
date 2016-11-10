@@ -28,11 +28,38 @@ namespace CnBlogs.Service
         /// <param name="page_index"></param>
         /// <param name="page_size"></param>
         /// <returns></returns>
+        public async static Task<List<News>> GeHotNewsDataArticlesAsync(int count)
+        {
+            string url = string.Format(WcfApiUrlConstants.HotNewsData, count);
+            return await GetNewsArticlesAsync(url);
+        }
+        /// <summary>
+        /// 分页获取首页新闻
+        /// </summary>
+        /// <param name="page_index"></param>
+        /// <param name="page_size"></param>
+        /// <returns></returns>
+        public async static Task<List<News>> GetRecentRecommendNewsByPagingArticlesAsync(int pageIndex, int pageSize)
+        {
+            string url = string.Format(WcfApiUrlConstants.RecentRecommendNewsByPaging, pageIndex, pageSize);
+            return await GetNewsArticlesAsync(url);
+        }
+        /// <summary>
+        /// 分页获取首页新闻
+        /// </summary>
+        /// <param name="page_index"></param>
+        /// <param name="page_size"></param>
+        /// <returns></returns>
         public async static Task<List<News>> GetSiteHomeArticlesAsync(int pageIndex, int pageSize)
+        {
+            string url = string.Format(WcfApiUrlConstants.RecentNewsByPaging, pageIndex, pageSize);
+            return await GetNewsArticlesAsync(url);
+        }
+
+        public async static Task<List<News>> GetNewsArticlesAsync(string url)
         {
             try
             {
-                string url = string.Format(WcfApiUrlConstants.RecentNewsByPaging, pageIndex, pageSize);
                 string xml = await HttpHelper.Get(url);
                 List<News> newses = new List<News>();
                 xml = xml.Replace(Constants.XmlNameSpace, "");
@@ -49,7 +76,6 @@ namespace CnBlogs.Service
                 return null;
             }
         }
-
         /// <summary>
         /// 获取文章内容
         /// </summary>

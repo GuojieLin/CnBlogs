@@ -10,8 +10,8 @@
     <Page.Resources>
         <ResourceDictionary Source="..\Resources\Dictionary.xaml"></ResourceDictionary>
     </Page.Resources>
-    
-    <Grid Padding="5,2,5,2" >
+
+    <Grid Padding="0,1"  >
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>

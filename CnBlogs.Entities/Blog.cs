@@ -111,17 +111,17 @@ namespace CnBlogs.Entities
         {
             if (element == null) throw new ArgumentNullException("element");
             Blog blog = new Blog();
-            blog.Id = element?.Element("id").Value;
-            blog.Title = element?.Element("title").Value;
-            blog.Summary = element?.Element("summary").Value;
-            blog.Published = Convert.ToDateTime(element?.Element("published").Value);
-            blog.Updated = Convert.ToDateTime(element?.Element("updated").Value);
+            blog.Id = element?.Element("id")?.Value;
+            blog.Title = element?.Element("title")?.Value;
+            blog.Summary = element?.Element("summary")?.Value;
+            blog.Published = Convert.ToDateTime(element?.Element("published")?.Value);
+            blog.Updated = Convert.ToDateTime(element?.Element("updated")?.Value);
             blog.Author = Author.Load(element?.Element("author"));
-            blog.BlogUrl = element?.Element("link")?.Attribute("href").Value;
-            blog.BlogApp = element?.Element("blogapp").Value;
-            blog.Diggs = Convert.ToInt32(element?.Element("diggs").Value);
-            blog.Views = Convert.ToInt32(element?.Element("views").Value);
-            blog.Comments = Convert.ToInt32(element?.Element("comments").Value);
+            blog.BlogUrl = element?.Element("link")?.Attribute("href")?.Value;
+            blog.BlogApp = element?.Element("blogapp")?.Value;
+            blog.Diggs = Convert.ToInt32(element?.Element("diggs")?.Value);
+            blog.Views = Convert.ToInt32(element?.Element("views")?.Value);
+            blog.Comments = Convert.ToInt32(element?.Element("comments")?.Value);
             return blog;
         }
     }

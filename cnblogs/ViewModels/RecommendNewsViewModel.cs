@@ -21,9 +21,9 @@ using CnBlogs.Common;
 //======================================================//
 namespace CnBlogs.ViewModels
 {
-    internal class NewsViewModel : BaseViewModel<News>
+    internal class RecommendNewsViewModel : BaseViewModel<News>
     {
-        public NewsViewModel():base()
+        public RecommendNewsViewModel():base()
         {
         }
         protected override async Task<IList<News>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
@@ -33,7 +33,7 @@ namespace CnBlogs.ViewModels
             List<News> newes = null;
             try
             {
-                newes = await NewsService.GetSiteHomeArticlesAsync(_currentPage, _pageSize);
+                newes = await NewsService.GetRecentRecommendNewsByPagingArticlesAsync(_currentPage, _pageSize);
                 HadLoading = true;
             }
             catch (Exception)

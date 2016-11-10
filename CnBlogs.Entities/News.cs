@@ -83,17 +83,17 @@ namespace CnBlogs.Entities
         {
             if (element == null) throw new ArgumentNullException("element");
             News blog = new News();
-            blog.Id = element?.Element("id").Value;
-            blog.Title = element?.Element("title").Value;
-            blog.Summary = element?.Element("summary").Value;
-            blog.Published = Convert.ToDateTime(element?.Element("published").Value);
-            blog.Updated = Convert.ToDateTime(element?.Element("updated").Value);
-            blog.NewsUrl = element?.Element("link")?.Attribute("href").Value;
-            blog.Diggs = Convert.ToInt32(element?.Element("diggs").Value);
-            blog.Views = Convert.ToInt32(element?.Element("views").Value);
-            blog.Comments = Convert.ToInt32(element?.Element("comments").Value);
-            blog.Topic = element?.Element("topic").Value;
-            blog.TopicIcon =  element?.Element("topicIcon").Value;
+            blog.Id = element?.Element("id")?.Value;
+            blog.Title = element?.Element("title")?.Value;
+            blog.Summary = element?.Element("summary")?.Value;
+            blog.Published = Convert.ToDateTime(element?.Element("published")?.Value);
+            blog.Updated = Convert.ToDateTime(element?.Element("updated")?.Value);
+            blog.NewsUrl = element?.Element("link")?.Attribute("href")?.Value;
+            blog.Diggs = Convert.ToInt32(element?.Element("diggs")?.Value);
+            blog.Views = Convert.ToInt32(element?.Element("views")?.Value);
+            blog.Comments = Convert.ToInt32(element?.Element("comments")?.Value);
+            blog.Topic = element?.Element("topic")?.Value;
+            blog.TopicIcon =  element?.Element("topicIcon")?.Value;
             if (blog.TopicIcon.IsNullOrEmpty()) blog.TopicIcon = Configuration.DefalutPath;
             int errorIndex= blog.TopicIcon.IndexOf("///");
             if (errorIndex>0)
@@ -102,7 +102,7 @@ namespace CnBlogs.Entities
                 //http://images0.cnblogs.com/news_topic///images0.cnblogs.com/news_topic/gmail.gif
                 blog.TopicIcon = "http://" + blog.TopicIcon.Substring(errorIndex + 3);
             }
-            blog.SourceName = element?.Element("sourceName").Value;
+            blog.SourceName = element?.Element("sourceName")?.Value;
             return blog;
         }
     }

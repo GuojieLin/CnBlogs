@@ -21,19 +21,24 @@ using CnBlogs.Common;
 //======================================================//
 namespace CnBlogs.ViewModels
 {
-    internal class NewsViewModel : BaseViewModel<News>
+    internal class HotNewsViewModel : BaseViewModel<News>
     {
-        public NewsViewModel():base()
+        public HotNewsViewModel():base()
         {
         }
         protected override async Task<IList<News>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
         {
             _isLoading = true;
             var actualCount = 0;
+            if (base.Count > 0)
+            {
+                _hasMoreItems = false;
+                return new List<News>();
+            }
             List<News> newes = null;
             try
             {
-                newes = await NewsService.GetSiteHomeArticlesAsync(_currentPage, _pageSize);
+                newes = await NewsService.GeHotNewsDataArticlesAsync(20);
                 HadLoading = true;
             }
             catch (Exception)

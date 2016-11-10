@@ -100,6 +100,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Contants.cs" />
+    <Compile Include="UI\BlogHomePage.xaml.cs">
+      <DependentUpon>BlogHomePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -112,11 +115,8 @@
     <Compile Include="UI\NewsBodyPage.xaml.cs">
       <DependentUpon>NewsBodyPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\BlogListPage.xaml.cs">
-      <DependentUpon>BlogListPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\NewsListPage.xaml.cs">
-      <DependentUpon>NewsListPage.xaml</DependentUpon>
+    <Compile Include="UI\NewsHomePage.xaml.cs">
+      <DependentUpon>NewsHomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\SettingPage.xaml.cs">
       <DependentUpon>SettingPage.xaml</DependentUpon>
@@ -131,6 +131,10 @@
       <DependentUpon>ShareDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\RecommendNewsViewModel.cs" />
+    <Compile Include="ViewModels\HotNewsViewModel.cs" />
+    <Compile Include="ViewModels\RecommendBlogViewModel.cs" />
+    <Compile Include="ViewModels\ReadRankBlogViewModel.cs" />
     <Compile Include="ViewModels\NewsBodyViewModel.cs" />
     <Compile Include="ViewModels\BlogBodyViewModel.cs" />
     <Compile Include="ViewModels\BlogCommentViewModel.cs" />
@@ -197,6 +201,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\BlogHomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -217,15 +225,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\BlogListPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="UI\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UI\NewsListPage.xaml">
+    <Page Include="UI\NewsHomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

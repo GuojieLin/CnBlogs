@@ -139,7 +139,7 @@ namespace CnBlogs.UI
                 }
             };
             //打开程序时跳转到博客列表
-            App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
+            App.NavigationService.MasterFrameNavigate(typeof(BlogHomePage));
         }
 
         private void InitFrame()
@@ -209,10 +209,10 @@ namespace CnBlogs.UI
             switch (appBarButton.Name)
             {
                 case Contants.HomeAppBarButton:
-                    App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
+                    App.NavigationService.MasterFrameNavigate(typeof(BlogHomePage));
                     break;
                 case Contants.NewAppBarButton:
-                    App.NavigationService.MasterFrameNavigate(typeof(NewsListPage));
+                    App.NavigationService.MasterFrameNavigate(typeof(NewsHomePage));
                     break;
                 case Contants.MessagesAppBarButton:
                     break;
