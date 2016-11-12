@@ -40,7 +40,7 @@ namespace CnBlogs.UI
             SettingManager.SetDispatcher(this.Dispatcher);
             InitFrame();
             InitNavigationService();
-            AuthenticationService.SetLoginPage(typeof(LoginPage));
+            AuthenticationService.SetLoginPage(typeof(NativeLoginPage));
             //导航及界面主次Frame切换等都由NavigationService进行控制
 
             SystemNavigationManager.GetForCurrentView().BackRequested += BackRequest;
@@ -187,11 +187,11 @@ namespace CnBlogs.UI
         {   
             if (HomeListItem.IsSelected)
             {
-                App.NavigationService.MasterFrameNavigate(typeof(BlogListPage));
+                App.NavigationService.MasterFrameNavigate(typeof(BlogHomePage));
             }
             else if (NewsListItem.IsSelected)
             {
-                App.NavigationService.MasterFrameNavigate(typeof(NewsListPage));
+                App.NavigationService.MasterFrameNavigate(typeof(NewsHomePage));
             }
         }
         private void SecondMenuListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

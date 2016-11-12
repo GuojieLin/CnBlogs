@@ -37,16 +37,53 @@ namespace CnBlogs.Service
             string url = string.Format(WcfApiUrlConstants.FortyEightHoursTopViewPosts, count);
             return await GeBlogArticlesAsync(url);
         }
+        public async static Task<List<Blogger>> SearchBlogger(string name)
+        {
+            string url = string.Format(WcfApiUrlConstants.SearchBloggerByAuthorName,name);
+            return await GetBloggerAsync(url);
+        }
+        public async static Task<List<Blog>> SearchBlogg(string content,int page)
+        {
+            string url = string.Format(WcfApiUrlConstants.SearchBlog, content,page);
+            return await GeBlogArticlesAsync(url);
+        }
         /// <summary>
         /// 加载推荐博客
         /// </summary>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public async static Task<List<Blog>> GetRecommendedBlogsArticlesAsync(int pageIndex, int pageSize)
+        public async static Task<List<Blogger>> GetRecommendedBloggerListAsync(int pageIndex, int pageSize)
         {
             string url = string.Format(WcfApiUrlConstants.RecommendedBlogs, pageIndex, pageSize);
-            return await GeBlogArticlesAsync(url);
+            return await GetBloggerAsync(url);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        private async static Task<List<Blogger>> GetBloggerAsync(string url)
+        {
+            try
+            {
+                string xml = await HttpHelper.GetAsync(url);
+                List<Blogger> bloggers = new List<Blogger>();
+                xml = xml.Replace(Constants.XmlNameSpace, "");//.Replace("&", "");
+                xml = RemoveInvalidCharacter(xml);
+                XElement xElement = XElement.Parse(xml);
+                int i = 1;
+                foreach (XElement entry in xElement.Elements("entry"))
+                {
+                    Blogger blogger = Blogger.Load(entry, i++);
+                    bloggers.Add(blogger);
+                }
+                return bloggers;
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
         }
         /// <summary>
         /// 
@@ -57,7 +94,7 @@ namespace CnBlogs.Service
         {
             try
             {
-                string xml = await HttpHelper.Get(url);
+                string xml = await HttpHelper.GetAsync(url);
                 List<Blog> blogs = new List<Blog>();
                 xml = xml.Replace(Constants.XmlNameSpace, "");//.Replace("&", "");
                 xml = RemoveInvalidCharacter(xml);
@@ -127,7 +164,7 @@ namespace CnBlogs.Service
             try
             {
                 string url = string.Format(WcfApiUrlConstants.GetBlogBody, id);
-                string xml = await HttpHelper.Get(url);
+                string xml = await HttpHelper.GetAsync(url);
                 xml = RemoveInvalidCharacter(xml);
                 //Match match = Regex.Match(xml, @"string[^>/]*>(?<content>[\s\S]*?)</string>");
                 //string content = match.Groups["content"].Value;
@@ -152,7 +189,7 @@ namespace CnBlogs.Service
             try
             {
                 string url = string.Format(WcfApiUrlConstants.GetBlogComments, id, pageIndex,pageSize);
-                string xml = await HttpHelper.Get(url);
+                string xml = await HttpHelper.GetAsync(url);
                 xml = xml.Replace(Constants.XmlNameSpace, "");//.Replace("&", "");
                 xml = RemoveInvalidCharacter(xml);
                 List<BlogComment> blogComments = new List<BlogComment>();

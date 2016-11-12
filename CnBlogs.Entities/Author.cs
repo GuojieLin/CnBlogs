@@ -56,7 +56,7 @@ namespace CnBlogs.Entities
             author.Uri = element?.Element("uri")?.Value;
             author.Avatar = element?.Element("avatar")?.Value;
             if (author.Avatar.IsNullOrEmpty())
-                author.Avatar = Configuration.DefalutPath;
+                author.Avatar = Configuration.DefalutImagePath;
             return author;
         }
     }

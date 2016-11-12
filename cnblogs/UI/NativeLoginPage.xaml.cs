@@ -1,4 +1,6 @@
 ﻿using CnBlogs.Common;
+using CnBlogs.Core;
+using CnBlogs.Core.Extentsions;
 using CnBlogs.Entities;
 using CnBlogs.Service;
 using CnBlogs.ViewModels;
@@ -11,9 +13,8 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.Security.Cryptography;
-using Windows.Security.Cryptography.Core;
-using Windows.Storage.Streams;
+using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -25,6 +26,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 using Windows.Web.Http.Filters;
 using Windows.Web.Http.Headers;
+
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace CnBlogs.UI
@@ -32,39 +34,106 @@ namespace CnBlogs.UI
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class LoginPage : Page
+    public sealed partial class NativeLoginPage : Page
     {
         private LoginViewModel _loginViewModel;
-        public const string HomeUri = "http://www.cnblogs.com/";
-        public const  string LoginUri = "https://passport.cnblogs.com/user/signin?ReturnUrl=https%3A%2F%2Fhome.cnblogs.com%2F";
-        public LoginPage()
+        public NativeLoginPage()
         {
             this.InitializeComponent();
-            //从缓存中获取用户名和密码
             LoadLoginUserInfoFromCache();
-            //var bytes = RSACryptoHelper.Encrypt(PublicKey, "a604572782");
-            //string encry = Convert.ToBase64String(bytes);
-            LoginWebView.LoadCompleted += LoginWebView_LoadCompleted;
-            LoginWebView.NavigationStarting += LoginWebView_NavigationStarting;
-            NavigationWithCookies();
-            
+            Logining();
+            AuthenticationService.InitLoginUserInfo(_loginViewModel.LoginUserInfo).ContinueWith(task =>
+            {
+                if (_loginViewModel.LoginUserInfo.ImageSrc.IsNullOrEmpty())
+                {
+                    //无需加载验证码
+                    this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ValidateCodeGrid.Visibility = Visibility.Collapsed);
+                }
+                else
+                {
+                    //加载验证码
+                    this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+                        ValidateCodeGrid.Visibility = Visibility.Collapsed;
+                        RefreshValidateImage();
+                    });
+                }
+                LoginCompleted();
+            });
+        }
+
+        private void RefreshValidateImage()
+        {
+            //加载验证码
+        }
+
+        public void Logining()
+        {
+            StatusBar statusBar = StatusBar.GetForCurrentView();
+            statusBar.BackgroundOpacity = 0.5; // 透明度  
+            statusBar.ProgressIndicator.ShowAsync();
+        }
+        public void LoginCompleted()
+        {
+            StatusBar statusBar = StatusBar.GetForCurrentView();
+            statusBar.ProgressIndicator.HideAsync();
         }
         private void LoadLoginUserInfoFromCache()
         {
             LoginUserInfo loginUserInfo = CacheManager.LoginUserInfo;
             _loginViewModel = new LoginViewModel(loginUserInfo);
         }
-        /// <summary>
-        /// 带上cookies
-        /// </summary>
+
+        private async void LoginButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Logining();
+            string userName = UserNameTextBox.Text.Trim();
+            string password = PasswordWordBox.Password.Trim();
+
+            LoginUserInfo loginUserInfo = new LoginUserInfo();
+            loginUserInfo.UserName = RSACryptoHelper.Encrypt(Uri.EscapeDataString(userName));
+            loginUserInfo.Password = RSACryptoHelper.Encrypt(Uri.EscapeDataString(password));
+            Cookie cookie = null;
+            var result = await AuthenticationService.SignInAsync(loginUserInfo, cookie);
+            if (!result.Success)
+            {
+                if (result.Message.Contains("验证码错误"))
+                {
+                    //刷新验证码
+                    RefreshValidateImage();
+                }
+                else
+                {
+                    MessageDialog dialog = new MessageDialog(result.Message);
+                    await dialog.ShowAsync();
+                }
+            }
+            else
+            {
+                CacheManager.Current.UpdateLoginUserInfo(_loginViewModel.UserName, _loginViewModel.Password, true, cookie);
+                if (AuthenticationService.NeedReturn)
+                {
+                    AuthenticationService.ReturnPreviousPage();
+                }
+            }
+            LoginCompleted();
+        }
+        #region htmlLogin
+        private void GoHtmlLoginPageButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Grid.RowDefinitions[0].Height = new GridLength(0);
+            Grid.RowDefinitions[1].Height = new GridLength(Grid.ActualHeight);
+            LoadLoginUserInfoFromCache();
+            LoginWebView.LoadCompleted += LoginWebView_LoadCompleted;
+            LoginWebView.NavigationStarting += LoginWebView_NavigationStarting;
+            NavigationWithCookies();
+        }
         private void NavigationWithCookies()
         {
-            string loginuri = LoginUri;
+            string loginuri = AuthenticationService.LoginUri;
             Uri uri = new Uri(loginuri);
             //var httpBaseProtocolFilter = new HttpBaseProtocolFilter();
             //httpBaseProtocolFilter.UseProxy = true;
             var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, uri);
-            
             var userAgent = "Mozilla/5.0 (Windows Phone 10.0; Android 6.0.0; WebView/3.0; Microsoft; Virtual) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10240 sample/1.0";
             httpRequestMessage.Headers.Add("User-Agent", userAgent);
             if (_loginViewModel.IsLogin && _loginViewModel.Cookies != null)
@@ -77,26 +146,26 @@ namespace CnBlogs.UI
                 }
             }
             LoginWebView.NavigateWithHttpRequestMessage(httpRequestMessage);
-            
         }
+
         bool isRemerberTemp;
         string userNameTemp;
         string passwordTemp;
         private async void LoginWebView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
         {
             //登陆成功取消跳转 
-            LoadingProgressRing.IsActive = true;
+            Logining();
             userNameTemp = await GetUserName();
             passwordTemp = await GetPassword();
             isRemerberTemp = args.Uri.Query.Contains("remember");
             if (args.Uri.AbsoluteUri.StartsWith("https://home.cnblogs.com/"))
             {
-                LoginCompeleted(args.Uri);
+                LoginCompleted(args.Uri);
                 args.Cancel = true;
             }
         }
-        
-        private void LoginCompeleted(Uri uri)
+
+        private void LoginCompleted(Uri uri)
         {//登录完成获取cookeis
             var cookiesCollection = GetBrowserCookie(uri);
             bool isLoginSucceeded = cookiesCollection.FirstOrDefault(c => c.Name.ToUpperInvariant()
@@ -142,10 +211,8 @@ namespace CnBlogs.UI
                     password.value='" + _loginViewModel.Password + "';";
                 await LoginWebView.InvokeScriptAsync("eval", new string[] { js });
             }
-            
-            LoadingProgressRing.IsActive = false;
+            LoginCompleted();
         }
-
         private async Task<string> InvokeScriptAsync(string js)
         {
             return await LoginWebView.InvokeScriptAsync("eval", new string[] { js });
@@ -161,7 +228,7 @@ namespace CnBlogs.UI
 
             return await InvokeScriptAsync(js);
         }
-        
+
         private HttpCookieCollection GetBrowserCookie(Uri targetUri)
         {
             var httpBaseProtocolFilter = new HttpBaseProtocolFilter();
@@ -169,5 +236,6 @@ namespace CnBlogs.UI
             var cookieCollection = cookieManager.GetCookies(targetUri);
             return cookieCollection;
         }
+        #endregion
     }
 }

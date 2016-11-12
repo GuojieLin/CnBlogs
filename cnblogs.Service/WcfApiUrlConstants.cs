@@ -19,6 +19,7 @@ namespace CnBlogs.Service
         /// </summary>
         internal const string CnblogsWcfBaseUrl = "http://wcf.open.CnBlogs.com/";
         #region http://wcf.open.CnBlogs.com/blog/
+
         internal const string CnblogsWcfBlogUrl = CnblogsWcfBaseUrl + "blog/";
         /// <summary>
         /// itemCount
@@ -35,9 +36,9 @@ namespace CnBlogs.Service
         /// </summary>
         internal const string RecommendedBlogAmount = CnblogsWcfBlogUrl + "bloggers/recommend/count";
         /// <summary>
-        /// 根据作者名搜索博主
+        /// 根据作者名搜索博主 http://wcf.open.cnblogs.com/blog/bloggers/search?t={TERM} 
         /// </summary>
-        internal const string SearchBloggerByAuthorName = CnblogsWcfBlogUrl + "bloggers/search";
+        internal const string SearchBloggerByAuthorName = CnblogsWcfBlogUrl + "bloggers/search?t={0}";
         /// <summary>
         /// postId,pageIndex,pageSize
         /// 获取文章评论
@@ -152,6 +153,39 @@ namespace CnBlogs.Service
         /// div >
         /// </summary>
         internal const string UserInfo = "http://www.cnblogs.com/mvc/blog/news.aspx?blogApp={0}";
+        //http://www.cnblogs.com/mvc/blog/BlogPostInfo.aspx?blogId=114902&postId=4605212&blogApp=yanweidie&blogUserGuid=91ae0150-efe9-e011-8ee0-842b2b196315&_=1478882037590
+        #endregion
+        #region 博问
+
+        internal const string GetUnReadFeedCount = "https://q.cnblogs.com/list/GetUnReadFeedCount";
+        internal const string GetUnReadMsgCount = "https://q.cnblogs.com/common/GetUnReadMsgCount";
+        /// <summary>
+        /// 我的排行
+        /// </summary>
+        internal const string myrank = "https://q.cnblogs.com/u/myrank?_=1478881407605";
+        /// <summary>
+        /// 热门标签
+        /// </summary>
+        internal const string hottag = "https://q.cnblogs.com/tag/hottag";
+        /// <summary>
+        /// 本周活跃用户
+        /// </summary>
+        internal const string Weekexpert = "https://q.cnblogs.com/list/Weekexpert";
+
+        /// <summary>
+        /// 本周活跃用户
+        /// </summary>
+        internal const string NewQuest = "https://q.cnblogs.com/q/new";
+
+        internal const string shoucang = "http://wz.cnblogs.com/create?t=TmV3dG9uc29mdC5Kc29u6auY57qn55So5rOVIC0g54Sw5bC+6L+tIC0g5Y2a5a6i5Zut&u=http%3A%2F%2Fwww.cnblogs.com%2Fyanweidie%2Fp%2F4605212.html&c=&bid=4605212&i=0&base64=1";
+
+        #endregion
+        #region 其他
+        internal const string SearchBlog = "http://zzk.cnblogs.com/s?t=b&w={0}&pageindex={1}";
+
+        internal const string Categories = "https://www.cnblogs.com/aggsite/SubCategories";
+
+        internal const string Home = "https://home.cnblogs.com/";
         #endregion
     }
 }

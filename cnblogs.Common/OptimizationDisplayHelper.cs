@@ -45,7 +45,7 @@ namespace CnBlogs.Common
                 {
                     #region 无图模式
                     string url = m.Groups["url"].Value;
-                    if (string.IsNullOrEmpty(url)) url = Configuration.DefalutPath;
+                    if (string.IsNullOrEmpty(url)) url = Configuration.DefalutImagePath;
                     if (m.Groups["url"].Value.StartsWith("//", StringComparison.CurrentCultureIgnoreCase))
                     {
                         url = "http:" + url;
@@ -58,7 +58,7 @@ namespace CnBlogs.Common
                         {
                             //移除长宽标签 最大化图片
                             //return "<img src='" + match.Groups["imgUrl"].Value + "'/>";
-                            return @"<img src=""" + Configuration.DefalutPath + @""" onclick=""click2loadimage(this,'" + url + @"');""/>";
+                            return @"<img src=""" + Configuration.DefalutImagePath + @""" onclick=""click2loadimage(this,'" + url + @"');""/>";
                         }
                         else
                         {

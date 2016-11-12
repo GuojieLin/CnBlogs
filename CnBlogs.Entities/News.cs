@@ -94,7 +94,7 @@ namespace CnBlogs.Entities
             blog.Comments = Convert.ToInt32(element?.Element("comments")?.Value);
             blog.Topic = element?.Element("topic")?.Value;
             blog.TopicIcon =  element?.Element("topicIcon")?.Value;
-            if (blog.TopicIcon.IsNullOrEmpty()) blog.TopicIcon = Configuration.DefalutPath;
+            if (blog.TopicIcon.IsNullOrEmpty()) blog.TopicIcon = Configuration.DefalutImagePath;
             int errorIndex= blog.TopicIcon.IndexOf("///");
             if (errorIndex>0)
             {

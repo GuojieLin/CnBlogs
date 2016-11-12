@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using CnBlogs.Core.Extentsions;
 
 //======================================================//
 //			作者中文名:	林国杰				            //
@@ -17,15 +18,18 @@ namespace CnBlogs.Core
 {
     public class HttpHelper
     {
-        private static HttpClient _httpClient;
-        private static HttpClientHandler _httpClientHander;
+        public static HttpClient HttpClient { get; private set; }
+        public static HttpClientHandler HttpClientHandler { get; private set; }
         private static CookieContainer _cookieContainer;
         static HttpHelper()
         {
-            _httpClientHander = new HttpClientHandler();
+            HttpClientHandler = new HttpClientHandler();
+            //HttpClientHandler.AllowAutoRedirect = false;
             _cookieContainer = new CookieContainer();
-            _httpClientHander.CookieContainer = _cookieContainer;
-            _httpClient = new HttpClient(_httpClientHander);
+            HttpClientHandler.CookieContainer = _cookieContainer;
+            HttpClient = new HttpClient(HttpClientHandler);
+            var userAgent = "Mozilla/5.0 (Windows Phone 10.0; Android 6.0.0; WebView/3.0; Microsoft; Virtual) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10240 sample/1.0";
+            HttpClient.DefaultRequestHeaders.Add("User-Agent", userAgent);
         }
         /// <summary>
         /// 访问服务器时的cookies
@@ -36,11 +40,11 @@ namespace CnBlogs.Core
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public async static Task<string> Get(string url)
+        public async static Task<string> GetAsync(string url)
         {
             Uri uri = new Uri(url);
 
-            using (HttpResponseMessage response = await _httpClient.GetAsync(uri))
+            using (HttpResponseMessage response = await HttpClient.GetAsync(uri))
             {
                 response.EnsureSuccessStatusCode();
 
@@ -61,11 +65,35 @@ namespace CnBlogs.Core
                 _cookieContainer.Add(uri, cookie);
             }
             HttpContent content = new StringContent(data,Encoding.UTF8, "application/json");
-            var userAgent = "Mozilla/5.0 (Windows Phone 10.0; Android 6.0.0; WebView/3.0; Microsoft; Virtual) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10240 sample/1.0";
-            _httpClient.DefaultRequestHeaders.Add("User-Agent", userAgent);
-            HttpResponseMessage response = await _httpClient.PostAsync(uri, content);
+            HttpResponseMessage response = await HttpClient.PostAsync(uri, content);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync();
+        }
+        public async static Task<string> Post(string url, string data, string cookies)
+        {
+            Uri uri = new Uri(url);
+            HttpContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpClient.DefaultRequestHeaders.Add("Set-Cookie", cookies);
+            HttpResponseMessage response = await HttpClient.PostAsync(uri, content);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync();
+        }
+
+
+        public static Cookie LoadCookieFromHeader(HttpResponseHeaders headers, string key)
+        {
+            IEnumerable<string> temps;
+            if (headers.TryGetValues("Set-Cookie", out temps))
+            {
+                string temp = temps.FirstOrDefault(t => t.Contains(key));
+                if (!temp.IsNullOrEmpty())
+                {
+                    string value = temp.Split(';')[0].Split('=')[1];
+                    Cookie cookie = new Cookie(key, value);
+                    return cookie;
+                }
+            }
+            return null;
         }
     }
 }

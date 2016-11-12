@@ -85,13 +85,13 @@
                     </ListView>
                 </pulltorefresh:PullToRefreshBox>
             </PivotItem>
-            <PivotItem Header="阅读排行" Name="RecommendBlogPivotItem">
-                <pulltorefresh:PullToRefreshBox  x:Name="RecommendBlogPullToRefreshBox" 
+            <PivotItem Header="博主推荐" Name="RecommendBloggerPivotItem">
+                <pulltorefresh:PullToRefreshBox  x:Name="RecommendBloggerPullToRefreshBox" 
                                                 RefreshInvoked="PullToRefreshBox_RefreshInvoked">
-                    <ListView  Name="RecommendBlogGridView" 
+                    <ListView  Name="RecommendBloggerGridView" 
                                 ItemsSource="{x:Bind RecommendBlogViewModel}"
                                 IsItemClickEnabled="True"
-                                ItemClick="BlogGridView_ItemClick"
+                                ItemClick="RecommendBloggerGridView_ItemClick"
                                 SelectionMode="Single">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
@@ -99,8 +99,8 @@
                             </Style>
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
-                            <DataTemplate x:DataType="data:Blog" >
-                                <usercontrol:BlogItemUserControl ></usercontrol:BlogItemUserControl>
+                            <DataTemplate x:DataType="data:Blogger" >
+                                <usercontrol:BloggerItemUserControl></usercontrol:BloggerItemUserControl>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

@@ -106,6 +106,9 @@
     <Compile Include="UI\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\NativeLoginPage.xaml.cs">
+      <DependentUpon>NativeLoginPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\NewsCommentListPage.xaml.cs">
       <DependentUpon>NewsCommentListPage.xaml</DependentUpon>
     </Compile>
@@ -123,6 +126,9 @@
     </Compile>
     <Compile Include="UserControls\BlogCommentItemUserControl.xaml.cs">
       <DependentUpon>BlogCommentItemUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\BloggerItemUserControl.xaml.cs">
+      <DependentUpon>BloggerItemUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\NewsItemUserControl.xaml.cs">
       <DependentUpon>NewsItemUserControl.xaml</DependentUpon>
@@ -170,6 +176,8 @@
     <Content Include="Assets\BadgeLogo.scale-200.png" />
     <Content Include="Assets\default_image.png" />
     <Content Include="Assets\default_image_loading.png" />
+    <Content Include="Assets\Logo.gif" />
+    <Content Include="Assets\logo.png" />
     <Content Include="Assets\Square150x150Logo.scale-100.png" />
     <Content Include="Assets\Square300x300Logo.scale-100.png" />
     <Content Include="Assets\Square300x300Logo.scale-200.png" />
@@ -209,6 +217,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\NativeLoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\NewsCommentListPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -240,6 +252,10 @@
     <Page Include="UserControls\BlogCommentItemUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserControls\BloggerItemUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\BlogItemUserControl.xaml">
       <SubType>Designer</SubType>

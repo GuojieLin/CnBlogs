@@ -46,34 +46,26 @@ namespace CnBlogs.UI
         }
         private void RefreshBlogListButton_Click(object sender, RoutedEventArgs e)
         {
-            if (rootPivot.SelectedItem == BlogPivotItem)
+            RefreshList(rootPivot.SelectedItem);
+        }
+        private void RefreshList(object selectItem)
+        {
+            if (selectItem == BlogPivotItem)
             {
                 BlogViewModel.Refresh();
             }
-            else if (rootPivot.SelectedItem == ReadRankPivotItem)
+            else if (selectItem == ReadRankPivotItem)
             {
                 ReadRankBlogViewModel.Refresh();
             }
-            else if (rootPivot.SelectedItem == RecommendBlogPivotItem)
+            else if (selectItem == RecommendBloggerPivotItem)
             {
                 RecommendBlogViewModel.Refresh();
             }
         }
-
         private void PullToRefreshBox_RefreshInvoked(DependencyObject sender, object args)
         {
-            if (rootPivot.SelectedItem == BlogPivotItem)
-            {
-                BlogViewModel.Refresh();
-            }
-            else if (rootPivot.SelectedItem == ReadRankPivotItem)
-            {
-                ReadRankBlogViewModel.Refresh();
-            }
-            else if (rootPivot.SelectedItem == RecommendBlogPivotItem)
-            {
-                RecommendBlogViewModel.Refresh();
-            }
+            RefreshList(rootPivot.SelectedItem);
         }
 
         private void rootPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -86,11 +78,15 @@ namespace CnBlogs.UI
             {
                 if (!ReadRankBlogViewModel.HadLoading) ReadRankBlogViewModel.Refresh();
             }
-            else if (rootPivot.SelectedItem == RecommendBlogPivotItem)
+            else if (rootPivot.SelectedItem == RecommendBloggerPivotItem)
             {
                 if (!RecommendBlogViewModel.HadLoading) RecommendBlogViewModel.Refresh();
             }
         }
-        
+
+        private void RecommendBloggerGridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+
+        }
     }
 }

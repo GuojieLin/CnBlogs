@@ -12,13 +12,14 @@ namespace CnBlogs.ViewModels
 {
     internal class LoginViewModel: NotifyPropertyChanged
     {
+        public LoginUserInfo LoginUserInfo { get; set; }
         public LoginViewModel(LoginUserInfo loginUserInfo)
         {
+            LoginUserInfo = loginUserInfo;
             this.UserName = loginUserInfo?.UserName;
             this.Password = loginUserInfo?.Password;
             this.IsLogin = loginUserInfo?.IsLogin ?? false;
             this.Cookies = loginUserInfo?.Cookies ?? new CookieCollection();
-
         }
         private string _userName;
         public string UserName

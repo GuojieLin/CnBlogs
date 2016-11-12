@@ -19,20 +19,20 @@ using CnBlogs.Core.Data;
 //======================================================//
 namespace CnBlogs.ViewModels
 {
-    internal class RecommendBlogViewModel : BaseViewModel<Blog>
+    internal class RecommendBlogViewModel : BaseViewModel<Blogger>
     {
 
         public RecommendBlogViewModel():base()
         {
         }
-        protected override async Task<IList<Blog>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
+        protected override async Task<IList<Blogger>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
         {
             _isLoading = true;
             var actualCount = 0;
-            List<Blog> blogs = null;
+            List<Blogger> bloggers = null;
             try
             {
-                blogs = await BlogService.GetRecommendedBlogsArticlesAsync(_currentPage, _pageSize);
+                bloggers = await BlogService.GetRecommendedBloggerListAsync(_currentPage, _pageSize);
                 HadLoading = true;
             }
             catch (Exception)
@@ -40,9 +40,9 @@ namespace CnBlogs.ViewModels
                 _hasMoreItems = false;
             }
 
-            if (blogs != null && blogs.Any())
+            if (bloggers != null && bloggers.Any())
             {
-                actualCount = blogs.Count;
+                actualCount = bloggers.Count;
                 base.AddTotalCount(actualCount);
                 _currentPage++;
                 _hasMoreItems = true;
@@ -52,7 +52,7 @@ namespace CnBlogs.ViewModels
                 _hasMoreItems = false;
             }
             _isLoading = false;
-            return blogs;
+            return bloggers;
         }
 
         protected override bool HasMoreItemsOverride()

@@ -61,6 +61,17 @@ namespace CnBlogs.Common
             }
             _setting.SetSetting(nameof(LoginUserInfo.Cookies), cookiesComposite);
         }
+        public void UpdateCookies(Cookie cookie)
+        {
+            LoginUserInfo.Cookies.Add(cookie);
+            ApplicationDataCompositeValue cookiesComposite;
+            if (!_setting.GetSetting(nameof(LoginUserInfo.Cookies), out cookiesComposite))
+            {
+                cookiesComposite = new ApplicationDataCompositeValue();
+            }
+            cookiesComposite[cookie.Name] = cookie.Value;
+            _setting.SetSetting(nameof(LoginUserInfo.Cookies), cookiesComposite);
+        }
         public void UpdatePassword(string password)
         {
             LoginUserInfo.Password = password;
@@ -81,7 +92,7 @@ namespace CnBlogs.Common
             }
             _setting.SetSetting(nameof(LoginUserInfo.Cookies), cookiesComposite);
         }
-        public void UpdateLoginUserInfo(string userName,string password,bool isRemerber = false)
+        public void UpdateLoginUserInfo(string userName, string password, bool isRemerber = false, Cookie cookie = null)
         {
             LoginUserInfo.UserName = userName;
             LoginUserInfo.Password = password;
@@ -94,6 +105,7 @@ namespace CnBlogs.Common
             composite[nameof(LoginUserInfo.UserName)] = userName;
             composite[nameof(LoginUserInfo.Password)] = password;
             composite[nameof(LoginUserInfo.IsRemerber)] = isRemerber;
+            if (cookie != null) UpdateCookies(cookie);
             _setting.SetSetting(nameof(LoginUserInfo), composite);
         }
     }

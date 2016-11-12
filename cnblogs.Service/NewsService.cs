@@ -60,7 +60,7 @@ namespace CnBlogs.Service
         {
             try
             {
-                string xml = await HttpHelper.Get(url);
+                string xml = await HttpHelper.GetAsync(url);
                 List<News> newses = new List<News>();
                 xml = xml.Replace(Constants.XmlNameSpace, "");
                 XElement xElement = XElement.Parse(xml);
@@ -87,7 +87,7 @@ namespace CnBlogs.Service
             try
             {
                 string url = string.Format(WcfApiUrlConstants.NewsContent, id);
-                string xml = await HttpHelper.Get(url);
+                string xml = await HttpHelper.GetAsync(url);
                 xml = xml.Replace(Constants.XmlNameSpace, "");
                 XElement xElement = XElement.Parse(xml);
                 return NewsBody.Load(xElement);
@@ -109,7 +109,7 @@ namespace CnBlogs.Service
             try
             {
                 string url = string.Format(WcfApiUrlConstants.GetNewsComment, id, pageIndex,pageSize);
-                string xml = await HttpHelper.Get(url);
+                string xml = await HttpHelper.GetAsync(url);
                 List<BlogComment> blogComments = new List<BlogComment>();
                 xml = xml.Replace(Constants.XmlNameSpace, "");
                 XElement xElement = XElement.Parse(xml);

@@ -19,5 +19,6 @@
     <valueconverter:LikeCountConverter x:Key="likeCountConverter"></valueconverter:LikeCountConverter>
     <valueconverter:DislikeCountConverter x:Key="dislikeCountConverter"></valueconverter:DislikeCountConverter>
     <valueconverter:NetWorkTypeConverter x:Key="NetWorkTypeConverter"></valueconverter:NetWorkTypeConverter>
-
+    <valueconverter:LastUpdateTimeConverter x:Key="lastUpdateTimeConverter"></valueconverter:LastUpdateTimeConverter>
+    <valueconverter:BlogAmountConverter x:Key="blogAmountConverter"></valueconverter:BlogAmountConverter>
 </ResourceDictionary>
