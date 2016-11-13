@@ -77,6 +77,7 @@
                     <TextBox Name="ValidateCodeText" 
                              Margin="0"
                              PlaceholderText="验证码"
+                             Text="{x:Bind _loginViewModel.LoginUserInfo.ValidateCode,Mode=TwoWay}"
                              Style="{StaticResource TextBlockStyle}">   
                     </TextBox>
                     <Image Grid.Column="1"
