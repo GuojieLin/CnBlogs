@@ -1,0 +1,129 @@
+﻿<Page
+    x:Class="CnBlogs.UI.BloggerHomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CnBlogs.UI"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:data="using:CnBlogs.Entities"
+    xmlns:usercontrol="using:CnBlogs.UserControls"
+    xmlns:pulltorefresh="using:PullToRefresh.UWP"
+    RequestedTheme="{x:Bind BloggerHomeViewModel.SettingManager.Theme,Mode=OneWay}">
+    <Page.Resources>
+        <ResourceDictionary Source="..\Resources\Dictionary.xaml"></ResourceDictionary>
+    </Page.Resources>
+
+    <Grid Background="LightGray">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Name="NeedLoginGrid" Background="OrangeRed">
+            <Button HorizontalAlignment="Center" VerticalAlignment="Center"
+                    BorderBrush="Transparent"
+                    Foreground="White"
+                    Background="OrangeRed"
+                    FontSize="20"
+                    Margin="10"
+                    Tapped="Button_Tapped">
+                <Button.Content>
+                    <StackPanel>
+                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                       FontSize="60"
+                       Margin="0,30,0,0"
+                       Foreground="White"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Text="&#xE2AF;"></TextBlock>
+                        <TextBlock 
+                       FontSize="20"
+                       Foreground="White"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Text="请先登录"/>
+                    </StackPanel>
+                </Button.Content> </Button>
+        </StackPanel>
+        <Grid Name="Grid" Visibility="Collapsed" Padding="5" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal">
+                <Image HorizontalAlignment="Center"
+                   VerticalAlignment="Center" 
+                   Width="100"
+                   Height="100"
+                   Source="{x:Bind BloggerHomeViewModel.Photo}"/>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <TextBlock Name="BlogAppTextBox"
+                           Text="{x:Bind BloggerHomeViewModel.BlogApp}"/>
+                    <TextBlock Name="BlogAgeTextBox"
+                           Text="{x:Bind BloggerHomeViewModel.BlogRegistDate,Converter={StaticResource ageConverter}}"/>
+                </StackPanel>
+            </StackPanel>
+            <Rectangle Height="1" Grid.Row="0" VerticalAlignment="Bottom" Fill="LightGray"/>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Background="Transparent" Grid.Column="0">
+                    <Button.Content>
+                        <StackPanel >
+                            <TextBlock Name="FollowerAmount"
+                            HorizontalAlignment="Center"
+                           Text="{x:Bind BloggerHomeViewModel.FollowerAmount}"
+                           Foreground="Black"></TextBlock>
+                            <TextBlock Foreground="Gray"
+                            HorizontalAlignment="Center">关注</TextBlock>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+                <Button Background="Transparent" Grid.Column="1">
+                    <Button.Content>
+                        <StackPanel>
+                            <TextBlock Name="FolloweeAmount"
+                           Text="{x:Bind BloggerHomeViewModel.FolloweeAmount}"
+                           Foreground="Black"
+                            HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Foreground="Gray"
+                            HorizontalAlignment="Center">粉丝</TextBlock>
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+
+            </Grid>
+        </Grid>
+        <Grid Margin="0,5,0,0" Grid.Row="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Pivot x:Name="rootPivot" SelectionChanged="rootPivot_SelectionChanged">
+                <PivotItem Header="博客" Name="BlogPivotItem">
+                    <pulltorefresh:PullToRefreshBox x:Name="BlogPullToRefreshBox" 
+                                                    RefreshInvoked="PullToRefreshBox_RefreshInvoked">
+                        <ListView  Name="BlogGridView" 
+                                   ItemsSource="{x:Bind BloggerHomeViewModel}"
+                                   IsItemClickEnabled="True"
+                                   ItemClick="BlogGridView_ItemClick"
+                                   SelectionMode="Single">
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemTemplate>
+                                <DataTemplate x:DataType="data:Blog">
+                                    <usercontrol:BlogItemUserControl></usercontrol:BlogItemUserControl>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </pulltorefresh:PullToRefreshBox>
+                </PivotItem>
+            </Pivot>
+            <ProgressRing 
+                      Name="LoadingProgressRing"
+                      Width="100"
+                      Height="100"
+                      IsActive="False">
+            </ProgressRing>
+        </Grid>
+    </Grid>
+</Page>

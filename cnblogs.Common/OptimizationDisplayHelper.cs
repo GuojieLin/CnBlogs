@@ -77,6 +77,8 @@ namespace CnBlogs.Common
             builder.Append("<html>");
             builder.Append("<head>");
             builder.Append(ex_mark);
+            if (SettingManager.Current.Theme == Windows.UI.Xaml.ElementTheme.Dark)
+                builder.Append(DarkThemeCss);
             builder.AppendFormat(BaseCss, (int)SettingManager.Current.FontSize);
             builder.Append(FontSizeCss);
             builder.Append(ClickToLoadImageJs);

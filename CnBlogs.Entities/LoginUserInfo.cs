@@ -20,9 +20,9 @@ namespace CnBlogs.Entities
         [DataMember(Name = "remember")]
         public bool IsRemerber { get; set; }
         //没有验证码的时候忽略
-        [DataMember(Name = "id", EmitDefaultValue = false)]
+        [DataMember(Name = "captchaId", EmitDefaultValue = false, IsRequired = false)]
         public string CaptchaId { get; set; }
-        [DataMember(Name = "captchaInstanceId",EmitDefaultValue = false)]
+        [DataMember(Name = "captchaInstanceId", EmitDefaultValue = false)]
         public string CaptchaInstanceId { get; set; }
         //没有验证码的时候忽略
         [DataMember(Name = "captchaUserInput", EmitDefaultValue = false)]
@@ -32,9 +32,17 @@ namespace CnBlogs.Entities
         public string ImageSrc { get; set; }
         public string ServerId { get; set; }
         public CookieCollection Cookies { get; set; }
+        public Blogger Blogger { get; set; }
         public LoginUserInfo()
         {
             Cookies = new CookieCollection();
+            Blogger = new Blogger();
+        }
+
+        public void Logout()
+        {
+            Cookies = new CookieCollection();
+            CaptchaId = "LoginCaptcha";
         }
     }
 }

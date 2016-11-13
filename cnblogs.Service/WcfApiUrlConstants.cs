@@ -12,8 +12,14 @@ using System.Threading.Tasks;
 //======================================================//
 namespace CnBlogs.Service
 {
-    internal class WcfApiUrlConstants
+    public class WcfApiUrlConstants
     {
+        public const string BaseUrl = "https://www.cnblogs.com/";
+        public const string HomeUrl = "https://home.cnblogs.com/";
+        public const string BaseLoginUrl = "https://passport.cnblogs.com/user/signin";
+        public const string LoginUrl = "https://passport.cnblogs.com/user/signin";
+        
+        public const string SetAccount = "https://home.cnblogs.com/set/account/";
         /// <summary>
         /// 博客园wcf
         /// </summary>
@@ -93,7 +99,7 @@ namespace CnBlogs.Service
         /// blogapp,pageIndex,pageSize 
         /// 分页获取个人博客文章列表
         /// </summary>
-        internal const string PersonalBlogs = CnblogsWcfBlogUrl + "u/{blogapp}/posts/{pageIndex}/{pageSize}";
+        internal const string PersonalBlogs = CnblogsWcfBlogUrl + "u/{0}/posts/{1}/{2}";
         #endregion
         #region http://wcf.open.CnBlogs.com/news/
         internal const string CnblogsWcfNewsUrl = CnblogsWcfBaseUrl + "news/";
@@ -141,8 +147,35 @@ namespace CnBlogs.Service
         /// </summary>
         internal const string VoteNews = "https://news.cnblogs.com/News/VoteNews";
         #endregion
+
         #region User
 
+        /// <summary>
+        /// 登录成功后从这里获取当前用户blogapp
+        /// <h1 id="header_user_left">
+        //        欢迎你，杰哥很忙
+        //</h1>
+        //<div id = "header_user_right" >
+        //        < a href="/u/Jack-Blog/"><img class="pfs" src="//pic.cnblogs.com/face/sample_face.gif" alt=""
+        ///></a>
+        //        <a href = "/u/Jack-Blog/" > 杰哥很忙 </ a >
+        //            · <a href = "http://www.cnblogs.com/Jack-Blog/" > 我的博客 </ a >
+        //        · <a href = "//home.cnblogs.com/set/account/" > 设置 </ a >
+        //        · <a href = "javascript:void;" onclick="return logout();">退出</a>
+        //</div>
+        /// </summary>
+        internal const string CurrentUserBlogApp = "https://home.cnblogs.com/user/CurrentUserInfo";
+        // 关注      {"uid":"b5f14557-3d97-e411-b908-9dcfd8948a71","groupId":"00000000-0000-0000-0000-000000000000","page"
+        //:1,"isFollowes":true}
+        // 粉丝       {"uid":"b5f14557-3d97-e411-b908-9dcfd8948a71","groupId":"00000000-0000-0000-0000-000000000000","page"
+        //:1,"isFollowes":false}
+        //        {"Users":[{"DisplayName":"陌上花开123","Alias":"1002860","Remark":null,"IconName":"//pic.cnblogs.com/face
+        ///sample_face.gif"},{"DisplayName":"Happy Day","Alias":"203145","Remark":null,"IconName":"//pic.cnblogs
+        //.com/face/sample_face.gif"},{"DisplayName":"哲的小石头","Alias":"726645","Remark":null,"IconName":"//pic.cnblogs
+        //.com/face/sample_face.gif"},{"DisplayName":"lulu5858","Alias":"lulu5858","Remark":null,"IconName":"/
+        ///pic.cnblogs.com/face/sample_face.gif"}],"Pager":""}
+        ///post
+        internal const string RelationUsers = "https://home.cnblogs.com/relation_users";
 
         /// <summary>
         /// 获取用户信息
@@ -154,6 +187,9 @@ namespace CnBlogs.Service
         /// </summary>
         internal const string UserInfo = "http://www.cnblogs.com/mvc/blog/news.aspx?blogApp={0}";
         //http://www.cnblogs.com/mvc/blog/BlogPostInfo.aspx?blogId=114902&postId=4605212&blogApp=yanweidie&blogUserGuid=91ae0150-efe9-e011-8ee0-842b2b196315&_=1478882037590
+        //写博客情况
+        //http://www.cnblogs.com/mvc/blog/calendar.aspx?blogApp=Jack-Blog&dateStr=
+        //标签，最新随便，评论等信息http://www.cnblogs.com/Jack-Blog/mvc/blog/sidecolumn.aspx?blogApp=Jack-Blog
         #endregion
         #region 博问
 

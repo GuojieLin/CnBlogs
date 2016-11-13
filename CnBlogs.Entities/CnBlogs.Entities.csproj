@@ -111,6 +111,7 @@
     <Compile Include="Blog.cs" />
     <Compile Include="BlogComment.cs" />
     <Compile Include="Blogger.cs" />
+    <Compile Include="RecommentBlogger.cs" />
     <Compile Include="LoginResult.cs" />
     <Compile Include="LoginUserInfo.cs" />
     <Compile Include="News.cs" />

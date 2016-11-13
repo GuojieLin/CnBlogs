@@ -100,7 +100,7 @@
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="data:Blogger" >
-                                <usercontrol:BloggerItemUserControl></usercontrol:BloggerItemUserControl>
+                                <usercontrol:RecommendBloggerItemUserControl></usercontrol:RecommendBloggerItemUserControl>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

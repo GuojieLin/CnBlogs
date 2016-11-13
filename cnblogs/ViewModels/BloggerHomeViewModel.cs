@@ -19,20 +19,33 @@ using CnBlogs.Core.Data;
 //======================================================//
 namespace CnBlogs.ViewModels
 {
-    internal class RecommendBlogViewModel : BaseViewModel<RecommentBlogger>
+    internal class BloggerHomeViewModel : BaseViewModel<Blog>
     {
-
-        public RecommendBlogViewModel():base()
+        public string Alias { get; set; }
+        public string BlogApp { get; set; }
+        public DateTime BlogRegistDate { get; set; }
+        /// <summary>
+        /// 关注数量
+        /// </summary>
+        public int FollowerAmount { get; set; }
+        /// <summary>
+        /// 粉丝数
+        /// </summary>
+        public int FolloweeAmount { get; set; }
+        public int BlogAmount { get; set; }
+        public string Photo { get; set; }
+        public string Id { get;set;}
+        public BloggerHomeViewModel(Blogger blogger):base()
         {
         }
-        protected override async Task<IList<RecommentBlogger>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
+        protected override async Task<IList<Blog>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
         {
             _isLoading = true;
             var actualCount = 0;
-            List<RecommentBlogger> bloggers = null;
+            List<Blog> blogs = null;
             try
             {
-                bloggers = await BlogService.GetRecommendedBloggerListAsync(_currentPage, _pageSize);
+                blogs = await BlogService.GetPersonalBlogsAsync(BlogApp, _currentPage, _pageSize);
                 HadLoading = true;
             }
             catch (Exception)
@@ -40,9 +53,9 @@ namespace CnBlogs.ViewModels
                 _hasMoreItems = false;
             }
 
-            if (bloggers != null && bloggers.Any())
+            if (blogs != null && blogs.Any())
             {
-                actualCount = bloggers.Count;
+                actualCount = blogs.Count;
                 base.AddTotalCount(actualCount);
                 _currentPage++;
                 _hasMoreItems = true;
@@ -52,7 +65,7 @@ namespace CnBlogs.ViewModels
                 _hasMoreItems = false;
             }
             _isLoading = false;
-            return bloggers;
+            return blogs;
         }
 
         protected override bool HasMoreItemsOverride()

@@ -31,6 +31,12 @@ namespace CnBlogs.Core
             var userAgent = "Mozilla/5.0 (Windows Phone 10.0; Android 6.0.0; WebView/3.0; Microsoft; Virtual) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Mobile Safari/537.36 Edge/12.10240 sample/1.0";
             HttpClient.DefaultRequestHeaders.Add("User-Agent", userAgent);
         }
+
+        public static void AddCookies(Uri uri,Cookie cookie)
+        {
+            HttpHelper.HttpClientHandler.CookieContainer.Add(uri, cookie);
+
+        }
         /// <summary>
         /// 访问服务器时的cookies
         /// </summary>
@@ -51,6 +57,7 @@ namespace CnBlogs.Core
                 return await response.Content.ReadAsStringAsync();
             }
         }
+
         /// <summary>
         /// 向服务器发送post请求 返回服务器回复数据
         /// </summary>

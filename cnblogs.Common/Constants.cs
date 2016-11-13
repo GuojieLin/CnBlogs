@@ -9,5 +9,6 @@ namespace CnBlogs.Common
     public class Constants
     {
         public const string AuthenticationCookiesName = ".CNBlogsCookie";
+        public const string Host = "https://www.cnblogs/com";
     }
 }

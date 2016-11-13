@@ -100,14 +100,14 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Contants.cs" />
+    <Compile Include="UI\BloggerHomePage.xaml.cs">
+      <DependentUpon>BloggerHomePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\BlogHomePage.xaml.cs">
       <DependentUpon>BlogHomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\NativeLoginPage.xaml.cs">
-      <DependentUpon>NativeLoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\NewsCommentListPage.xaml.cs">
       <DependentUpon>NewsCommentListPage.xaml</DependentUpon>
@@ -127,8 +127,11 @@
     <Compile Include="UserControls\BlogCommentItemUserControl.xaml.cs">
       <DependentUpon>BlogCommentItemUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\BloggerItemUserControl.xaml.cs">
-      <DependentUpon>BloggerItemUserControl.xaml</DependentUpon>
+    <Compile Include="UserControls\RecommendBloggerItemUserControl.xaml.cs">
+      <DependentUpon>RecommendBloggerItemUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\NewsCommentItemUserControl.xaml.cs">
+      <DependentUpon>NewsCommentItemUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\NewsItemUserControl.xaml.cs">
       <DependentUpon>NewsItemUserControl.xaml</DependentUpon>
@@ -137,6 +140,7 @@
       <DependentUpon>ShareDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\BloggerHomeViewModel.cs" />
     <Compile Include="ViewModels\RecommendNewsViewModel.cs" />
     <Compile Include="ViewModels\HotNewsViewModel.cs" />
     <Compile Include="ViewModels\RecommendBlogViewModel.cs" />
@@ -178,6 +182,7 @@
     <Content Include="Assets\default_image_loading.png" />
     <Content Include="Assets\Logo.gif" />
     <Content Include="Assets\logo.png" />
+    <Content Include="Assets\sample_face.gif" />
     <Content Include="Assets\Square150x150Logo.scale-100.png" />
     <Content Include="Assets\Square300x300Logo.scale-100.png" />
     <Content Include="Assets\Square300x300Logo.scale-200.png" />
@@ -209,15 +214,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\BloggerHomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\BlogHomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\LoginPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UI\NativeLoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -253,13 +258,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UserControls\BloggerItemUserControl.xaml">
+    <Page Include="UserControls\RecommendBloggerItemUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\BlogItemUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\NewsCommentItemUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\NewsItemUserControl.xaml">
       <SubType>Designer</SubType>

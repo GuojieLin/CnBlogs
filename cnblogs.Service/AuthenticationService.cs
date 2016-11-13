@@ -17,8 +17,6 @@ namespace CnBlogs.Service
 {
     public class AuthenticationService
     {
-        public static string BaseLoginUri = "https://passport.cnblogs.com";
-        public static string LoginUri = "https://passport.cnblogs.com/user/signin";
         private static Type _nativeLoginPageType;
         public static bool NeedReturn { get; private set; }
         /// <summary>
@@ -38,10 +36,20 @@ namespace CnBlogs.Service
         {
             _nativeLoginPageType = nativeLoginType;
         }
+
+        public async static Task<Blogger> LoadUserInfo()
+        {
+            Blogger temp = await BlogService.LoadCurrentUserBlogAppAsync();
+            if (temp == null) return null;
+            Blogger blogger =  await BlogService.LoadCurrentUserInfoAsync(temp.BlogApp);
+            if (blogger == null) return null;
+            blogger.BlogApp = temp.BlogApp;
+            blogger.IconName = temp.IconName;
+            return blogger;
+        }
         public async static Task InitLoginUserInfo(LoginUserInfo loginUserInfo)
         {
-
-            Uri uri = new Uri(LoginUri);
+            Uri uri = new Uri(WcfApiUrlConstants.LoginUrl);
             //先请求一次获取cookies
             var response = await HttpHelper.HttpClient.GetAsync(uri);
             string html = await response.Content.ReadAsStringAsync();
@@ -65,9 +73,10 @@ namespace CnBlogs.Service
 
         public async static Task<byte[]> LoadValidateImage(LoginUserInfo loginUserInfo)
         {
-            Uri uri = new Uri(LoginUri);
+            //获取验证码实例ID
             //uri.Query,t=f8d90cc2aa2d4972bd2f1e46ae61364a
-            return await HttpHelper.HttpClient.GetByteArrayAsync(BaseLoginUri+ loginUserInfo.ImageSrc);
+            loginUserInfo.CaptchaInstanceId = loginUserInfo.ImageSrc.Substring(loginUserInfo.ImageSrc.IndexOf(";t=") + 3);
+            return await HttpHelper.HttpClient.GetByteArrayAsync(WcfApiUrlConstants.BaseLoginUrl + loginUserInfo.ImageSrc);
         }
 
         public async static Task<LoginResult> SignInAsync(LoginUserInfo loginUserInfo,Cookie cookie)
@@ -77,18 +86,19 @@ namespace CnBlogs.Service
                 string data = JsonSerializeHelper.Serialize(loginUserInfo);
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
 
-                Uri uri = new Uri(LoginUri);
+                Uri uri = new Uri(WcfApiUrlConstants.LoginUrl);
                 content.Headers.Add("X-Requested-With", "XMLHttpRequest");
                 content.Headers.Add("VerificationToken", loginUserInfo.VerificationToken);
                 HttpHelper.HttpClientHandler.CookieContainer.Add(uri, new Cookie("SERVERID", loginUserInfo.ServerId));
                 HttpHelper.HttpClientHandler.CookieContainer.Add(uri, new Cookie("AspxAutoDetectCookieSupport", "1"));
-                var response = await HttpHelper.HttpClient.PostAsync(new Uri(LoginUri), content);
+                var response = await HttpHelper.HttpClient.PostAsync(uri, content);
                 response.EnsureSuccessStatusCode();
                 string responseContent = await response.Content.ReadAsStringAsync();
                 LoginResult postResult = JsonSerializeHelper.Deserialize<LoginResult>(responseContent);
                 if (postResult.Success)
                 {
                     cookie = HttpHelper.LoadCookieFromHeader(response.Headers, ".CNBlogsCookie");
+                    HttpHelper.HttpClientHandler.CookieContainer.Add(uri, cookie);
                 }
                 return postResult;
             }

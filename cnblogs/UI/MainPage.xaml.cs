@@ -31,16 +31,18 @@ namespace CnBlogs.UI
     public sealed partial class MainPage : Page
     {
         public SettingManager SettingManager;
+        public CacheManager CacheManager;
         public Action RefreshList;
         public MainPage()
         {
             this.InitializeComponent();
             SettingManager = SettingManager.Current;
+            CacheManager = CacheManager.Current;
             //设置Dispatcher,使得更新操作可以异步进行
             SettingManager.SetDispatcher(this.Dispatcher);
             InitFrame();
             InitNavigationService();
-            AuthenticationService.SetLoginPage(typeof(NativeLoginPage));
+            AuthenticationService.SetLoginPage(typeof(LoginPage));
             //导航及界面主次Frame切换等都由NavigationService进行控制
 
             SystemNavigationManager.GetForCurrentView().BackRequested += BackRequest;
@@ -234,7 +236,7 @@ namespace CnBlogs.UI
 
         private void AccountAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            App.NavigationService.DetailFrameNavigate(typeof(LoginPage));
+            App.NavigationService.DetailFrameNavigate(typeof(BloggerHomePage));
         }
     }
 }

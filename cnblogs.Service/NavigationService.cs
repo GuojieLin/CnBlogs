@@ -36,15 +36,6 @@ namespace CnBlogs.Service
                 return DetailFrameCanGoBack || TertiaryFrameCanGoBack;//|| MasterFrameCanGoBack;
             }
         }
-        //private bool MasterFrameCanGoBack
-        //{
-        //    get
-        //    {
-        //        return (IsNarrow && (MasterFrame != null &&
-        //            MasterFrame.BackStackDepth >= 1 &&
-        //            MasterFrame.CanGoBack));
-        //    }
-        //}
         private bool DetailFrameCanGoBack
         {
             get
@@ -98,10 +89,8 @@ namespace CnBlogs.Service
             LastFrame = MasterFrame;
             MasterFrameDepth++;
             //当主导航跳转时，显示左侧菜单，
-            //CnBlogSplitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
             UpdateBackButton();
             UpdateFrame();
-            //NavigateToMasterAction?.Invoke();
         }
 
         public void LastFrameNavigate(Type type, object parameter = null)

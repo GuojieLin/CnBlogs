@@ -36,13 +36,17 @@ namespace CnBlogs.Common
                 //存在缓存
                 LoginUserInfo.UserName = (string)composite[nameof(LoginUserInfo.UserName)];
                 LoginUserInfo.Password = (string)composite[nameof(LoginUserInfo.Password)];
+                LoginUserInfo.Blogger.Guid = (string)composite[nameof(LoginUserInfo.Blogger.Guid)];
+                LoginUserInfo.Blogger.BlogApp = (string)composite[nameof(LoginUserInfo.Blogger.BlogApp)];
                 ApplicationDataCompositeValue cookiesComposite;
                 //存在cookies则获取
                 if (_setting.GetSetting(nameof(LoginUserInfo.Cookies), out cookiesComposite))
                 {
                     foreach (string key in cookiesComposite.Keys)
                     {
-                        LoginUserInfo.Cookies.Add(new Cookie(key, (string)cookiesComposite[key]));
+                        var cookie = new Cookie(key, (string)cookiesComposite[key]);
+                        LoginUserInfo.Cookies.Add(cookie);
+                        HttpHelper.AddCookies(new Uri(Constants.Host), cookie);
                     }
                 }
             }
@@ -92,11 +96,12 @@ namespace CnBlogs.Common
             }
             _setting.SetSetting(nameof(LoginUserInfo.Cookies), cookiesComposite);
         }
-        public void UpdateLoginUserInfo(string userName, string password, bool isRemerber = false, Cookie cookie = null)
+        public void UpdateLoginUserInfo(string userName, string password, Blogger blogger, bool isRemerber = false, Cookie cookie = null)
         {
             LoginUserInfo.UserName = userName;
             LoginUserInfo.Password = password;
             LoginUserInfo.IsRemerber = isRemerber;
+            LoginUserInfo.Blogger = blogger;
             ApplicationDataCompositeValue composite;
             if (!_setting.GetSetting(nameof(LoginUserInfo), out composite))
             {
@@ -105,6 +110,8 @@ namespace CnBlogs.Common
             composite[nameof(LoginUserInfo.UserName)] = userName;
             composite[nameof(LoginUserInfo.Password)] = password;
             composite[nameof(LoginUserInfo.IsRemerber)] = isRemerber;
+            composite[nameof(LoginUserInfo.Blogger.BlogApp)] = LoginUserInfo.Blogger.BlogApp;
+            composite[nameof(LoginUserInfo.Blogger.Guid)] = LoginUserInfo.Blogger.Guid;
             if (cookie != null) UpdateCookies(cookie);
             _setting.SetSetting(nameof(LoginUserInfo), composite);
         }

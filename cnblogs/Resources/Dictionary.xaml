@@ -21,4 +21,5 @@
     <valueconverter:NetWorkTypeConverter x:Key="NetWorkTypeConverter"></valueconverter:NetWorkTypeConverter>
     <valueconverter:LastUpdateTimeConverter x:Key="lastUpdateTimeConverter"></valueconverter:LastUpdateTimeConverter>
     <valueconverter:BlogAmountConverter x:Key="blogAmountConverter"></valueconverter:BlogAmountConverter>
+    <valueconverter:AgeConverter x:Key="ageConverter"></valueconverter:AgeConverter>
 </ResourceDictionary>

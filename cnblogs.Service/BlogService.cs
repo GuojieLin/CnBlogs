@@ -37,7 +37,14 @@ namespace CnBlogs.Service
             string url = string.Format(WcfApiUrlConstants.FortyEightHoursTopViewPosts, count);
             return await GeBlogArticlesAsync(url);
         }
-        public async static Task<List<Blogger>> SearchBlogger(string name)
+
+        public async static Task<List<Blog>> GetPersonalBlogsAsync(string blogApp, int currentPage, int pageSize)
+        {
+            string url = string.Format(WcfApiUrlConstants.PersonalBlogs, blogApp, currentPage, pageSize);
+            return await GeBlogArticlesAsync(url);
+        }
+
+        public async static Task<List<RecommentBlogger>> SearchBlogger(string name)
         {
             string url = string.Format(WcfApiUrlConstants.SearchBloggerByAuthorName,name);
             return await GetBloggerAsync(url);
@@ -53,7 +60,7 @@ namespace CnBlogs.Service
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public async static Task<List<Blogger>> GetRecommendedBloggerListAsync(int pageIndex, int pageSize)
+        public async static Task<List<RecommentBlogger>> GetRecommendedBloggerListAsync(int pageIndex, int pageSize)
         {
             string url = string.Format(WcfApiUrlConstants.RecommendedBlogs, pageIndex, pageSize);
             return await GetBloggerAsync(url);
@@ -63,19 +70,19 @@ namespace CnBlogs.Service
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        private async static Task<List<Blogger>> GetBloggerAsync(string url)
+        private async static Task<List<RecommentBlogger>> GetBloggerAsync(string url)
         {
             try
             {
                 string xml = await HttpHelper.GetAsync(url);
-                List<Blogger> bloggers = new List<Blogger>();
+                List<RecommentBlogger> bloggers = new List<RecommentBlogger>();
                 xml = xml.Replace(Constants.XmlNameSpace, "");//.Replace("&", "");
                 xml = RemoveInvalidCharacter(xml);
                 XElement xElement = XElement.Parse(xml);
                 int i = 1;
                 foreach (XElement entry in xElement.Elements("entry"))
                 {
-                    Blogger blogger = Blogger.Load(entry, i++);
+                    RecommentBlogger blogger = RecommentBlogger.Load(entry, i++);
                     bloggers.Add(blogger);
                 }
                 return bloggers;
@@ -106,6 +113,80 @@ namespace CnBlogs.Service
                     blogs.Add(Blog);
                 }
                 return blogs;
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
+        }
+
+        public static async Task<Blogger> LoadCurrentUserInfoAsync(string blogApp)
+        {
+            try
+            {
+                string url = string.Format(WcfApiUrlConstants.UserInfo, blogApp);
+                string html = await HttpHelper.GetAsync(url);
+                //获取名字，注册时间，粉丝数，关注数
+                MatchCollection matches = Regex.Matches(html, @"<a[\s\S]+?>([\S\s]*?)</a>");//匹配<a href="/u/开始的串，后面即位blogpp，<a href="/u/Jack-Blog/"
+                Blogger blogger = new Blogger();
+                blogger.BlogApp = blogApp;
+                blogger.Name = matches[0].Groups[1].Value;
+                blogger.BlogApp = matches[0].Groups[1].Value;
+                blogger.RegiestDate = DateTime.ParseExact(matches[1].Groups[1].Value, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentCulture);
+                blogger.FolloweeAmount = Convert.ToInt32(matches[2].Groups[1].Value);
+                blogger.FollowerAmount = Convert.ToInt32(matches[3].Groups[1].Value);
+                //获取guid
+                Match match = Regex.Match(html, @"\('([^\'].*?)'\)");//匹配('b5f14557-3d97-e411-b908-9dcfd8948a71')以('开始的串')结束的串
+                if (match.Success)
+                {
+                    blogger.Guid = match.Groups[1].Value;
+                }
+                return blogger;
+                #region sample
+                /// <div id="profile_block">昵称：<a href="http://home.cnblogs.com/u/Mangues/">mangues</a><br/>园龄：<a href="http
+                //://home.cnblogs.com/u/Mangues/" title="入园时间：2015-01-08">1年9个月</a><br/>粉丝：<a href="http://home.cnblogs
+                //.com/u/Mangues/followers/">4</a><br/>关注：<a href="http://home.cnblogs.com/u/Mangues/followees/">1</a>
+                //<div id = "p_b_follow" ></ div >< script > getFollowStatus('b5f14557-3d97-e411-b908-9dcfd8948a71') </ script ><
+                // div >
+                #endregion
+            }
+            catch (Exception exception)
+            {
+                return null;
+            }
+        }
+
+        public async static Task<Blogger> LoadCurrentUserBlogAppAsync()
+        {
+            try
+            {
+                string url = string.Format(WcfApiUrlConstants.CurrentUserBlogApp);
+                string html = await HttpHelper.GetAsync(url);
+                Match match = Regex.Match(html, @"<a\shref\=\""/u/([^\/]+)");//匹配<a href="/u/开始的串，后面即位blogpp，<a href="/u/Jack-Blog/"
+                if (!match.Success) return null;
+                Blogger blogger = new Blogger();
+                blogger.BlogApp = match.Groups[1].Value;
+                match = Regex.Match(html, @"<img.*?src=(['""]?)(?<url>[^'"" ]+)(?=\1)[^>]*>");//匹配<a href="/u/开始的串，后面即位blogpp，<a href="/u/Jack-Blog/"
+                if (match.Success)
+                {
+                    blogger.IconName = match.Groups["url"].Value;
+                };
+                return blogger;
+                #region sample
+                /// < h1 id = "header_user_left" >
+                //         欢迎你，杰哥很忙
+                // </ h1 >
+
+                // < div id = "header_user_right" >
+
+                //          < a href = "/u/Jack-Blog/" >< img class="pfs" src="//pic.cnblogs.com/face/sample_face.gif" alt=""
+                ///></a>
+                //        <a href = "/u/Jack-Blog/" > 杰哥很忙 </ a >
+                //            · <a href = "http://www.cnblogs.com/Jack-Blog/" > 我的博客 </ a >
+                //        · <a href = "//home.cnblogs.com/set/account/" > 设置 </ a >
+                //        · <a href = "javascript:void;" onclick="return logout();">退出</a>
+                //</div>
+                #endregion
             }
             catch (Exception exception)
             {
