@@ -13,6 +13,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage.Streams;
 using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
@@ -22,6 +23,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 using Windows.Web.Http.Filters;
@@ -44,26 +46,37 @@ namespace CnBlogs.UI
             Logining();
             AuthenticationService.InitLoginUserInfo(_loginViewModel.LoginUserInfo).ContinueWith(task =>
             {
-                if (_loginViewModel.LoginUserInfo.ImageSrc.IsNullOrEmpty())
+                this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    //无需加载验证码
-                    this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => ValidateCodeGrid.Visibility = Visibility.Collapsed);
-                }
-                else
-                {
-                    //加载验证码
-                    this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => {
+                    if (_loginViewModel.LoginUserInfo.ImageSrc.IsNullOrEmpty())
+                    {
+                        //无需加载验证码
                         ValidateCodeGrid.Visibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        //加载验证码
+                        ValidateCodeGrid.Visibility = Visibility.Visible;
                         RefreshValidateImage();
-                    });
-                }
-                LoginCompleted();
+                    }
+                    LoginCompleted();
+                });
             });
         }
 
-        private void RefreshValidateImage()
+        private async void RefreshValidateImage()
         {
             //加载验证码
+            var bytes = await AuthenticationService.LoadValidateImage(_loginViewModel.LoginUserInfo);
+            BitmapImage image = new BitmapImage();
+            using (InMemoryRandomAccessStream memoryStream = new InMemoryRandomAccessStream())
+            {
+                DataWriter writer = new DataWriter(memoryStream.GetOutputStreamAt(0));
+                writer.WriteBytes(bytes);
+                await writer.StoreAsync();
+                await image.SetSourceAsync(memoryStream);
+            }
+            ValidateCodeImage.Source = image;
         }
 
         public void Logining()
@@ -89,11 +102,10 @@ namespace CnBlogs.UI
             string userName = UserNameTextBox.Text.Trim();
             string password = PasswordWordBox.Password.Trim();
 
-            LoginUserInfo loginUserInfo = new LoginUserInfo();
-            loginUserInfo.UserName = RSACryptoHelper.Encrypt(Uri.EscapeDataString(userName));
-            loginUserInfo.Password = RSACryptoHelper.Encrypt(Uri.EscapeDataString(password));
+            _loginViewModel.LoginUserInfo.UserName = RSACryptoHelper.Encrypt(Uri.EscapeDataString(userName));
+            _loginViewModel.LoginUserInfo.Password = RSACryptoHelper.Encrypt(Uri.EscapeDataString(password));
             Cookie cookie = null;
-            var result = await AuthenticationService.SignInAsync(loginUserInfo, cookie);
+            var result = await AuthenticationService.SignInAsync(_loginViewModel.LoginUserInfo, cookie);
             if (!result.Success)
             {
                 if (result.Message.Contains("验证码错误"))

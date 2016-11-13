@@ -104,7 +104,18 @@ namespace CnBlogs.Service
             //NavigateToMasterAction?.Invoke();
         }
 
-
+        public void LastFrameNavigate(Type type, object parameter = null)
+        {
+            //一级frame不做其他跳转操作。若最后一个跳转的不是三级frame则让二级frame进行跳转
+            if (LastFrame == TertiaryFrame)
+            {
+                TertiaryFrameNavigate(type, parameter);
+            }
+            else
+            {
+                DetailFrameNavigate(type, parameter);
+            }
+        }
         public void DetailFrameNavigate(Type type, object parameter = null)
         {
             //ClearDetailFrameStack();
@@ -122,15 +133,8 @@ namespace CnBlogs.Service
 
             LastFrame = DetailFrame;
             DetailFrameDepth++;
-            //DetailFrame.Visibility = Visibility.Visible;
-            //TertiaryFrame.Visibility = Visibility.Collapsed;
             UpdateBackButton();
             UpdateFrame();
-            //if (IsNarrow && DetailFrameCanGoBack)
-            //{
-            //    CnBlogSplitView.DisplayMode = SplitViewDisplayMode.Overlay;
-            //}
-            //NavigateToDetailAction?.Invoke();
         }
         public void TertiaryFrameNavigate(Type type, object parameter = null)
         {
@@ -146,13 +150,8 @@ namespace CnBlogs.Service
             }
             LastFrame = TertiaryFrame;
             TertiaryFrameDepth++;
-            //TertiaryFrame.Visibility = Visibility.Visible;
             UpdateBackButton();
             UpdateFrame();
-            //if (IsNarrow && DetailFrameCanGoBack)
-            //{
-            //    CnBlogSplitView.DisplayMode = SplitViewDisplayMode.Overlay;
-            //}
         }
         /// <summary>
         /// 从大变小，优先显示详情页面
@@ -183,19 +182,8 @@ namespace CnBlogs.Service
         public void NarrowToMedium()
         {
             IsNarrow = false;
-            //CnBlogSplitView.Visibility = Visibility.Visible;
-            //CommandBar.Visibility = Visibility.Collapsed;
-            //if (TertiaryFrameCanGoBack)
-            //{
-
-            //}
-            //else
-            //{
-            //    DetailFrame.Visibility = Visibility.Visible;
-            //}
             UpdateBackButton();
             UpdateFrame();
-            //CnBlogSplitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
         }
         public void ClearMasterFrameStack()
         {
@@ -207,7 +195,6 @@ namespace CnBlogs.Service
         {
             DetailFrame.Navigate(DefaultBlankPage);
             DetailFrameDepth = 1;
-            //DetailFrame.SetAttachedPropertyValue(typeof(Canvas),"ZIndex", Contants.DetailFrameDefaultZIndex);
         }
         /// <summary>
         /// 当主Frame跳转时，清空明细Frame
@@ -243,7 +230,6 @@ namespace CnBlogs.Service
                 if (TertiaryFrame.CanGoBack) TertiaryFrame.GoBack();
                 TertiaryFrameDepth--;
                 //若还可以继续后退，则显示，否则隐藏
-                //TertiaryFrame.Visibility = TertiaryFrameCanGoBack ? Visibility.Visible : Visibility.Collapsed;
             }
             else if (DetailFrameCanGoBack )
             {
@@ -251,11 +237,6 @@ namespace CnBlogs.Service
                 DetailFrameDepth--;
                 //DetailFrame.Visibility = DetailFrameCanGoBack ? Visibility.Visible : Visibility.Collapsed;
             }
-            //else if (MasterFrameCanGoBack)
-            //{
-            //    MasterFrame.GoBack();
-            //    e.Handled = true;
-            //}
             UpdateBackButton();
             UpdateFrame();
         }
@@ -265,14 +246,6 @@ namespace CnBlogs.Service
             //可以后退
             if (CanGoBack)
             {
-                //电脑
-                //if (CnBlogSplitView != null)
-                //{
-                //    CnBlogSplitView.DisplayMode = IsNarrow ?
-                //        SplitViewDisplayMode.Overlay :
-                //        SplitViewDisplayMode.CompactOverlay;
-                //}
-
                 //三级Frame能后退
                 if (TertiaryFrameCanGoBack)
                 {
@@ -285,21 +258,12 @@ namespace CnBlogs.Service
                     DetailFrame.Visibility = Visibility.Visible;
                     TertiaryFrame.Visibility = Visibility.Collapsed;
                 }
-                //int zIndex = DetailFrame.GetAttachedPropertyValue<int>(typeof(Canvas), "ZIndex");
-                //DetailFrame.SetAttachedPropertyValue(typeof(Canvas),"ZIndex", 2 * zIndex);
             }
             else
             {
-                //if (CnBlogSplitView != null)
-                //{
-                //    CnBlogSplitView.DisplayMode = SplitViewDisplayMode.CompactOverlay;
-                //}
                 if (IsNarrow) DetailFrame.Visibility = Visibility.Collapsed;
                 else DetailFrame.Visibility = Visibility.Visible;
                 TertiaryFrame.Visibility = Visibility.Collapsed;
-
-                //int zIndex = DetailFrame.GetAttachedPropertyValue<int>(typeof(Canvas),"ZIndex");
-                //DetailFrame.SetAttachedPropertyValue(typeof(Canvas),"ZIndex", zIndex / 2);
             }
         }
     }

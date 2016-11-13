@@ -81,7 +81,6 @@
                     </TextBox>
                     <Image Grid.Column="1"
                            Name="ValidateCodeImage"
-                           Source="ms-appx:///Assets/logo.png"
                            Style="{StaticResource ImageStyle}"/>
 
                 </Grid>

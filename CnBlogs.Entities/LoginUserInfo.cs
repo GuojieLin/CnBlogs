@@ -19,6 +19,15 @@ namespace CnBlogs.Entities
         public bool IsLogin { get { return Cookies[".CNBlogsCookie"] != null; } }
         [DataMember(Name = "remember")]
         public bool IsRemerber { get; set; }
+        //没有验证码的时候忽略
+        [DataMember(Name = "id", EmitDefaultValue = false)]
+        public string CaptchaId { get; set; }
+        [DataMember(Name = "captchaInstanceId",EmitDefaultValue = false)]
+        public string CaptchaInstanceId { get; set; }
+        //没有验证码的时候忽略
+        [DataMember(Name = "captchaUserInput", EmitDefaultValue = false)]
+        public string ValidateCode { get; set; }
+
         public string VerificationToken { get; set; }
         public string ImageSrc { get; set; }
         public string ServerId { get; set; }

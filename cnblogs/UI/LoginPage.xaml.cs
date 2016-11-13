@@ -42,8 +42,6 @@ namespace CnBlogs.UI
             this.InitializeComponent();
             //从缓存中获取用户名和密码
             LoadLoginUserInfoFromCache();
-            //var bytes = RSACryptoHelper.Encrypt(PublicKey, "a604572782");
-            //string encry = Convert.ToBase64String(bytes);
             LoginWebView.LoadCompleted += LoginWebView_LoadCompleted;
             LoginWebView.NavigationStarting += LoginWebView_NavigationStarting;
             NavigationWithCookies();
