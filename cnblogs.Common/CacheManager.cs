@@ -65,16 +65,23 @@ namespace CnBlogs.Common
             }
             _setting.SetSetting(nameof(LoginUserInfo.Cookies), cookiesComposite);
         }
-        public void UpdateCookies(Cookie cookie)
+        public void UpdateCookies()
         {
-            LoginUserInfo.Cookies.Add(cookie);
             ApplicationDataCompositeValue cookiesComposite;
             if (!_setting.GetSetting(nameof(LoginUserInfo.Cookies), out cookiesComposite))
             {
                 cookiesComposite = new ApplicationDataCompositeValue();
             }
-            cookiesComposite[cookie.Name] = cookie.Value;
+            foreach (Cookie cookie in LoginUserInfo.Cookies)
+            {
+                cookiesComposite[cookie.Name] = cookie.Value;
+            }
             _setting.SetSetting(nameof(LoginUserInfo.Cookies), cookiesComposite);
+        }
+        public void UpdateCookies(Cookie cookie)
+        {
+            LoginUserInfo.Cookies.Add(cookie);
+            UpdateCookies();
         }
         public void UpdatePassword(string password)
         {

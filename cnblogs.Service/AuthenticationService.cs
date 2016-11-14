@@ -79,7 +79,7 @@ namespace CnBlogs.Service
             return await HttpHelper.HttpClient.GetByteArrayAsync(WcfApiUrlConstants.BaseLoginUrl + loginUserInfo.ImageSrc);
         }
 
-        public async static Task<LoginResult> SignInAsync(LoginUserInfo loginUserInfo,Cookie cookie)
+        public async static Task<LoginResult> SignInAsync(LoginUserInfo loginUserInfo)
         {
             try
             {
@@ -97,8 +97,10 @@ namespace CnBlogs.Service
                 LoginResult postResult = JsonSerializeHelper.Deserialize<LoginResult>(responseContent);
                 if (postResult.Success)
                 {
-                    cookie = HttpHelper.LoadCookieFromHeader(response.Headers, ".CNBlogsCookie");
+                    Cookie cookie = HttpHelper.LoadCookieFromHeader(response.Headers, ".CNBlogsCookie");
                     HttpHelper.HttpClientHandler.CookieContainer.Add(uri, cookie);
+                    //登录成功先保存cookie
+                    CacheManager.Current.UpdateCookies(cookie);
                 }
                 return postResult;
             }

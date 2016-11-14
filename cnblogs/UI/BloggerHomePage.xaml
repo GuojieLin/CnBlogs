@@ -43,7 +43,7 @@
                     </StackPanel>
                 </Button.Content> </Button>
         </StackPanel>
-        <Grid Name="Grid" Visibility="Collapsed" Padding="5" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid Name="Grid" Padding="5" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
@@ -53,12 +53,12 @@
                    VerticalAlignment="Center" 
                    Width="100"
                    Height="100"
-                   Source="{x:Bind BloggerHomeViewModel.Photo}"/>
+                   Source="{x:Bind BloggerHomeViewModel.Photo,Mode=OneWay}"/>
                 <StackPanel Orientation="Vertical" VerticalAlignment="Center">
                     <TextBlock Name="BlogAppTextBox"
-                           Text="{x:Bind BloggerHomeViewModel.BlogApp}"/>
+                           Text="{x:Bind BloggerHomeViewModel.BlogApp,Mode=OneWay}"/>
                     <TextBlock Name="BlogAgeTextBox"
-                           Text="{x:Bind BloggerHomeViewModel.BlogRegistDate,Converter={StaticResource ageConverter}}"/>
+                           Text="{x:Bind BloggerHomeViewModel.BlogRegistDate,Converter={StaticResource ageConverter},Mode=OneWay}"/>
                 </StackPanel>
             </StackPanel>
             <Rectangle Height="1" Grid.Row="0" VerticalAlignment="Bottom" Fill="LightGray"/>
@@ -96,7 +96,7 @@
         </Grid>
         <Grid Margin="0,5,0,0" Grid.Row="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <Pivot x:Name="rootPivot" SelectionChanged="rootPivot_SelectionChanged">
-                <PivotItem Header="博客" Name="BlogPivotItem">
+                <PivotItem Name="BlogPivotItem">
                     <pulltorefresh:PullToRefreshBox x:Name="BlogPullToRefreshBox" 
                                                     RefreshInvoked="PullToRefreshBox_RefreshInvoked">
                         <ListView  Name="BlogGridView" 

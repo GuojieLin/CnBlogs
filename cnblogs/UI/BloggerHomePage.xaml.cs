@@ -26,6 +26,7 @@ namespace CnBlogs.UI
     /// </summary>
     public sealed partial class BloggerHomePage : Page
     {
+        private bool _isLogining;
         BloggerHomeViewModel BloggerHomeViewModel;
         public BloggerHomePage()
         {
@@ -33,7 +34,6 @@ namespace CnBlogs.UI
         }
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
-            bool needLogin = false;
             Blogger blogger = e.Parameter as Blogger;
             if (blogger == null)
             {
@@ -41,32 +41,38 @@ namespace CnBlogs.UI
                 {
                     Grid.Visibility = Visibility.Visible;
                     NeedLoginGrid.Visibility = Visibility.Collapsed;
-                    blogger = await AuthenticationService.LoadUserInfo();
-                    if (blogger == null)
+                    //登录返回时无需重新获取信息 
+                    if (!_isLogining)
                     {
-                        CacheManager.LoginUserInfo.Logout();
-                        CacheManager.Current.UpdateLogout();
-                        //重新登录
+                        blogger = await AuthenticationService.LoadUserInfo();
+                        if (blogger == null)
+                        {
+                            CacheManager.LoginUserInfo.Logout();
+                            CacheManager.Current.UpdateLogout();
+                        }
+                    }
+                    else
+                    {
+                        blogger = CacheManager.LoginUserInfo.Blogger;
                     }
                 }
                 else
                 {
                     CacheManager.LoginUserInfo.Logout();
                     CacheManager.Current.UpdateLogout();
-                    //TODO:登录
                 }
             }
             if (!AuthenticationService.IsLogin)
             {
                 Grid.Visibility = Visibility.Collapsed;
                 NeedLoginGrid.Visibility = Visibility.Visible;
+                _isLogining = true;
                 return;
             }
-            if (e.NavigationMode == NavigationMode.New)
-            {
-                blogger = await BlogService.LoadCurrentUserInfoAsync(blogger.BlogApp);
-                BloggerHomeViewModel = new BloggerHomeViewModel(blogger);
-            }
+            _isLogining = false;
+            BloggerHomeViewModel = new BloggerHomeViewModel(blogger);
+            BloggerHomeViewModel.OnLoadMoreStarted += count => LoadingProgressRing.IsActive = true;
+            BloggerHomeViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
             base.OnNavigatedTo(e);
         }
 

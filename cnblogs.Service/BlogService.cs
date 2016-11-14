@@ -129,14 +129,13 @@ namespace CnBlogs.Service
                 //获取名字，注册时间，粉丝数，关注数
                 MatchCollection matches = Regex.Matches(html, @"<a[\s\S]+?>([\S\s]*?)</a>");//匹配<a href="/u/开始的串，后面即位blogpp，<a href="/u/Jack-Blog/"
                 Blogger blogger = new Blogger();
-                blogger.BlogApp = blogApp;
                 blogger.Name = matches[0].Groups[1].Value;
-                blogger.BlogApp = matches[0].Groups[1].Value;
-                blogger.RegiestDate = DateTime.ParseExact(matches[1].Groups[1].Value, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentCulture);
                 blogger.FolloweeAmount = Convert.ToInt32(matches[2].Groups[1].Value);
                 blogger.FollowerAmount = Convert.ToInt32(matches[3].Groups[1].Value);
+                Match match = Regex.Match(html, "时间：(.*?)\"");
+                blogger.RegiestDate = DateTime.ParseExact(match.Groups[1].Value, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentCulture);
                 //获取guid
-                Match match = Regex.Match(html, @"\('([^\'].*?)'\)");//匹配('b5f14557-3d97-e411-b908-9dcfd8948a71')以('开始的串')结束的串
+                match = Regex.Match(html, @"\('([^\'].*?)'\)");//匹配('b5f14557-3d97-e411-b908-9dcfd8948a71')以('开始的串')结束的串
                 if (match.Success)
                 {
                     blogger.Guid = match.Groups[1].Value;

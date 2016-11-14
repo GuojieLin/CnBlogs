@@ -104,8 +104,7 @@ namespace CnBlogs.UI
 
             _loginViewModel.LoginUserInfo.UserName = RSACryptoHelper.Encrypt(Uri.EscapeDataString(userName));
             _loginViewModel.LoginUserInfo.Password = RSACryptoHelper.Encrypt(Uri.EscapeDataString(password));
-            Cookie cookie = null;
-            var result = await AuthenticationService.SignInAsync(_loginViewModel.LoginUserInfo, cookie);
+            var result = await AuthenticationService.SignInAsync(_loginViewModel.LoginUserInfo);
             if (!result.Success)
             {
                 if (result.Message.Contains("验证码错误"))
@@ -121,11 +120,11 @@ namespace CnBlogs.UI
             }
             else
             {
-                await LoginSuccess(cookie);
+                await LoginSuccess();
             }
             LoginCompleted();
         }
-        private async Task LoginSuccess(Cookie cookie = null)
+        private async Task LoginSuccess()
         {
             Blogger blogger = await AuthenticationService.LoadUserInfo();
             if (blogger == null)
@@ -137,7 +136,7 @@ namespace CnBlogs.UI
             {
                 _loginViewModel.LoginUserInfo.Blogger = blogger;
             }
-            CacheManager.Current.UpdateLoginUserInfo(_loginViewModel.UserName, _loginViewModel.Password, _loginViewModel.LoginUserInfo.Blogger, true, cookie);
+            CacheManager.Current.UpdateLoginUserInfo(_loginViewModel.UserName, _loginViewModel.Password, _loginViewModel.LoginUserInfo.Blogger, true);
             if (AuthenticationService.NeedReturn)
             {
                 AuthenticationService.ReturnPreviousPage();
