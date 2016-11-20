@@ -10,6 +10,7 @@ using Windows.Foundation;
 using CnBlogs.Service;
 using System.Threading;
 using CnBlogs.Core.Data;
+using CnBlogs.Common;
 
 //======================================================//
 //			作者中文名:	林国杰				            //
@@ -37,6 +38,14 @@ namespace CnBlogs.ViewModels
         public string Id { get;set;}
         public BloggerHomeViewModel(Blogger blogger):base()
         {
+            this.Id = blogger.Guid;
+            this.BlogApp = blogger.BlogApp;
+            this.FollowerAmount = blogger.FollowerAmount;
+            this.FolloweeAmount = blogger.FolloweeAmount;
+            this.BlogRegistDate = blogger.RegiestDate;
+            this.Photo = blogger.IconName;
+            if (string.IsNullOrEmpty(Photo)) this.Photo = Constants.DefaultAvatar;
+            this.Alias = blogger.Name;
         }
         protected override async Task<IList<Blog>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
         {
@@ -48,8 +57,9 @@ namespace CnBlogs.ViewModels
                 blogs = await BlogService.GetPersonalBlogsAsync(BlogApp, _currentPage, _pageSize);
                 HadLoading = true;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 _hasMoreItems = false;
             }
 

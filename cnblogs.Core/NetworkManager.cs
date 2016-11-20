@@ -106,8 +106,9 @@ namespace CnBlogs.Core
                 }
                 return NetWorkType.None;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return NetWorkType.None; //as default
             }
 

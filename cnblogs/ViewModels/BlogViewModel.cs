@@ -35,8 +35,9 @@ namespace CnBlogs.ViewModels
                 blogs = await BlogService.GetSiteHomeArticlesAsync(_currentPage, _pageSize);
                 HadLoading = true;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 _hasMoreItems = false;
             }
 

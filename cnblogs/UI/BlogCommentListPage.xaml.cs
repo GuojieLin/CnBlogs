@@ -44,7 +44,7 @@ namespace CnBlogs.UI
             BlogCommentViewModel = new BlogCommentViewModel(blog);
             BlogCommentViewModel.OnLoadMoreStarted += count => LoadingProgressRing.IsActive = true;
             BlogCommentViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
-            BlogCommentViewModel.Refresh();
+            //BlogCommentViewModel.Refresh();
             //App.NavigationService.DetailFrame.Navigating += (sender, args) => LoadingProgressRing.IsActive = true;
             //App.NavigationService.DetailFrame.Navigated += (sender, args) => LoadingProgressRing.IsActive = false;
             base.OnNavigatedTo(e);

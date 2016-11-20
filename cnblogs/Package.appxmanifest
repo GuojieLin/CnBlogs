@@ -40,6 +40,11 @@
             </uap:SupportedFileTypes>
           </uap:FileTypeAssociation>
         </uap:Extension>
+        <Extension Category="windows.backgroundTasks" EntryPoint="CnBlogs.BackgroundTask.DisplayLastBlogTask">
+          <BackgroundTasks>
+            <Task Type="timer" />
+          </BackgroundTasks>
+        </Extension>
       </Extensions>
       <uap:ApplicationContentUriRules>
         <uap:Rule Match="https://*.*.cnblogs.com" Type="exclude" />

@@ -1,4 +1,5 @@
 ﻿using CnBlogs.Common;
+using CnBlogs.Core.Extentsions;
 using CnBlogs.Entities;
 using CnBlogs.Service;
 using CnBlogs.ViewModels;
@@ -15,6 +16,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -26,59 +28,39 @@ namespace CnBlogs.UI
     /// </summary>
     public sealed partial class BloggerHomePage : Page
     {
-        private bool _isLogining;
-        BloggerHomeViewModel BloggerHomeViewModel;
+        internal BloggerHomeViewModel BloggerHomeViewModel { get; set; }
         public BloggerHomePage()
         {
             this.InitializeComponent();
+            //this.NavigationCacheMode = NavigationCacheMode.Enabled;
         }
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+    
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            Blogger blogger = e.Parameter as Blogger;
-            if (blogger == null)
+            base.OnNavigatedTo(e);
+            Blogger recommentBlogger = e.Parameter as Blogger;
+            Blogger blogger = recommentBlogger;
+            if (recommentBlogger == null)
             {
-                if (AuthenticationService.IsLogin)
+                blogger = CacheManager.LoginUserInfo.Blogger;
+                if (!AuthenticationService.IsLogin ||
+                    blogger == null ||
+                    blogger.BlogApp.IsNullOrEmpty())
                 {
-                    Grid.Visibility = Visibility.Visible;
-                    NeedLoginGrid.Visibility = Visibility.Collapsed;
-                    //登录返回时无需重新获取信息 
-                    if (!_isLogining)
-                    {
-                        blogger = await AuthenticationService.LoadUserInfo();
-                        if (blogger == null)
-                        {
-                            CacheManager.LoginUserInfo.Logout();
-                            CacheManager.Current.UpdateLogout();
-                        }
-                    }
-                    else
-                    {
-                        blogger = CacheManager.LoginUserInfo.Blogger;
-                    }
-                }
-                else
-                {
-                    CacheManager.LoginUserInfo.Logout();
-                    CacheManager.Current.UpdateLogout();
+                    FollowAmountRow.Height = new GridLength(0);
+                    LoginRow.Height = new GridLength(1, GridUnitType.Auto);
+                    return;
                 }
             }
-            if (!AuthenticationService.IsLogin)
-            {
-                Grid.Visibility = Visibility.Collapsed;
-                NeedLoginGrid.Visibility = Visibility.Visible;
-                _isLogining = true;
-                return;
-            }
-            _isLogining = false;
             BloggerHomeViewModel = new BloggerHomeViewModel(blogger);
             BloggerHomeViewModel.OnLoadMoreStarted += count => LoadingProgressRing.IsActive = true;
             BloggerHomeViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
-            base.OnNavigatedTo(e);
+            PhotoImage.Source = new BitmapImage(new Uri(BloggerHomeViewModel.Photo));
         }
 
         private void PullToRefreshBox_RefreshInvoked(DependencyObject sender, object args)
         {
-
+            BloggerHomeViewModel.Refresh();
         }
 
         private void rootPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -94,6 +76,48 @@ namespace CnBlogs.UI
         private void Button_Tapped(object sender, TappedRoutedEventArgs e)
         {
             AuthenticationService.RedictLoginPage();
+        }
+
+        private void CommandBarPanel_Opening(object sender, object e)
+        {
+            CommandBar cb = sender as CommandBar;
+            if (cb != null) cb.Background.Opacity = 1.0;
+        }
+
+        private void CommandBarPanel_Closing(object sender, object e)
+        {
+            CommandBar cb = sender as CommandBar;
+            if (cb != null) cb.Background.Opacity = 0.5;
+        }
+
+        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            var appBarButton = sender as AppBarButton;
+            switch (appBarButton.Name)
+            {
+                case Contants.HomeAppBarButton:
+                    App.NavigationService.MasterFrameNavigate(typeof(BlogHomePage));
+                    break;
+                case Contants.NewAppBarButton:
+                    App.NavigationService.MasterFrameNavigate(typeof(NewsHomePage));
+                    break;
+                case Contants.MessagesAppBarButton:
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+        private void SettingButton_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            App.NavigationService.DetailFrameNavigate(typeof(SettingPage));
+        }
+        
+
+        private void AccountAppBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            App.NavigationService.DetailFrameNavigate(typeof(BloggerHomePage));
         }
     }
 }

@@ -112,7 +112,6 @@
     <Compile Include="NavigationService.cs" />
     <Compile Include="NewsService.cs" />
     <Compile Include="BlogService.cs" />
-    <Compile Include="Constants.cs" />
     <Compile Include="WcfApiUrlConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\cnblogs.Service.rd.xml" />

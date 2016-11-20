@@ -41,8 +41,9 @@ namespace CnBlogs.ViewModels
                 newes = await NewsService.GeHotNewsDataArticlesAsync(20);
                 HadLoading = true;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 _hasMoreItems = false;
             }
 

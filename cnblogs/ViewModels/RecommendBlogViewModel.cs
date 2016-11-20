@@ -19,24 +19,25 @@ using CnBlogs.Core.Data;
 //======================================================//
 namespace CnBlogs.ViewModels
 {
-    internal class RecommendBlogViewModel : BaseViewModel<RecommentBlogger>
+    internal class RecommendBlogViewModel : BaseViewModel<Blogger>
     {
 
         public RecommendBlogViewModel():base()
         {
         }
-        protected override async Task<IList<RecommentBlogger>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
+        protected override async Task<IList<Blogger>> LoadMoreItemsOverrideAsync(CancellationToken c, uint count)
         {
             _isLoading = true;
             var actualCount = 0;
-            List<RecommentBlogger> bloggers = null;
+            List<Blogger> bloggers = null;
             try
             {
                 bloggers = await BlogService.GetRecommendedBloggerListAsync(_currentPage, _pageSize);
                 HadLoading = true;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 _hasMoreItems = false;
             }
 

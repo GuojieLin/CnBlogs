@@ -35,8 +35,9 @@ namespace CnBlogs.ViewModels
             {
                 blogs = await BlogService.GetBlogCommentsAsync(Blog.Id, _currentPage, _pageSize);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 _hasMoreItems = false;
             }
 

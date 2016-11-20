@@ -22,4 +22,6 @@
     <valueconverter:LastUpdateTimeConverter x:Key="lastUpdateTimeConverter"></valueconverter:LastUpdateTimeConverter>
     <valueconverter:BlogAmountConverter x:Key="blogAmountConverter"></valueconverter:BlogAmountConverter>
     <valueconverter:AgeConverter x:Key="ageConverter"></valueconverter:AgeConverter>
+    <valueconverter:ConvertToImageSourceConverter x:Key="convertToImageSourceConverter"></valueconverter:ConvertToImageSourceConverter>
+    
 </ResourceDictionary>

@@ -182,7 +182,7 @@
     <Content Include="Assets\default_image_loading.png" />
     <Content Include="Assets\Logo.gif" />
     <Content Include="Assets\logo.png" />
-    <Content Include="Assets\sample_face.gif" />
+    <Content Include="Assets\sample_face.png" />
     <Content Include="Assets\Square150x150Logo.scale-100.png" />
     <Content Include="Assets\Square300x300Logo.scale-100.png" />
     <Content Include="Assets\Square300x300Logo.scale-200.png" />
@@ -280,6 +280,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CnBlogs.BackgroundTask\CnBlogs.BackgroundTask.csproj">
+      <Project>{d1e7a60d-8cb5-4ac9-a9de-236d32ab4133}</Project>
+      <Name>CnBlogs.BackgroundTask</Name>
+    </ProjectReference>
     <ProjectReference Include="..\cnblogs.Common\CnBlogs.Common.csproj">
       <Project>{f4a5d8ab-af8a-49dd-bb05-afc7ba89eef8}</Project>
       <Name>CnBlogs.Common</Name>

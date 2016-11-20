@@ -36,8 +36,9 @@ namespace CnBlogs.ViewModels
                 newes = await NewsService.GetRecentRecommendNewsByPagingArticlesAsync(_currentPage, _pageSize);
                 HadLoading = true;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 _hasMoreItems = false;
             }
 

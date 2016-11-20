@@ -50,7 +50,7 @@
         </Style>
         <Style TargetType="RelativePanel" x:Key="TopRelativePanel">
             <Setter Property="Padding" Value="0,6,0,6"></Setter>
-            <Setter Property="Background" Value="LightGray"></Setter>
+            <Setter Property="Background" Value="OrangeRed"></Setter>
         </Style>
         <Style TargetType="TextBlock" x:Key="StackPanelTextBlockStyle">
             <Setter Property="FontSize" Value="10"></Setter>

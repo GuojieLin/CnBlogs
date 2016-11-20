@@ -23,7 +23,7 @@ namespace CnBlogs.UserControls
     /// </summary>
     public sealed partial class RecommendBloggerItemUserControl : Page
     {
-        public RecommentBlogger Blogger => this.DataContext as RecommentBlogger;
+        public Blogger Blogger => this.DataContext as Blogger;
         public RecommendBloggerItemUserControl()
         {
             this.InitializeComponent();

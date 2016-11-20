@@ -71,8 +71,9 @@ namespace CnBlogs.Service
                 }
                 return newses;
             }
-            catch
+            catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return null;
             }
         }
@@ -92,8 +93,9 @@ namespace CnBlogs.Service
                 XElement xElement = XElement.Parse(xml);
                 return NewsBody.Load(xElement);
             }
-            catch
+            catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return null;
             }
         }
@@ -121,8 +123,9 @@ namespace CnBlogs.Service
                 }
                 return blogComments;
             }
-            catch
+            catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return null;
             }
         }
@@ -138,6 +141,7 @@ namespace CnBlogs.Service
             }
             catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return new PostResult() { IsSuccess = false, Message = "提交时发送异常" };
             }
         }
@@ -152,6 +156,7 @@ namespace CnBlogs.Service
             }
             catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return new PostResult() { IsSuccess = false, Message = "提交时发送异常" };
             }
         }
@@ -166,6 +171,7 @@ namespace CnBlogs.Service
             }
             catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return new PostResult() { IsSuccess = false, Message = "提交时发送异常" };
             }
         }

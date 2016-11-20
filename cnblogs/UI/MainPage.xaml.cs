@@ -38,6 +38,7 @@ namespace CnBlogs.UI
             this.InitializeComponent();
             SettingManager = SettingManager.Current;
             CacheManager = CacheManager.Current;
+            LoadCurrentUserInfo();
             //设置Dispatcher,使得更新操作可以异步进行
             SettingManager.SetDispatcher(this.Dispatcher);
             InitFrame();
@@ -50,10 +51,15 @@ namespace CnBlogs.UI
             if (App.NavigationService.IsMobile && SettingManager.IsFullWindows)
             {
                 StatusBar statusBar = StatusBar.GetForCurrentView();
-                statusBar.HideAsync();
+                statusBar.BackgroundColor = Colors.OrangeRed;
+                statusBar.BackgroundOpacity = 1;
+                //statusBar.HideAsync();
             }
         }
-
+        private async Task LoadCurrentUserInfo()
+        {
+            CacheManager.Current.UpdateLoginBlogger(await AuthenticationService.LoadUserInfoAsync());
+        }
 
         private bool isExit = false;
         /// <summary>
@@ -84,7 +90,7 @@ namespace CnBlogs.UI
             StatusBar statusBar = StatusBar.GetForCurrentView();
             //statusBar.ShowAsync();
             //statusBar.ForegroundColor = Colors.White; // 前景色  
-            statusBar.BackgroundOpacity = 0.5; // 透明度  
+            //statusBar.BackgroundOpacity = 0.5; // 透明度  
             statusBar.ProgressIndicator.Text = "再按一次返回键退出程序"; // 文本  
             statusBar.ProgressIndicator.ShowAsync();
             isExit = true;

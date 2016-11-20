@@ -119,6 +119,7 @@
     <Compile Include="Share\WeChatResponseHandler.cs" />
     <Compile Include="ValueConverters\AgeConverter.cs" />
     <Compile Include="ValueConverters\BlogAmountConverter.cs" />
+    <Compile Include="ValueConverters\ConvertToImageSourceConverter.cs" />
     <Compile Include="ValueConverters\LastUpdateTimeConverter.cs" />
     <Compile Include="ValueConverters\ViewCountConverter.cs" />
     <Compile Include="ValueConverters\CommentCountConverter.cs" />

@@ -43,11 +43,23 @@ namespace CnBlogs.ViewModels
                 OnPropertyChanged();
             }
         }
+        private bool _isFullWindows;
+        public bool IsFullWindows
+        {
+            get { return _isFullWindows; }
+            set
+            {
+                _isFullWindows = value;
+                OnPropertyChanged();
+            }
+        }
+
         public SettingViewModel()
         {
             SettingManager = SettingManager.Current;
             this.IsDarkModel = SettingManager.Theme == ElementTheme.Dark;
             this.IsNoImagesModel = SettingManager.IsNoImagesMode;
+            this.IsFullWindows = SettingManager.IsFullWindows;
             this.FontSize = (int)SettingManager.FontSize;
         }
 
@@ -60,6 +72,10 @@ namespace CnBlogs.ViewModels
         internal void UpdateNoImagesMode(bool isNoImages)
         {
             SettingManager.UpdateNoImagesMode(isNoImages);
+        }
+        internal void UpdateFullWindows(bool isFullWindows)
+        {
+            SettingManager.UpdateFullWindows(isFullWindows);
         }
         internal void UpdateFontSize(int size)
         {

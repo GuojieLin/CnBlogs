@@ -1,4 +1,6 @@
-﻿using CnBlogs.ViewModels;
+﻿using CnBlogs.Entities;
+using CnBlogs.Service;
+using CnBlogs.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -84,9 +86,13 @@ namespace CnBlogs.UI
             }
         }
 
-        private void RecommendBloggerGridView_ItemClick(object sender, ItemClickEventArgs e)
+        private async void RecommendBloggerGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-
+            Blogger recommentBlogger = (Blogger)e.ClickedItem;
+            Blogger blogger = await BlogService.LoadCurrentUserInfoAsync(recommentBlogger.BlogApp);
+            blogger.BlogApp = recommentBlogger.BlogApp;
+            blogger.IconName = recommentBlogger.IconName;
+            App.NavigationService.DetailFrameNavigate(typeof(BloggerHomePage), blogger);
         }
     }
 }

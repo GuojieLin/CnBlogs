@@ -44,7 +44,7 @@ namespace CnBlogs.Common
                 {
                     foreach (string key in cookiesComposite.Keys)
                     {
-                        var cookie = new Cookie(key, (string)cookiesComposite[key]);
+                        var cookie = new Cookie(key, (string)cookiesComposite[key],"/", Constants.Domain);
                         LoginUserInfo.Cookies.Add(cookie);
                         HttpHelper.AddCookies(new Uri(Constants.Host), cookie);
                     }
@@ -97,18 +97,39 @@ namespace CnBlogs.Common
         public void UpdateLogout()
         {
             ApplicationDataCompositeValue cookiesComposite;
-            if (!_setting.GetSetting(nameof(LoginUserInfo.Cookies), out cookiesComposite))
+            if (_setting.GetSetting(nameof(LoginUserInfo.Cookies), out cookiesComposite))
             {
                 cookiesComposite = null;
             }
             _setting.SetSetting(nameof(LoginUserInfo.Cookies), cookiesComposite);
+
+            ApplicationDataCompositeValue composite;
+            if (!_setting.GetSetting(nameof(LoginUserInfo), out composite))
+            {
+                composite = new ApplicationDataCompositeValue();
+            }
+            composite[nameof(LoginUserInfo.Blogger.BlogApp)] = null;
+            composite[nameof(LoginUserInfo.Blogger.Guid)] = null;
+            _setting.SetSetting(nameof(LoginUserInfo), composite);
         }
-        public void UpdateLoginUserInfo(string userName, string password, Blogger blogger, bool isRemerber = false, Cookie cookie = null)
+
+        public void UpdateLoginBlogger(Blogger blogger)
+        {
+            LoginUserInfo.Blogger = blogger;
+            ApplicationDataCompositeValue composite;
+            if (!_setting.GetSetting(nameof(LoginUserInfo), out composite))
+            {
+                composite = new ApplicationDataCompositeValue();
+            }
+            composite[nameof(LoginUserInfo.Blogger.BlogApp)] = LoginUserInfo.Blogger.BlogApp;
+            composite[nameof(LoginUserInfo.Blogger.Guid)] = LoginUserInfo.Blogger.Guid;
+            _setting.SetSetting(nameof(LoginUserInfo), composite);
+        }
+        public void UpdateLoginUserInfo(string userName, string password, bool isRemerber = false, Cookie cookie = null)
         {
             LoginUserInfo.UserName = userName;
             LoginUserInfo.Password = password;
             LoginUserInfo.IsRemerber = isRemerber;
-            LoginUserInfo.Blogger = blogger;
             ApplicationDataCompositeValue composite;
             if (!_setting.GetSetting(nameof(LoginUserInfo), out composite))
             {
@@ -117,8 +138,6 @@ namespace CnBlogs.Common
             composite[nameof(LoginUserInfo.UserName)] = userName;
             composite[nameof(LoginUserInfo.Password)] = password;
             composite[nameof(LoginUserInfo.IsRemerber)] = isRemerber;
-            composite[nameof(LoginUserInfo.Blogger.BlogApp)] = LoginUserInfo.Blogger.BlogApp;
-            composite[nameof(LoginUserInfo.Blogger.Guid)] = LoginUserInfo.Blogger.Guid;
             if (cookie != null) UpdateCookies(cookie);
             _setting.SetSetting(nameof(LoginUserInfo), composite);
         }

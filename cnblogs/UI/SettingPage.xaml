@@ -25,24 +25,14 @@
                        FontSize="18">
             </TextBlock>
         </RelativePanel>
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition Height="auto"></RowDefinition>
-            </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Padding="10">
+        <StackPanel Grid.Row="1">
+            <StackPanel Padding="10">
                 <TextBlock Text="常规" FontWeight="Bold"/>
                 <Rectangle Fill="Gray"
                            Margin="0,4,0,0"
                            Height="1"/>
             </StackPanel>
-            <StackPanel Grid.Row="1" Padding="10">
+            <StackPanel  Padding="10">
                 <RelativePanel>
                     <TextBlock Text="夜间模式" 
                                RelativePanel.AlignLeftWithPanel="True"
@@ -60,9 +50,7 @@
                     </ToggleSwitch>
                 </RelativePanel>
             </StackPanel>
-            <StackPanel Grid.Row="2"
-                        Padding="10"
-                        >
+            <StackPanel Padding="10">
                 <RelativePanel>
                     <TextBlock Text="无图模式(2g/3g不下载图片)"
                                RelativePanel.AlignLeftWithPanel="True"
@@ -80,7 +68,25 @@
                     </ToggleSwitch>
                 </RelativePanel>
             </StackPanel>
-            <StackPanel Grid.Row="3" Padding="10">
+            <StackPanel Padding="10">
+                <RelativePanel>
+                    <TextBlock Text="全屏模式"
+                               RelativePanel.AlignLeftWithPanel="True"
+                               RelativePanel.AlignVerticalCenterWithPanel="True">
+
+                    </TextBlock>
+                    <ToggleSwitch RelativePanel.AlignRightWithPanel="True"
+                                  MinWidth="0"
+                                  Name="FullWindowsToggleSwitch"
+                                  IsOn="{x:Bind SettingViewModel.IsNoImagesModel,Mode=OneWay}"
+                                  Toggled="FullWindowsToggleSwitch_Toggled"
+                                  Margin="0,0,20,0"
+                                  RelativePanel.AlignVerticalCenterWithPanel="True">
+
+                    </ToggleSwitch>
+                </RelativePanel>
+            </StackPanel>
+            <StackPanel Padding="10">
                 <RelativePanel>
                     <TextBlock Text="字体"
                                RelativePanel.AlignLeftWithPanel="True"
@@ -101,13 +107,11 @@
                     </Slider>
                 </RelativePanel>
             </StackPanel>
-            <StackPanel Grid.Row="4"
-                        Padding="10">
+            <StackPanel Padding="10">
                 <TextBlock Text="其他" FontWeight="Bold"/>
                 <Rectangle Fill="Gray" Height="1" Margin="0,4,0,0"/>
             </StackPanel>
-            <StackPanel Grid.Row="5"
-                        Padding="10">
+            <StackPanel Padding="10">
                 <RelativePanel>
                     <TextBlock Text="{Binding ClearCacheTitle,TargetNullValue='清除缓存[计算中...]'}"
                                RelativePanel.AlignLeftWithPanel="True"
@@ -124,9 +128,7 @@
                     </Button>
                 </RelativePanel>
             </StackPanel>
-            <StackPanel Grid.Row="6"
-                        Padding="10"
-                       >
+            <StackPanel Padding="10">
                 <RelativePanel>
                     <TextBlock Text="关于作者"
                                RelativePanel.AlignLeftWithPanel="True"
@@ -143,24 +145,23 @@
                     <HyperlinkButton Content="cnblogs"
                                      Name="link_cnblogs"
                                      Margin="0,0,20,0"
-                                     NavigateUri="http://www.cnblogs.com/xiaozhi_5638/"
+                                     NavigateUri="http://www.cnblogs.com/jack-blog/"
                                      RelativePanel.LeftOf="DiggAPPs"
                                      RelativePanel.AlignVerticalCenterWithPanel="True"
                                      Background="Transparent">
 
                     </HyperlinkButton>
-                    <HyperlinkButton Content="github"
+                    <HyperlinkButton Content="源码"
                                      RelativePanel.AlignVerticalCenterWithPanel="True"
                                      RelativePanel.LeftOf="link_cnblogs"
-                                     NavigateUri="https://www.github.com/sherlockchou86/"
+                                     NavigateUri="https://github.com/GuojieLin/CnBlogs"
                                      Margin="0,0,10,0"
                                      Background="Transparent">
                     </HyperlinkButton>
                 </RelativePanel>
             </StackPanel>
-            <StackPanel Grid.Row="7"
-                        Padding="10"
-                       >
+            <StackPanel Grid.Row="8"
+                        Padding="10">
                 <RelativePanel>
                     <TextBlock Text="留下过夜费"
                                RelativePanel.AlignLeftWithPanel="True"
@@ -177,12 +178,11 @@
                     </Button>
                 </RelativePanel>
             </StackPanel>
-        </Grid>
-        <ProgressRing Height="30"
-                      Width="30"
-                      Grid.Row="5"
+        </StackPanel>
+        <ProgressRing Height="100"
+                      Width="100"
+                      Grid.RowSpan="2"
                       IsActive="{Binding IsBusy}">
-
         </ProgressRing>
     </Grid>
 

@@ -61,11 +61,11 @@
                    Source="ms-appx:///Assets/logo.png"></Image>
                 <TextBox Name="UserNameTextBox" 
                      PlaceholderText="用户名"
-                     Text="{x:Bind _loginViewModel.UserName}"
+                     Text="{x:Bind _loginViewModel.UserName,Mode=TwoWay}"
                      Style="{StaticResource TextBlockStyle}">
                 </TextBox>
                 <PasswordBox Name="PasswordWordBox" 
-                         Password="{x:Bind _loginViewModel.Password}"
+                         Password="{x:Bind _loginViewModel.Password,Mode=TwoWay}"
                          Style="{StaticResource PasswordBoxStyle}"
                          PlaceholderText="密码"/>
 
@@ -94,5 +94,11 @@
                          >无法登录？跳转至页面登录</HyperlinkButton>
         </Grid>
         <WebView Grid.Row="1" Name="LoginWebView"></WebView>
+        <ProgressRing Grid.Row="1"
+                      Name="LoadingProgressRing"
+                      Width="100"
+                      Height="100"
+                      IsActive="False">
+        </ProgressRing>
     </Grid>
 </Page>

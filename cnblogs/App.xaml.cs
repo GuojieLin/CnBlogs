@@ -1,4 +1,5 @@
-﻿using CnBlogs.Service;
+﻿using CnBlogs.BackgroundTask;
+using CnBlogs.Service;
 using CnBlogs.UI;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
@@ -81,7 +83,8 @@ namespace CnBlogs
             }
             var appView = ApplicationView.GetForCurrentView();
             appView.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
-            
+            //注册后台任务
+            DisplayLastBlogTask.Register();
             if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
@@ -95,6 +98,8 @@ namespace CnBlogs
                 Window.Current.Activate();
             }
         }
+
+
 
         /// <summary>
         /// Invoked when Navigation to a certain page fails

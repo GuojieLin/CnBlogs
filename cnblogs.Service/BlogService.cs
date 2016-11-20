@@ -44,7 +44,7 @@ namespace CnBlogs.Service
             return await GeBlogArticlesAsync(url);
         }
 
-        public async static Task<List<RecommentBlogger>> SearchBlogger(string name)
+        public async static Task<List<Blogger>> SearchBlogger(string name)
         {
             string url = string.Format(WcfApiUrlConstants.SearchBloggerByAuthorName,name);
             return await GetBloggerAsync(url);
@@ -60,7 +60,7 @@ namespace CnBlogs.Service
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public async static Task<List<RecommentBlogger>> GetRecommendedBloggerListAsync(int pageIndex, int pageSize)
+        public async static Task<List<Blogger>> GetRecommendedBloggerListAsync(int pageIndex, int pageSize)
         {
             string url = string.Format(WcfApiUrlConstants.RecommendedBlogs, pageIndex, pageSize);
             return await GetBloggerAsync(url);
@@ -70,25 +70,26 @@ namespace CnBlogs.Service
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        private async static Task<List<RecommentBlogger>> GetBloggerAsync(string url)
+        private async static Task<List<Blogger>> GetBloggerAsync(string url)
         {
             try
             {
                 string xml = await HttpHelper.GetAsync(url);
-                List<RecommentBlogger> bloggers = new List<RecommentBlogger>();
+                List<Blogger> bloggers = new List<Blogger>();
                 xml = xml.Replace(Constants.XmlNameSpace, "");//.Replace("&", "");
                 xml = RemoveInvalidCharacter(xml);
                 XElement xElement = XElement.Parse(xml);
                 int i = 1;
                 foreach (XElement entry in xElement.Elements("entry"))
                 {
-                    RecommentBlogger blogger = RecommentBlogger.Load(entry, i++);
+                    Blogger blogger = Blogger.Load(entry, i++);
                     bloggers.Add(blogger);
                 }
                 return bloggers;
             }
             catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return null;
             }
         }
@@ -116,6 +117,7 @@ namespace CnBlogs.Service
             }
             catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return null;
             }
         }
@@ -127,13 +129,35 @@ namespace CnBlogs.Service
                 string url = string.Format(WcfApiUrlConstants.UserInfo, blogApp);
                 string html = await HttpHelper.GetAsync(url);
                 //获取名字，注册时间，粉丝数，关注数
-                MatchCollection matches = Regex.Matches(html, @"<a[\s\S]+?>([\S\s]*?)</a>");//匹配<a href="/u/开始的串，后面即位blogpp，<a href="/u/Jack-Blog/"
+                Match match = Regex.Match(html, @"昵称：<a[\s\S]+?>([\S\s]*?)</a>");//匹配<a href="/u/开始的串，后面即位blogpp，<a href="/u/Jack-Blog/"
                 Blogger blogger = new Blogger();
-                blogger.Name = matches[0].Groups[1].Value;
-                blogger.FolloweeAmount = Convert.ToInt32(matches[2].Groups[1].Value);
-                blogger.FollowerAmount = Convert.ToInt32(matches[3].Groups[1].Value);
-                Match match = Regex.Match(html, "时间：(.*?)\"");
-                blogger.RegiestDate = DateTime.ParseExact(match.Groups[1].Value, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentCulture);
+                if (match.Success)
+                {
+                    blogger.Name = match.Groups[1].Value;
+                }
+                match = Regex.Match(html, "时间：(.*?)\"");
+                if (match.Success)
+                {
+                    blogger.RegiestDate = DateTime.ParseExact(match.Groups[1].Value, "yyyy-MM-dd", System.Globalization.CultureInfo.CurrentCulture);
+                }
+                match = Regex.Match(html, @"荣誉：<a[\s\S]+?>([\S\s]*?)</a>");
+                if (match.Success)
+                {
+                    if (match.Groups[1].Value == "推荐博客")
+                    {
+                        blogger.IsRecomment = true;
+                    }
+                }
+                match = Regex.Match(html, @"followers/"">([\S\s]*?)</a>");
+                if (match.Success)
+                {
+                    blogger.FollowerAmount = Convert.ToInt32(match.Groups[1].Value);
+                }
+                match = Regex.Match(html, @"followees/"">([\S\s]*?)</a>");
+                if (match.Success)
+                {
+                    blogger.FolloweeAmount = Convert.ToInt32(match.Groups[1].Value);
+                }
                 //获取guid
                 match = Regex.Match(html, @"\('([^\'].*?)'\)");//匹配('b5f14557-3d97-e411-b908-9dcfd8948a71')以('开始的串')结束的串
                 if (match.Success)
@@ -151,6 +175,7 @@ namespace CnBlogs.Service
             }
             catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return null;
             }
         }
@@ -169,6 +194,10 @@ namespace CnBlogs.Service
                 if (match.Success)
                 {
                     blogger.IconName = match.Groups["url"].Value;
+                    if (blogger.IconName.StartsWith("//"))
+                    {
+                        blogger.IconName = "http://" + blogger.IconName.TrimStart('/');
+                    }
                 };
                 return blogger;
                 #region sample
@@ -189,6 +218,7 @@ namespace CnBlogs.Service
             }
             catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return null;
             }
         }
@@ -229,6 +259,7 @@ namespace CnBlogs.Service
             }
             catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return new PostResult() { IsSuccess = false, Message = "提交时发送异常" };
             }
         }
@@ -252,8 +283,9 @@ namespace CnBlogs.Service
                 XElement xElement = XElement.Parse(xml);
                 return xElement.Value;
             }
-            catch
+            catch(Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return null;
             }
         }
@@ -282,8 +314,9 @@ namespace CnBlogs.Service
                 }
                 return blogComments;
             }
-            catch
+            catch(Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return null;
             }
         }
@@ -299,6 +332,7 @@ namespace CnBlogs.Service
             }
             catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return new PostResult() { IsSuccess = false, Message = "提交时发送异常" };
             }
         }
@@ -313,6 +347,7 @@ namespace CnBlogs.Service
             }
             catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 return new PostResult() { IsSuccess = false, Message = "提交时发送异常" };
             }
         }

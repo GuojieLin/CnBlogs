@@ -4,16 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace CnBlogs.Common.ValueConverters
 {
-
-    public class AgeConverter : IValueConverter
+    public class ConvertToImageSourceConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var span = DateTime.Now - (DateTime)value;
-            return $"{span.Days}天";
+            Uri uri = new Uri((string)value);
+            BitmapImage image = new BitmapImage(uri);
+            return image;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

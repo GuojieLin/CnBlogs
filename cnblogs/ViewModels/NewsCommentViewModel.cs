@@ -35,8 +35,9 @@ namespace CnBlogs.ViewModels
             {
                 news = await NewsService.GetNewsCommentsAsync(News.Id, _currentPage, _pageSize);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 _hasMoreItems = false;
             }
 

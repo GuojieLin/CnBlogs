@@ -81,14 +81,11 @@ namespace CnBlogs.UI
 
         public void Logining()
         {
-            StatusBar statusBar = StatusBar.GetForCurrentView();
-            statusBar.BackgroundOpacity = 0.5; // 透明度  
-            statusBar.ProgressIndicator.ShowAsync();
+            LoadingProgressRing.IsActive = true;
         }
         public void LoginCompleted()
         {
-            StatusBar statusBar = StatusBar.GetForCurrentView();
-            statusBar.ProgressIndicator.HideAsync();
+            LoadingProgressRing.IsActive = false;
         }
         private void LoadLoginUserInfoFromCache()
         {
@@ -99,11 +96,8 @@ namespace CnBlogs.UI
         private async void LoginButton_Tapped(object sender, TappedRoutedEventArgs e)
         {
             Logining();
-            string userName = UserNameTextBox.Text.Trim();
-            string password = PasswordWordBox.Password.Trim();
-
-            _loginViewModel.LoginUserInfo.UserName = RSACryptoHelper.Encrypt(Uri.EscapeDataString(userName));
-            _loginViewModel.LoginUserInfo.Password = RSACryptoHelper.Encrypt(Uri.EscapeDataString(password));
+            _loginViewModel.LoginUserInfo.UserName = RSACryptoHelper.Encrypt(Uri.EscapeDataString(_loginViewModel.UserName));
+            _loginViewModel.LoginUserInfo.Password = RSACryptoHelper.Encrypt(Uri.EscapeDataString(_loginViewModel.Password));
             var result = await AuthenticationService.SignInAsync(_loginViewModel.LoginUserInfo);
             if (!result.Success)
             {
@@ -126,17 +120,12 @@ namespace CnBlogs.UI
         }
         private async Task LoginSuccess()
         {
-            Blogger blogger = await AuthenticationService.LoadUserInfo();
-            if (blogger == null)
+            Blogger blogger =  await AuthenticationService.LoadUserInfoAsync();
+            if (blogger != null)
             {
-                MessageDialog dialog = new MessageDialog("加载用户信息出错!");
-                await dialog.ShowAsync();
+                CacheManager.Current.UpdateLoginBlogger(blogger);
             }
-            else
-            {
-                _loginViewModel.LoginUserInfo.Blogger = blogger;
-            }
-            CacheManager.Current.UpdateLoginUserInfo(_loginViewModel.UserName, _loginViewModel.Password, _loginViewModel.LoginUserInfo.Blogger, true);
+            CacheManager.Current.UpdateLoginUserInfo(_loginViewModel.UserName, _loginViewModel.Password, true);
             if (AuthenticationService.NeedReturn)
             {
                 AuthenticationService.ReturnPreviousPage();

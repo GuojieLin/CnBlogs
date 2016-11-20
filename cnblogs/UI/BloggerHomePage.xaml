@@ -13,117 +13,172 @@
     <Page.Resources>
         <ResourceDictionary Source="..\Resources\Dictionary.xaml"></ResourceDictionary>
     </Page.Resources>
-
-    <Grid Background="LightGray">
+    <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="AdaptiveStates">
+                <VisualState x:Name="NarrowState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ContentGrid.(Grid.Row)" Value="0" />
+                        <Setter Target="LoadingProgressRing.(Grid.Row)" Value="1" />
+                        <Setter Target="CommandBarPanel.(Grid.Row)" Value="1" />
+                        <Setter Target="TopRow.Height" Value="*" />
+                        <Setter Target="BottomRow.Height" Value="Auto" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="MediumState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="960" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ContentGrid.(Grid.Row)" Value="1" />
+                        <Setter Target="LoadingProgressRing.(Grid.Row)" Value="1" />
+                        <Setter Target="CommandBarPanel.(Grid.Row)" Value="0" />
+                        <Setter Target="TopRow.Height" Value="Auto" />
+                        <Setter Target="BottomRow.Height" Value="*" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition x:Name="TopRow" Height="Auto"></RowDefinition>
+            <RowDefinition x:Name="BottomRow" Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Name="NeedLoginGrid" Background="OrangeRed">
-            <Button HorizontalAlignment="Center" VerticalAlignment="Center"
+        <Grid Name="ContentGrid" Background="LightGray">
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="LoginRow" Height="0"></RowDefinition>
+                <RowDefinition x:Name="FollowAmountRow" Height="auto"></RowDefinition>
+                <RowDefinition x:Name="BlogRow" Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Background="OrangeRed">
+                <Button HorizontalAlignment="Center" VerticalAlignment="Center"
                     BorderBrush="Transparent"
                     Foreground="White"
                     Background="OrangeRed"
                     FontSize="20"
                     Margin="10"
                     Tapped="Button_Tapped">
-                <Button.Content>
-                    <StackPanel>
-                    <TextBlock FontFamily="Segoe MDL2 Assets"
+                    <Button.Content>
+                        <StackPanel>
+                            <TextBlock FontFamily="Segoe MDL2 Assets"
                        FontSize="60"
                        Margin="0,30,0,0"
                        Foreground="White"
                        HorizontalAlignment="Center" VerticalAlignment="Center"
                        Text="&#xE2AF;"></TextBlock>
-                        <TextBlock 
+                            <TextBlock 
                        FontSize="20"
                        Foreground="White"
                        HorizontalAlignment="Center" VerticalAlignment="Center"
                        Text="请先登录"/>
-                    </StackPanel>
-                </Button.Content> </Button>
-        </StackPanel>
-        <Grid Name="Grid" Padding="5" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <StackPanel Orientation="Horizontal">
-                <Image HorizontalAlignment="Center"
+                        </StackPanel>
+                    </Button.Content>
+                </Button>
+            </StackPanel>
+            <Grid Grid.Row="1" Padding="5" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <Image Name="PhotoImage"
+                    HorizontalAlignment="Center"
                    VerticalAlignment="Center" 
                    Width="100"
                    Height="100"
                    Source="{x:Bind BloggerHomeViewModel.Photo,Mode=OneWay}"/>
-                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                    <TextBlock Name="BlogAppTextBox"
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock >昵称：</TextBlock>
+                            <TextBlock Name="BlogAppTextBox"
                            Text="{x:Bind BloggerHomeViewModel.BlogApp,Mode=OneWay}"/>
-                    <TextBlock Name="BlogAgeTextBox"
-                           Text="{x:Bind BloggerHomeViewModel.BlogRegistDate,Converter={StaticResource ageConverter},Mode=OneWay}"/>
-                </StackPanel>
-            </StackPanel>
-            <Rectangle Height="1" Grid.Row="0" VerticalAlignment="Bottom" Fill="LightGray"/>
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Button Background="Transparent" Grid.Column="0">
-                    <Button.Content>
-                        <StackPanel >
-                            <TextBlock Name="FollowerAmount"
-                            HorizontalAlignment="Center"
-                           Text="{x:Bind BloggerHomeViewModel.FollowerAmount}"
-                           Foreground="Black"></TextBlock>
-                            <TextBlock Foreground="Gray"
-                            HorizontalAlignment="Center">关注</TextBlock>
                         </StackPanel>
-                    </Button.Content>
-                </Button>
-                <Button Background="Transparent" Grid.Column="1">
-                    <Button.Content>
-                        <StackPanel>
-                            <TextBlock Name="FolloweeAmount"
-                           Text="{x:Bind BloggerHomeViewModel.FolloweeAmount}"
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock >园龄：</TextBlock>
+                            <TextBlock Name="BlogAgeTextBox"
+                           Text="{x:Bind BloggerHomeViewModel.BlogRegistDate,Converter={StaticResource ageConverter},Mode=OneWay}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <Rectangle Height="1" Grid.Row="0" VerticalAlignment="Bottom" Fill="LightGray"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button HorizontalAlignment="Stretch" Background="Transparent" Grid.Column="0">
+                        <Button.Content>
+                            <StackPanel>
+                                <TextBlock Name="FollowerAmount"
+                            HorizontalAlignment="Center"
+                           Text="{x:Bind BloggerHomeViewModel.FolloweeAmount ,Mode=OneWay}"
+                           Foreground="Black"></TextBlock>
+                                <TextBlock Foreground="Gray"
+                            HorizontalAlignment="Center">关注</TextBlock>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                    <Button HorizontalAlignment="Stretch" Background="Transparent" Grid.Column="1">
+                        <Button.Content>
+                            <StackPanel>
+                                <TextBlock Name="FolloweeAmount"
+                           Text="{x:Bind BloggerHomeViewModel.FollowerAmount,Mode=OneWay}"
                            Foreground="Black"
                             HorizontalAlignment="Center"></TextBlock>
-                            <TextBlock Foreground="Gray"
+                                <TextBlock Foreground="Gray"
                             HorizontalAlignment="Center">粉丝</TextBlock>
-                        </StackPanel>
-                    </Button.Content>
-                </Button>
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
 
+                </Grid>
             </Grid>
-        </Grid>
-        <Grid Margin="0,5,0,0" Grid.Row="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <Pivot x:Name="rootPivot" SelectionChanged="rootPivot_SelectionChanged">
-                <PivotItem Name="BlogPivotItem">
-                    <pulltorefresh:PullToRefreshBox x:Name="BlogPullToRefreshBox" 
+            <Grid Margin="0,5,0,0" Grid.Row="2" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <Pivot x:Name="rootPivot" SelectionChanged="rootPivot_SelectionChanged">
+                    <PivotItem Header="博客" Name="BlogPivotItem">
+                        <pulltorefresh:PullToRefreshBox x:Name="BlogPullToRefreshBox" 
                                                     RefreshInvoked="PullToRefreshBox_RefreshInvoked">
-                        <ListView  Name="BlogGridView" 
+                            <ListView  Name="BlogGridView" 
                                    ItemsSource="{x:Bind BloggerHomeViewModel}"
                                    IsItemClickEnabled="True"
                                    ItemClick="BlogGridView_ItemClick"
                                    SelectionMode="Single">
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                            <ListView.ItemTemplate>
-                                <DataTemplate x:DataType="data:Blog">
-                                    <usercontrol:BlogItemUserControl></usercontrol:BlogItemUserControl>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </pulltorefresh:PullToRefreshBox>
-                </PivotItem>
-            </Pivot>
-            <ProgressRing 
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="data:Blog">
+                                        <usercontrol:BlogItemUserControl></usercontrol:BlogItemUserControl>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </pulltorefresh:PullToRefreshBox>
+                    </PivotItem>
+                </Pivot>
+                <ProgressRing 
                       Name="LoadingProgressRing"
                       Width="100"
                       Height="100"
                       IsActive="False">
-            </ProgressRing>
+                </ProgressRing>
+            </Grid>
         </Grid>
+        <CommandBar  Name="CommandBarPanel"
+                    HorizontalAlignment="Stretch"
+                    Opening="CommandBarPanel_Opening"
+                    Closing="CommandBarPanel_Closing">
+            <AppBarButton Name="HomeAppBarButton" Icon="Home" Label="主页" Click="AppBarButton_Click"></AppBarButton>
+            <AppBarButton Name="NewAppBarButton" Icon="List" Label="新闻" Click="AppBarButton_Click"></AppBarButton>
+            <AppBarButton Name="MessagesAppBarButton" Icon="Message" Label="新闻" Click="AppBarButton_Click"></AppBarButton>
+            <AppBarButton Name="AccountAppBarButton" Icon="Contact" Label="我" Click="AccountAppBarButton_Click"></AppBarButton>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Name="SettingButton" Icon="Setting" Label="设置" Tapped="SettingButton_Tapped"></AppBarButton>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
     </Grid>
 </Page>

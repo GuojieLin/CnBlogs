@@ -40,8 +40,10 @@ namespace CnBlogs.ViewModels
                 blogs = await BlogService.GetFortyEightHoursTopViewPostsArticlesAsync(48);
                 HadLoading = true;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+
+                System.Diagnostics.Debug.WriteLine(exception.Message);
                 _hasMoreItems = false;
             }
 

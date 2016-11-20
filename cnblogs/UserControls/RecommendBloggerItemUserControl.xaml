@@ -16,7 +16,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
-        <Image Source="{x:Bind Blogger.Avatar}"
+        <Image Source="{x:Bind Blogger.IconName}"
                                     Width="50"
                                     Name="AuthorAvatar">
         </Image>

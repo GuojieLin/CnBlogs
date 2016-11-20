@@ -37,7 +37,7 @@ namespace CnBlogs.Service
             _nativeLoginPageType = nativeLoginType;
         }
 
-        public async static Task<Blogger> LoadUserInfo()
+        public async static Task<Blogger> LoadUserInfoAsync()
         {
             Blogger temp = await BlogService.LoadCurrentUserBlogAppAsync();
             if (temp == null) return null;
@@ -56,18 +56,18 @@ namespace CnBlogs.Service
             if (loginUserInfo.VerificationToken.IsNullOrEmpty())
             {
                 //LoginCaptcha_CaptchaImage 验证码 获取 src
-                Match match = Regex.Match(html, @"<img.*?src=(['""]?)(?<url>[^'"" ]+)(?=\1)[^>]*>");
+                Match match = Regex.Match(html, Constants.GetImageSrc);
                 if (match.Success)
                 {
-                    loginUserInfo.ImageSrc = match.Groups["url"].Value;
+                    loginUserInfo.ImageSrc = match.Groups[Constants.Url].Value;
                 }
-                match = Regex.Match(html, "'VerificationToken'\\s*:\\s*'([^\\s\\n]+)'");
+                match = Regex.Match(html, Constants.FindVerificationTokenRegexString);
                 if (match.Success)
                 {
                     loginUserInfo.VerificationToken = match.Groups[1].Value;
                 }
             }
-            Cookie serverId = HttpHelper.LoadCookieFromHeader(response.Headers, "SERVERID");
+            Cookie serverId = HttpHelper.LoadCookieFromHeader(response.Headers, Constants.ServerId);
             loginUserInfo.ServerId = serverId.Value;
         }
 
@@ -84,20 +84,20 @@ namespace CnBlogs.Service
             try
             {
                 string data = JsonSerializeHelper.Serialize(loginUserInfo);
-                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                var content = new StringContent(data, Encoding.UTF8, Constants.JsonMediaType);
 
                 Uri uri = new Uri(WcfApiUrlConstants.LoginUrl);
-                content.Headers.Add("X-Requested-With", "XMLHttpRequest");
-                content.Headers.Add("VerificationToken", loginUserInfo.VerificationToken);
-                HttpHelper.HttpClientHandler.CookieContainer.Add(uri, new Cookie("SERVERID", loginUserInfo.ServerId));
-                HttpHelper.HttpClientHandler.CookieContainer.Add(uri, new Cookie("AspxAutoDetectCookieSupport", "1"));
+                content.Headers.Add(Constants.XRequestWith, Constants.XmlHttpRequest);
+                content.Headers.Add(Constants.VerificationToken, loginUserInfo.VerificationToken);
+                HttpHelper.HttpClientHandler.CookieContainer.Add(uri, new Cookie(Constants.ServerId, loginUserInfo.ServerId));
+                HttpHelper.HttpClientHandler.CookieContainer.Add(uri, new Cookie(Constants.AspxAutoDetectCookieSupport, "1"));
                 var response = await HttpHelper.HttpClient.PostAsync(uri, content);
                 response.EnsureSuccessStatusCode();
                 string responseContent = await response.Content.ReadAsStringAsync();
                 LoginResult postResult = JsonSerializeHelper.Deserialize<LoginResult>(responseContent);
-                if (postResult.Success)
+                if (postResult.Success)// || postResult.Message == Constants.HadLogined)//提示已登录过cnblogs不能从响应中获取cookie。
                 {
-                    Cookie cookie = HttpHelper.LoadCookieFromHeader(response.Headers, ".CNBlogsCookie");
+                    Cookie cookie = HttpHelper.LoadCookieFromHeader(response.Headers, Constants.AuthenticationCookiesName);
                     HttpHelper.HttpClientHandler.CookieContainer.Add(uri, cookie);
                     //登录成功先保存cookie
                     CacheManager.Current.UpdateCookies(cookie);
