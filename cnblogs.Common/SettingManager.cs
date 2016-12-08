@@ -116,7 +116,7 @@ namespace CnBlogs.Common
             }
 
             int pageSize;
-            if (_configurationManager.GetSetting(Configuration.IsFullWindows, out pageSize))
+            if (_configurationManager.GetSetting(Configuration.PageSize, out pageSize))
             {
                 PageSize = pageSize;
             }
