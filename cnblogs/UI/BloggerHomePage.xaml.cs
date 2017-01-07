@@ -37,27 +37,30 @@ namespace CnBlogs.UI
     
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            Blogger recommentBlogger = e.Parameter as Blogger;
             if (e.NavigationMode == NavigationMode.New)
             {
-                Blogger recommentBlogger = e.Parameter as Blogger;
-                Blogger blogger = recommentBlogger;
+                //为空时说明加载的是自己的信息，获取当前登陆用户信息
                 if (recommentBlogger == null)
                 {
-                    blogger = CacheManager.LoginUserInfo.Blogger;
+                    recommentBlogger = CacheManager.LoginUserInfo.Blogger;
                     if (!AuthenticationService.IsLogin ||
-                        blogger == null ||
-                        blogger.BlogApp.IsNullOrEmpty())
+                        recommentBlogger == null ||
+                        recommentBlogger.BlogApp.IsNullOrEmpty())
                     {
+                        //粉丝数量控件隐藏
                         FollowAmountRow.Height = new GridLength(0);
+                        //显示登陆控件
                         LoginRow.Height = new GridLength(1, GridUnitType.Auto);
                         return;
                     }
                 }
-                BloggerHomeViewModel = new BloggerHomeViewModel(blogger);
-                BloggerHomeViewModel.OnLoadMoreStarted += count => LoadingProgressRing.IsActive = true;
-                BloggerHomeViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
-                PhotoImage.Source = new BitmapImage(new Uri(BloggerHomeViewModel.Photo));
             }
+            //加载用户信息
+            BloggerHomeViewModel = new BloggerHomeViewModel(recommentBlogger);
+            BloggerHomeViewModel.OnLoadMoreStarted += count => LoadingProgressRing.IsActive = true;
+            BloggerHomeViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
+            PhotoImage.Source = new BitmapImage(new Uri(BloggerHomeViewModel.Photo));
             base.OnNavigatedTo(e);
         }
 

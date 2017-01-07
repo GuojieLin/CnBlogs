@@ -11,6 +11,18 @@
     xmlns:pulltorefresh="using:PullToRefresh.UWP"
     RequestedTheme="{x:Bind NewsViewModel.SettingManager.Theme,Mode=OneWay}">
 
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <SlideNavigationTransitionInfo  />
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+    <Page.RenderTransform>
+        <TranslateTransform/>
+    </Page.RenderTransform>
     <Page.Resources>
         <ResourceDictionary Source="..\Resources\Dictionary.xaml"></ResourceDictionary>
     </Page.Resources>

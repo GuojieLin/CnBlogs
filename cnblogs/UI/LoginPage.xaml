@@ -43,6 +43,19 @@
             <Setter Property="Height" Value="50"></Setter>
         </Style>
     </Page.Resources>
+
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <SlideNavigationTransitionInfo  />
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
+    <Page.RenderTransform>
+        <TranslateTransform/>
+    </Page.RenderTransform>
     <Grid Name="Grid" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition x:Name="NativeLoginRow" Height="*"></RowDefinition>
