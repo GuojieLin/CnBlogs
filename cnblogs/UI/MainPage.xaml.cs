@@ -50,9 +50,12 @@ namespace CnBlogs.UI
             //若要全屏则隐藏顶部状态栏
             if (App.NavigationService.IsMobile && SettingManager.IsFullWindows)
             {
-                StatusBar statusBar = StatusBar.GetForCurrentView();
-                statusBar.BackgroundColor = Colors.OrangeRed;
-                statusBar.BackgroundOpacity = 1;
+                if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent(typeof(StatusBar).ToString()))
+                {
+                    StatusBar statusBar = StatusBar.GetForCurrentView();
+                    statusBar.BackgroundColor = Colors.OrangeRed;
+                    statusBar.BackgroundOpacity = 1;
+                }
                 //statusBar.HideAsync();
             }
         }
@@ -87,12 +90,17 @@ namespace CnBlogs.UI
         /// <param name="e"></param>
         private void DoubleBackExit(BackRequestedEventArgs e)
         {
-            StatusBar statusBar = StatusBar.GetForCurrentView();
-            //statusBar.ShowAsync();
-            //statusBar.ForegroundColor = Colors.White; // 前景色  
-            //statusBar.BackgroundOpacity = 0.5; // 透明度  
-            statusBar.ProgressIndicator.Text = "再按一次返回键退出程序"; // 文本  
-            statusBar.ProgressIndicator.ShowAsync();
+
+            StatusBar statusBar =null;
+            if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent(typeof(StatusBar).ToString()))
+            {
+                statusBar = StatusBar.GetForCurrentView();
+                //statusBar.ShowAsync();
+                //statusBar.ForegroundColor = Colors.White; // 前景色  
+                //statusBar.BackgroundOpacity = 0.5; // 透明度  
+                statusBar.ProgressIndicator.Text = "再按一次返回键退出程序"; // 文本  
+                statusBar.ProgressIndicator.ShowAsync();
+            }
             isExit = true;
             Task.Run(async () =>
             {
@@ -104,7 +112,10 @@ namespace CnBlogs.UI
                 await Task.Delay(1500);
                 Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
                 {
-                    await statusBar.ProgressIndicator.HideAsync();
+                    if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent(typeof(StatusBar).ToString()))
+                    {
+                        await statusBar.ProgressIndicator.HideAsync();
+                    }
                     //statusBar.HideAsync();
                 });
                 isExit = false;
@@ -154,13 +165,13 @@ namespace CnBlogs.UI
         {
             MasterFrame.Navigating += (sender, e) =>
             {
-                LoadingProgressRing.Visibility = Visibility.Visible;
-                LoadingProgressRing.IsIndeterminate = true;
+                MasterLoadingProgressBar.Visibility = Visibility.Visible;
+                MasterLoadingProgressBar.IsIndeterminate = true;
             };
             MasterFrame.Navigated += (sender, e) =>
             {
-                LoadingProgressRing.IsIndeterminate = false;
-                LoadingProgressRing.Visibility = Visibility.Collapsed;
+                MasterLoadingProgressBar.IsIndeterminate = false;
+                MasterLoadingProgressBar.Visibility = Visibility.Collapsed;
                 UpdateForVisualState(AdaptiveStates?.CurrentState);
             };
 

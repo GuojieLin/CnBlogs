@@ -5,6 +5,7 @@
     "Microsoft.ApplicationInsights.PersistenceChannel": "1.0.0",
     "Microsoft.ApplicationInsights.WindowsApps": "1.0.0",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
+    "Microsoft.Toolkit.Uwp": "1.2.0",
     "PullToRefresh.UWP": "0.3.4",
     "WeChatSDK": "2.0.1"
   },

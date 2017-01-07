@@ -15,6 +15,8 @@ namespace CnBlogs.Core
         public static void UpdateBlogTile(string title, string content)
         {
             var updater = TileUpdateManager.CreateTileUpdaterForApplication();
+            updater.EnableNotificationQueueForWide310x150(true);
+            updater.EnableNotificationQueueForSquare150x150(true);
             updater.EnableNotificationQueue(true);
             updater.Clear();
             // Create a tile notification for each feed item.

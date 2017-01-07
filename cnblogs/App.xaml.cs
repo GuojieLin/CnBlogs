@@ -84,7 +84,7 @@ namespace CnBlogs
             var appView = ApplicationView.GetForCurrentView();
             appView.SetDesiredBoundsMode(ApplicationViewBoundsMode.UseVisible);
             //注册后台任务
-            DisplayLastBlogTask.Register();
+            DisplayLastBlogBackgroundTask.Register();
             if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)

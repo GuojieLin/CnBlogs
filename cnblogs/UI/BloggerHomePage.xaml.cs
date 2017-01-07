@@ -37,25 +37,28 @@ namespace CnBlogs.UI
     
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            base.OnNavigatedTo(e);
-            Blogger recommentBlogger = e.Parameter as Blogger;
-            Blogger blogger = recommentBlogger;
-            if (recommentBlogger == null)
+            if (e.NavigationMode == NavigationMode.New)
             {
-                blogger = CacheManager.LoginUserInfo.Blogger;
-                if (!AuthenticationService.IsLogin ||
-                    blogger == null ||
-                    blogger.BlogApp.IsNullOrEmpty())
+                Blogger recommentBlogger = e.Parameter as Blogger;
+                Blogger blogger = recommentBlogger;
+                if (recommentBlogger == null)
                 {
-                    FollowAmountRow.Height = new GridLength(0);
-                    LoginRow.Height = new GridLength(1, GridUnitType.Auto);
-                    return;
+                    blogger = CacheManager.LoginUserInfo.Blogger;
+                    if (!AuthenticationService.IsLogin ||
+                        blogger == null ||
+                        blogger.BlogApp.IsNullOrEmpty())
+                    {
+                        FollowAmountRow.Height = new GridLength(0);
+                        LoginRow.Height = new GridLength(1, GridUnitType.Auto);
+                        return;
+                    }
                 }
+                BloggerHomeViewModel = new BloggerHomeViewModel(blogger);
+                BloggerHomeViewModel.OnLoadMoreStarted += count => LoadingProgressRing.IsActive = true;
+                BloggerHomeViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
+                PhotoImage.Source = new BitmapImage(new Uri(BloggerHomeViewModel.Photo));
             }
-            BloggerHomeViewModel = new BloggerHomeViewModel(blogger);
-            BloggerHomeViewModel.OnLoadMoreStarted += count => LoadingProgressRing.IsActive = true;
-            BloggerHomeViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
-            PhotoImage.Source = new BitmapImage(new Uri(BloggerHomeViewModel.Photo));
+            base.OnNavigatedTo(e);
         }
 
         private void PullToRefreshBox_RefreshInvoked(DependencyObject sender, object args)

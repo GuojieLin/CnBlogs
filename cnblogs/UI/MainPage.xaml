@@ -144,7 +144,7 @@
                     <Frame Grid.Row="0" Name="DetailFrame" Grid.Column="1"></Frame>
                     <Frame Grid.Row="0" Name="TertiaryFrame" Grid.Column="1" Visibility="Collapsed"></Frame>
                     <ProgressBar Grid.Row="0"
-                                 Name="LoadingProgressRing"
+                                 Name="MasterLoadingProgressBar"
                                  VerticalAlignment="Top"
                                  IsIndeterminate="False">
                     </ProgressBar>

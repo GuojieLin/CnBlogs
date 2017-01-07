@@ -70,16 +70,19 @@ namespace CnBlogs.UI
             SettingViewModel.UpdateFullWindows(isFullWindows);
             if (App.NavigationService.IsMobile)
             {
-                StatusBar statusBar = StatusBar.GetForCurrentView();
-                statusBar.BackgroundColor = Colors.OrangeRed;
-                statusBar.BackgroundOpacity = 1;
-                if (SettingManager.Current.IsFullWindows)
+                if (Windows.Foundation.Metadata.ApiInformation.IsTypePresent(typeof(StatusBar).ToString()))
                 {
-                    statusBar.HideAsync();
-                }
-                else
-                {
-                    statusBar.ShowAsync();
+                    StatusBar statusBar = StatusBar.GetForCurrentView();
+                    statusBar.BackgroundColor = Colors.OrangeRed;
+                    statusBar.BackgroundOpacity = 1;
+                    if (SettingManager.Current.IsFullWindows)
+                    {
+                        statusBar.HideAsync();
+                    }
+                    else
+                    {
+                        statusBar.ShowAsync();
+                    }
                 }
             }
         }

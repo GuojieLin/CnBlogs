@@ -40,13 +40,16 @@ namespace CnBlogs.UI
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            Blog blog = (Blog)e.Parameter;
-            BlogCommentViewModel = new BlogCommentViewModel(blog);
-            BlogCommentViewModel.OnLoadMoreStarted += count => LoadingProgressRing.IsActive = true;
-            BlogCommentViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
-            //BlogCommentViewModel.Refresh();
-            //App.NavigationService.DetailFrame.Navigating += (sender, args) => LoadingProgressRing.IsActive = true;
-            //App.NavigationService.DetailFrame.Navigated += (sender, args) => LoadingProgressRing.IsActive = false;
+            if (e.NavigationMode == NavigationMode.New)
+            {
+                Blog blog = (Blog)e.Parameter;
+                BlogCommentViewModel = new BlogCommentViewModel(blog);
+                BlogCommentViewModel.OnLoadMoreStarted += count => LoadingProgressRing.IsActive = true;
+                BlogCommentViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
+                //BlogCommentViewModel.Refresh();
+                //App.NavigationService.DetailFrame.Navigating += (sender, args) => LoadingProgressRing.IsActive = true;
+                //App.NavigationService.DetailFrame.Navigated += (sender, args) => LoadingProgressRing.IsActive = false;
+            }
             base.OnNavigatedTo(e);
         }
         private void BlogsGridView_ItemClick(object sender, ItemClickEventArgs e)
@@ -83,6 +86,7 @@ namespace CnBlogs.UI
             }
             else
             {
+                //TODO:使用API,评论不会马上刷出来,需要改成http获取进行解析才可以实时显示最新评论
                 //{ "Id":0,"IsSuccess":false,"Message":"请先登录！","Data":null}
                 this.BlogCommentViewModel.Refresh();
             }

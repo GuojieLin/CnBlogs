@@ -39,11 +39,14 @@ namespace CnBlogs.UI
         /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            News news = (News)e.Parameter;
-            NewsCommentViewModel = new NewsCommentViewModel(news);
-            NewsCommentViewModel.OnLoadMoreStarted += count => LoadingProgressRing.IsActive = true;
-            NewsCommentViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
-            NewsCommentViewModel.Refresh();
+            if (e.NavigationMode == NavigationMode.New)
+            {
+                News news = (News)e.Parameter;
+                NewsCommentViewModel = new NewsCommentViewModel(news);
+                NewsCommentViewModel.OnLoadMoreStarted += count => LoadingProgressRing.IsActive = true;
+                NewsCommentViewModel.OnLoadMoreCompleted += count => LoadingProgressRing.IsActive = false;
+                NewsCommentViewModel.Refresh();
+            }
             //App.NavigationService.DetailFrame.Navigating += (sender, args) => LoadingProgressRing.IsActive = true;
             //App.NavigationService.DetailFrame.Navigated += (sender, args) => LoadingProgressRing.IsActive = false;
             base.OnNavigatedTo(e);

@@ -10,7 +10,7 @@ using Windows.ApplicationModel.Background;
 
 namespace CnBlogs.BackgroundTask
 {
-    public sealed class DisplayLastBlogTask : IBackgroundTask
+    public sealed class DisplayLastBlogBackgroundTask : IBackgroundTask
     {
         BackgroundTaskDeferral _deferral; // Note: defined at class scope so we can mark it complete inside the OnCancel() callback if we choose to support cancellation
         public async void Run(IBackgroundTaskInstance taskInstance)
@@ -43,8 +43,8 @@ namespace CnBlogs.BackgroundTask
                 UnRegister();
             
                 BackgroundTaskBuilder taskBuilder = new BackgroundTaskBuilder();
-                taskBuilder.Name = nameof(DisplayLastBlogTask);
-                taskBuilder.TaskEntryPoint = typeof(DisplayLastBlogTask).FullName;
+                taskBuilder.Name = nameof(DisplayLastBlogBackgroundTask);
+                taskBuilder.TaskEntryPoint = typeof(DisplayLastBlogBackgroundTask).FullName;
                 taskBuilder.SetTrigger(new TimeTrigger(15, false));
                 var registration = taskBuilder.Register();
             }
@@ -55,7 +55,7 @@ namespace CnBlogs.BackgroundTask
             {
                 foreach (var task in BackgroundTaskRegistration.AllTasks)
                 {
-                    if (task.Value.Name == nameof(DisplayLastBlogTask))
+                    if (task.Value.Name == nameof(DisplayLastBlogBackgroundTask))
                     {
                         task.Value.Unregister(true);
                     }
