@@ -1,4 +1,5 @@
 ﻿using CnBlogs.BackgroundTask;
+using CnBlogs.Common;
 using CnBlogs.Core;
 using CnBlogs.Entities;
 using CnBlogs.Service;
@@ -57,7 +58,7 @@ namespace CnBlogs
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
@@ -89,6 +90,8 @@ namespace CnBlogs
             //注册后台任务
             DisplayLastBlogBackgroundTask.Register();
             LastNewNotifitionBackgroundTask.Register();
+            //注册cortana命令
+            await RegistCortanaVCDFile();
 
             if (e.PrelaunchActivated == false)
             {
@@ -103,13 +106,42 @@ namespace CnBlogs
                 Window.Current.Activate();
             }
         }
+
+        private async Task RegistCortanaVCDFile()
+        {
+            var storageFile = await Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(new Uri(Constants.VCDFilePath));
+            await Windows.ApplicationModel.VoiceCommands.VoiceCommandDefinitionManager
+                .InstallCommandDefinitionsFromStorageFileAsync(storageFile);
+        }
+
         protected override void OnActivated(IActivatedEventArgs args)
+        {
+            switch (args.Kind)
+            {
+                case ActivationKind.ToastNotification:
+                    {
+                        ProcessToastNotification(args);
+                        break;
+                    }
+                case ActivationKind.VoiceCommand:
+                    {
+                        ProcessVoiceCommand(args);
+                        break;
+                    }
+            }
+            base.OnActivated(args);
+        }
+        /// <summary>
+        /// 点击通知响应
+        /// </summary>
+        /// <param name="args"></param>
+        private void ProcessToastNotification(IActivatedEventArgs args)
         {
             var toastActivationArgs = args as ToastNotificationActivatedEventArgs;
             if (toastActivationArgs != null)
             {
                 bool success = ToastificationHandle(toastActivationArgs);
-                if (!success) 
+                if (!success)
                 {
                     Frame rootFrame = Window.Current.Content as Frame;
                     // If we're loading the app for the first time, place the main page on
@@ -118,11 +150,21 @@ namespace CnBlogs
                     if (rootFrame.BackStack.Count == 0)
                         rootFrame.BackStack.Add(new PageStackEntry(typeof(MainPage), null, null));
                 }
+                Window.Current.Activate();
+            }
+        }
+        private void ProcessVoiceCommand(IActivatedEventArgs args)
+        {
+            var voiceActivationArgs = args as VoiceCommandActivatedEventArgs;
+            if (voiceActivationArgs != null)
+            {
+                var result = voiceActivationArgs.Result;
+                var command = result.Text;
 
                 Window.Current.Activate();
             }
-            base.OnActivated(args);
         }
+
         private bool ToastificationHandle(ToastNotificationActivatedEventArgs toastActivationArgs)
         {
             Frame rootFrame = Window.Current.Content as Frame;
@@ -131,20 +173,19 @@ namespace CnBlogs
             // See what action is being requested 
             switch (args["action"])
             {
-                // Open the image
                 case "HotNews":
-
                     // The URL retrieved from the toast args
                     string queryString = args["queryString"];
                     News news = JsonSerializeHelper.Deserialize<News>(queryString);
-                    // If we're already viewing that image, do nothing
-                    if (rootFrame.Content is NewsBodyPage && (rootFrame.Content as NewsBodyPage).NewsBodyViewModel.News.Id.Equals(news.Id))
+                    //二级Frame才显示该页
+                    if (NavigationService.DetailFrame.Content is NewsBodyPage &&
+                        (NavigationService.DetailFrame.Content as NewsBodyPage).NewsBodyViewModel.News.Id.Equals(news.Id))
                         break;
                     // Otherwise navigate to view it
                     NavigationService.DetailFrameNavigate(typeof(NewsBodyPage), news);
                     return true;
-                    break;
             }
+            //导航失败
             return false;
         }
 

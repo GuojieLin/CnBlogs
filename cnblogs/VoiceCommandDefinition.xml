@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VoiceCommands xmlns="http://schemas.microsoft.com/voicecommands/1.2">
+  <CommandSet xml:lang="zh-cn" Name="CnblogsCommandSet_zh-cn">
+    <CommandPrefix>博客园</CommandPrefix>
+    <Example>打开博客园</Example>
+ 
+    <Command Name="openCnblogs">
+      <Example>打开博客园</Example>
+      <ListenFor>打开博客园</ListenFor>
+      <Feedback>正在打开博客园</Feedback>
+      <Navigate/>
+    </Command>
+   
+    <Command Name="showLastBlog">
+      <Example>显示最新博客</Example>
+      <ListenFor>显示最新博客</ListenFor>
+      <Feedback>好的,马上显示最新博客</Feedback>
+      <Navigate/>
+    </Command>
+    <Command Name="showLastNews">
+      <Example>显示最新新闻</Example>
+      <ListenFor>显示最新新闻</ListenFor>
+      <Feedback>好的,马上显示最新新闻</Feedback>
+      <Navigate/>
+    </Command>
+ 
+    <PhraseList Label="user">
+      <Item>Sam</Item>
+      <Item>John</Item>
+    </PhraseList>
+  </CommandSet>
+</VoiceCommands>

@@ -14,6 +14,8 @@ namespace CnBlogs.Common
         public const string HadLogined = "您已处于登录状态";
         public const string AspxAutoDetectCookieSupport = "AspxAutoDetectCookieSupport";
         public const string DefaultAvatar = "ms-appx:///Asserts/sample_face.png";
+        public const string VCDFilePath = "ms-appx:///VoiceCommandDefinition.xml";
+        
         public const string XmlNameSpace = "xmlns=\"http://www.w3.org/2005/Atom\"";
         public const string ServerId = "SERVERID";
         public const string XRequestWith = "X-Requested-With";
