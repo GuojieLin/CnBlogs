@@ -139,6 +139,9 @@
     <Compile Include="UserControls\ShareDialog.xaml.cs">
       <DependentUpon>ShareDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Toast.xaml.cs">
+      <DependentUpon>Toast.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\BloggerHomeViewModel.cs" />
     <Compile Include="ViewModels\RecommendNewsViewModel.cs" />
@@ -275,6 +278,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\ShareDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\Toast.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

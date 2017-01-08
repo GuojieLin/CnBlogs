@@ -28,7 +28,7 @@ namespace CnBlogs.Service
         /// <param name="page_index"></param>
         /// <param name="page_size"></param>
         /// <returns></returns>
-        public async static Task<List<News>> GeHotNewsDataArticlesAsync(int count)
+        public async static Task<List<News>> GetHotNewsDataArticlesAsync(int count)
         {
             string url = string.Format(WcfApiUrlConstants.HotNewsData, count);
             return await GetNewsArticlesAsync(url);

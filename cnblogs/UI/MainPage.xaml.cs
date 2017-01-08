@@ -104,12 +104,7 @@ namespace CnBlogs.UI
             }
             isExit = true;
             Task.Run(async () =>
-            {
-                //Windows.Data.Xml.Dom. XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText01);  
-                //Windows.Data.Xml.Dom.XmlNodeList elements = toastXml.GetElementsByTagName("text");  
-                //elements[0].AppendChild(toastXml.CreateTextNode("再按一次返回键退出程序。"));  
-                //ToastNotification toast = new ToastNotification(toastXml);  
-                //ToastNotificationManager.CreateToastNotifier().Show(toast);       
+            {   
                 await Task.Delay(1500);
                 Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
                 {

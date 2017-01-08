@@ -38,7 +38,7 @@ namespace CnBlogs.ViewModels
             List<News> newes = null;
             try
             {
-                newes = await NewsService.GeHotNewsDataArticlesAsync(20);
+                newes = await NewsService.GetHotNewsDataArticlesAsync(20);
                 HadLoading = true;
             }
             catch (Exception exception)

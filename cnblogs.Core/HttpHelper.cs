@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using CnBlogs.Core.Extentsions;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.Graphics.Imaging;
+using System.IO;
+using Windows.Storage.Streams;
+using Windows.Security.Cryptography;
 
 //======================================================//
 //			作者中文名:	林国杰				            //
@@ -57,7 +62,32 @@ namespace CnBlogs.Core
                 return await response.Content.ReadAsStringAsync();
             }
         }
+        /// <summary>
+        /// 返回保存的路径
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public async static Task<string> DownloadImage(string url)
+        {
+            try
+            {
+                HttpResponseMessage resp = await HttpClient.GetAsync(new Uri(url));
+                resp.EnsureSuccessStatusCode();
+                byte [] temps = await resp.Content.ReadAsByteArrayAsync();
+                IBuffer buffer = CryptographicBuffer.CreateFromByteArray(temps);
+                using (IRandomAccessStream stream = new InMemoryRandomAccessStream())
+                {
 
+                    await stream.WriteAsync(buffer);
+                    stream.Seek(0);
+                    return await ImageStorageHelper.StorageImageFolder(stream, url);
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
         /// <summary>
         /// 向服务器发送post请求 返回服务器回复数据
         /// </summary>

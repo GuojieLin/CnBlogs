@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppDomain.cs" />
+    <Compile Include="ImageStorageHelper.cs" />
     <Compile Include="JsonSerializeHelper.cs" />
     <Compile Include="LocalSetting.cs" />
     <Compile Include="RoamingSetting.cs" />

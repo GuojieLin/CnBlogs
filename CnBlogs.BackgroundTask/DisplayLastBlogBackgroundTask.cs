@@ -34,52 +34,18 @@ namespace CnBlogs.BackgroundTask
             //
             _deferral.Complete();
         }
+        
         public async static void Register()
         {
-            if (BackgroundTaskHelper.IsBackgroundTaskRegistered(nameof(DisplayLastBlogBackgroundTask)))
-            {
-                // Background task already registered.
-                return;
-            }
             //这里就是磁贴更新周期的一些逻辑处理
             var backgroundAccessStatus = await BackgroundExecutionManager.RequestAccessAsync();
             if (backgroundAccessStatus == BackgroundAccessStatus.AllowedMayUseActiveRealTimeConnectivity ||
                 backgroundAccessStatus == BackgroundAccessStatus.AllowedWithAlwaysOnRealTimeConnectivity)
             {
-                BackgroundTaskHelper.Register(nameof(DisplayLastBlogBackgroundTask), new TimeTrigger(15, false));
-                //下面这句注册会失败，然后会闪退。原因未知。
-                //BackgroundTaskHelper.Register(nameof(DisplayLastBlogBackgroundTask), 
-                //    typeof(DisplayLastBlogBackgroundTask).FullName,
-                //    new TimeTrigger(15, false), false, true, new SystemCondition(SystemConditionType.InternetAvailable));
-
-
-                //UnRegister();
-
-                //BackgroundTaskBuilder taskBuilder = new BackgroundTaskBuilder();
-                //taskBuilder.Name = nameof(DisplayLastBlogBackgroundTask);
-                //taskBuilder.TaskEntryPoint = typeof(DisplayLastBlogBackgroundTask).FullName;
-                //taskBuilder.SetTrigger(new TimeTrigger(15, false));
-                //var registration = taskBuilder.Register();
-            }
-        }
-        private static bool UnRegister()
-        {
-            try
-            {
-
-                BackgroundTaskHelper.Unregister(nameof(DisplayLastBlogBackgroundTask));
-                //foreach (var task in BackgroundTaskRegistration.AllTasks)
-                //{
-                //    if (task.Value.Name == nameof(DisplayLastBlogBackgroundTask))
-                //    {
-                //        task.Value.Unregister(true);
-                //    }
-                //}
-                return true;
-            }
-            catch
-            {
-                return false;
+                BackgroundTaskHelper.Register(typeof(DisplayLastBlogBackgroundTask), new TimeTrigger(15, false),
+                    false, true,
+                    new SystemCondition(SystemConditionType.InternetAvailable), //网络可用
+                    new SystemCondition(SystemConditionType.UserPresent));//用户正在使用时
             }
         }
     }
