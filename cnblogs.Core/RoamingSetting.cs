@@ -10,8 +10,11 @@ namespace CnBlogs.Core
 {
     public class RoamingSetting : ISetting
     {
+        private static RoamingSetting _current;
+        public static RoamingSetting Current { get { return _current; } }
         static RoamingSetting()
         {
+            _current = new RoamingSetting(); 
             ApplicationData.Current.DataChanged +=
                new TypedEventHandler<ApplicationData, object>(DataChangeHandler);
         }

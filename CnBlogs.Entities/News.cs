@@ -3,6 +3,7 @@ using CnBlogs.Core.Extentsions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -23,16 +24,19 @@ namespace CnBlogs.Entities
     // <topicIcon>http://images0.cnblogs.com/news_topic///images0.cnblogs.com/news_topic/gmail.gif</topicIcon>
     // <sourceName>cnBeta</sourceName>
     //</entry>
+    [DataContract]
     public class News
     {
 
         /// <summary>
         /// id
         /// </summary>
+        [DataMember]
         public string Id { get; set; }
         /// <summary>
         /// 标题
         /// </summary>
+        [DataMember]
         public string Title { get; set; }
         /// <summary>
         /// 摘要
@@ -41,39 +45,48 @@ namespace CnBlogs.Entities
         /// <summary>
         /// 发布时间
         /// </summary>
+        [DataMember]
         public DateTime Published { get; set; }
         /// <summary>
         /// 最后更新时间
         /// </summary>
+        [DataMember]
         public DateTime Updated { get; set; }
         /// <summary>
         /// 新闻地址
         /// </summary>
+        [DataMember]
         public string NewsUrl { get; set; }
         public NewsBody Body { get; set; }
         /// <summary>
         /// 推荐数
         /// </summary>
+        [DataMember]
         public int Diggs { get; set; }
         /// <summary>
         /// 阅读数
         /// </summary>
+        [DataMember]
         public int Views { get; set; }
         /// <summary>
         /// 评论数
         /// </summary>
+        [DataMember]
         public int Comments { get; set; }
         // <summary>
         /// 主题
         /// </summary>
+        [DataMember]
         public string Topic { get; set; }
         /// <summary>
         /// 
         /// </summary>
+        [DataMember]
         public string TopicIcon { get; set; }
         /// <summary>
         /// 来源
         /// </summary>
+        [DataMember]
         public string SourceName { get; set; }
         public void SetBody(NewsBody newsBody)
         {

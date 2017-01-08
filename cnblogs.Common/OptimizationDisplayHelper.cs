@@ -58,17 +58,18 @@ namespace CnBlogs.Common
                         {
                             //移除长宽标签 最大化图片
                             //return "<img src='" + match.Groups["imgUrl"].Value + "'/>";
-                            return @"<img src=""" + Configuration.DefalutImagePath + @""" onclick=""click2loadimage(this,'" + url + @"');""/>";
+                            return $"<img src=\"{Configuration.DefalutImagePath} \" onclick=\"click2loadimage(this,'{url}');\"/>";
+
                         }
                         else
                         {
-                            return @"<img src='" + url + @"'>";
+                            return $"<img src='{url}'>";
                         }
                     }
                     #endregion
                     else
                     {
-                        return @"<img src='" + url + @"'>";
+                        return $"<img src='{url}'>";
                     }
                 }, RegexOptions.IgnoreCase);  //替换所有img标签 为本地图片
 

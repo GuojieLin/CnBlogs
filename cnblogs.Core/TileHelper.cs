@@ -20,14 +20,17 @@ namespace CnBlogs.Core
             updater.EnableNotificationQueue(true);
             updater.Clear();
             // Create a tile notification for each feed item.
-            XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileWide310x150Text03);
+            XmlDocument tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileWide310x150Text01);
             string titleText = title ?? string.Empty;
             tileXml.GetElementsByTagName(TEXT)[0].InnerText = titleText;
+            tileXml.GetElementsByTagName(TEXT)[1].InnerText = content;
             // Create a new tile notification.
             updater.Update(new TileNotification(tileXml));
-            tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquare150x150Text03);
+
+            tileXml = TileUpdateManager.GetTemplateContent(TileTemplateType.TileSquare150x150Text02);
             titleText = title ?? string.Empty;
             tileXml.GetElementsByTagName(TEXT)[0].InnerText = titleText;
+            tileXml.GetElementsByTagName(TEXT)[1].InnerText = content;
             // Create a new tile notification.
             updater.Update(new TileNotification(tileXml));
 

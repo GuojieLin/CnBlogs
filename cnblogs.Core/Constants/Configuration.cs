@@ -14,6 +14,7 @@ namespace CnBlogs.Core.Constants
         public const string IsFullWindows = "IsFullWindows";
         public const string PageSize = "PageSize";
         public const int DefaultPageSize = 20;
+        public const string LogoPath = "ms-appx:///Asserts/Square300x300Logo.scale-200.png";
         public const string DefalutImagePath = "ms-appx-web:///Assets/default_image.png";
         public const string ImageTempDirectory = "Image";
     }

@@ -1,6 +1,9 @@
 ﻿using CnBlogs.BackgroundTask;
+using CnBlogs.Core;
+using CnBlogs.Entities;
 using CnBlogs.Service;
 using CnBlogs.UI;
+using Microsoft.QueryStringDotNET;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -86,6 +89,7 @@ namespace CnBlogs
             //注册后台任务
             DisplayLastBlogBackgroundTask.Register();
             LastNewNotifitionBackgroundTask.Register();
+
             if (e.PrelaunchActivated == false)
             {
                 if (rootFrame.Content == null)
@@ -98,6 +102,50 @@ namespace CnBlogs
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+        }
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            var toastActivationArgs = args as ToastNotificationActivatedEventArgs;
+            if (toastActivationArgs != null)
+            {
+                bool success = ToastificationHandle(toastActivationArgs);
+                if (!success) 
+                {
+                    Frame rootFrame = Window.Current.Content as Frame;
+                    // If we're loading the app for the first time, place the main page on
+                    // the back stack so that user can go back after they've been
+                    // navigated to the specific page
+                    if (rootFrame.BackStack.Count == 0)
+                        rootFrame.BackStack.Add(new PageStackEntry(typeof(MainPage), null, null));
+                }
+
+                Window.Current.Activate();
+            }
+            base.OnActivated(args);
+        }
+        private bool ToastificationHandle(ToastNotificationActivatedEventArgs toastActivationArgs)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            // Parse the query string
+            QueryString args = QueryString.Parse(toastActivationArgs.Argument);
+            // See what action is being requested 
+            switch (args["action"])
+            {
+                // Open the image
+                case "HotNews":
+
+                    // The URL retrieved from the toast args
+                    string queryString = args["queryString"];
+                    News news = JsonSerializeHelper.Deserialize<News>(queryString);
+                    // If we're already viewing that image, do nothing
+                    if (rootFrame.Content is NewsBodyPage && (rootFrame.Content as NewsBodyPage).NewsBodyViewModel.News.Id.Equals(news.Id))
+                        break;
+                    // Otherwise navigate to view it
+                    NavigationService.DetailFrameNavigate(typeof(NewsBodyPage), news);
+                    return true;
+                    break;
+            }
+            return false;
         }
 
 
